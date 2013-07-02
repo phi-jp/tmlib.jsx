@@ -1,0 +1,28 @@
+{
+  "name": "tmlib.jsx",
+  "version": "0.0.0",
+  "description": "tmlib.jsx is jsx version of tmlib.js.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/phi1618/tmlib.jsx.git"
+  },
+  "keywords": [
+    "tmlib",
+    "javascript",
+    "jsx"
+  ],
+  "author": "phi-jp",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt-jsx": "0.0.4",
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.4"
+  }
+}
