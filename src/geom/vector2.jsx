@@ -4,21 +4,21 @@
 
 
 /**
- * 
+ * vector class
  */
 class Vector2 {
     var x:number = 0;
     var y:number = 0;
     
     /**
-     * 
+     * constructor
      */
     function constructor() {
         
     }
     
     /**
-     * 
+     * constructor
      */
     function constructor(x:number, y:number) {
         this.x = x;
@@ -26,7 +26,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * set
      */
     function set(x:number, y:number): Vector2 {
         this.x = x;
@@ -35,14 +35,14 @@ class Vector2 {
     }
     
     /**
-     * 
+     * get length
      */
     function length(): number {
         return Math.sqrt(this.x*this.x + this.y*this.y);
     }
     
     /**
-     * 
+     * add value
      */
     function add(x:number, y:number): Vector2 {
         this.x += x;
@@ -51,7 +51,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * add value by Vector2
      */
     function add(v:Vector2): Vector2 {
         this.x += v.x;
@@ -60,7 +60,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * sub value
      */
     function sub(x:number, y:number): Vector2 {
         this.x -= x;
@@ -69,7 +69,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * sub value by Vector2
      */
     function sub(v:Vector2): Vector2 {
         this.x -= v.x;
@@ -78,7 +78,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * multiplication
      */
     function mul(value:number): Vector2 {
         this.x *= value;
@@ -87,7 +87,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * division
      */
     function div(value:number): Vector2 {
         this.x /= value;
@@ -96,7 +96,7 @@ class Vector2 {
     }
     
     /**
-     * 
+     * normalize
      */
     function normalize():Vector2 {
         var len = this.length();
@@ -106,14 +106,14 @@ class Vector2 {
     }
     
     /**
-     *
+     * to string
      */
     override function toString(): string {
         return "(" + this.x.toString() + "," + this.y.toString() + ")";
     }
     
     /**
-     * 
+     * output log
      */
     function log(): Vector2 {
         log this.toString();
