@@ -13,12 +13,18 @@ module.exports = function(grunt) {
       },
     },
     jsx: {
+      /*
       build: {
         src: 'test/geom/main.jsx',
         dest: 'test/geom/main.js',
         add_search_path: "src",
         executable: "web",
       },
+      */
+      test: {
+        src: 'test/geom/vector2.jsx',
+        args: '--test'
+      }
     },
   });
 

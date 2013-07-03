@@ -35,13 +35,6 @@ class Vector2 {
     }
     
     /**
-     * get length
-     */
-    function length(): number {
-        return Math.sqrt(this.x*this.x + this.y*this.y);
-    }
-    
-    /**
      * add value
      */
     function add(x:number, y:number): Vector2 {
@@ -96,6 +89,13 @@ class Vector2 {
     }
     
     /**
+     * get length
+     */
+    function length(): number {
+        return Math.sqrt(this.x*this.x + this.y*this.y);
+    }
+    
+    /**
      * normalize
      */
     function normalize():Vector2 {
@@ -103,6 +103,14 @@ class Vector2 {
         this.x /= len;
         this.y /= len;
         return this;
+    }
+    
+    function equals(x: number, y: number): boolean {
+        return this.x == x && this.y == y;
+    }
+    
+    function equals(v: Vector2): boolean {
+        return this.x == v.x && this.y == v.y;
     }
     
     /**
@@ -118,5 +126,19 @@ class Vector2 {
     function log(): Vector2 {
         log this.toString();
         return this;
+    }
+    
+    /**
+     * 
+     */
+    static function dot(lhs:Vector2, rhs:Vector2): number {
+        return lhs.x * rhs.x + lhs.y * rhs.y;
+    }
+    
+    /**
+     * 
+     */
+    static function cross(lhs:Vector2, rhs:Vector2): number {
+        return (lhs.x*rhs.y) - (lhs.y*rhs.x);
     }
 }
