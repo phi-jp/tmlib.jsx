@@ -47,9 +47,7 @@ class Vector2 {
      * add value by Vector2
      */
     function add(v:Vector2): Vector2 {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
+        return this.add(v.x, v.y);
     }
     
     /**
