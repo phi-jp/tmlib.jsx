@@ -63,9 +63,7 @@ class Vector2 {
      * sub value by Vector2
      */
     function sub(v:Vector2): Vector2 {
-        this.x -= v.x;
-        this.y -= v.y;
-        return this;
+        return this.sub(v.x, v.y);
     }
     
     /**
@@ -90,7 +88,14 @@ class Vector2 {
      * get length
      */
     function length(): number {
-        return Math.sqrt(this.x*this.x + this.y*this.y);
+        return Math.sqrt( this.lengthSquare() );
+    }
+    
+    /**
+     * get length square
+     */
+    function lengthSquare(): number {
+        return this.x*this.x + this.y*this.y;
     }
     
     /**
