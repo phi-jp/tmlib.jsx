@@ -7,10 +7,14 @@ module.exports = function(grunt) {
     buildDir: "build",
     
     watch: {
-      jsx: {
-        files: ['**/*.jsx'],
-        tasks: ['jsx:build']
+      test: {
+        files: ['src/**/*.jsx', 'test/**/*.jsx'],
+        tasks: ['jsx:test'],
       },
+      shooting: {
+        files: ['src/**/*.jsx', 'examples/shooting/src/*.jsx'],
+        tasks: ['jsx:shooting'],
+      }
     },
     jsx: {
       /*
@@ -24,7 +28,12 @@ module.exports = function(grunt) {
       test: {
         src: 'test/geom/vector2.jsx',
         args: '--test'
-      }
+      },
+      shooting: {
+        src: 'examples/shooting/src/main.jsx',
+        dest: 'examples/shooting/main.js',
+        executable: "web",
+      },
     },
   });
 
