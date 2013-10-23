@@ -21,7 +21,7 @@
   "author": "phi-jp",
   "license": "MIT",
   "devDependencies": {
-    "grunt-jsx": "0.0.4",
+    "grunt-jsx": "~0.1.5",
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4"
   }
