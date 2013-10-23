@@ -651,15 +651,9 @@ BaseApp.prototype._draw$ = function () {
 
 function CanvasApp(elm) {
 	BaseApp.call(this, elm);
-	this.canvas = elm;
-	this.context = (function ($v) {
-		if (! ($v == null || $v instanceof CanvasRenderingContext2D)) {
-			debugger;
-			throw new Error("[src/display/canvasapp.jsx:24:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
-		}
-		return $v;
-	}(this.canvas.getContext('2d')));
+	this.canvas = new Canvas(elm);
 	this.renderer = new Renderer();
+	this.bgColor = "#eee";
 };
 
 $__jsx_extend([CanvasApp], BaseApp);
@@ -674,8 +668,8 @@ CanvasApp.prototype._update$ = function () {
 	var scene;
 	scene = this.getCurrentScene$();
 	scene._update$X(this);
-	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	this.renderer.render$LElement$0$LCanvasRenderingContext2D$(scene, this.context);
+	this.canvas.clear$S(this.bgColor);
+	this.renderer.render$LElement$0$LCanvas$(scene, this.canvas);
 };
 
 
@@ -690,35 +684,79 @@ function ShootingApp(elm) {
 };
 
 $__jsx_extend([ShootingApp], CanvasApp);
+function Canvas(elm) {
+	this.element = null;
+	this.canvas = elm;
+	this.context = (function ($v) {
+		if (! ($v == null || $v instanceof CanvasRenderingContext2D)) {
+			debugger;
+			throw new Error("[src/graphics/canvas.jsx:18:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
+		}
+		return $v;
+	}(this.canvas.getContext('2d')));
+	this.width = this.canvas.width;
+	this.height = this.canvas.height;
+};
+
+$__jsx_extend([Canvas], Object);
+Canvas.prototype.clear$ = function () {
+	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+
+Canvas.prototype.clear$S = function (color) {
+	this.context.save();
+	this.context.fillStyle = color;
+	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	this.context.restore();
+};
+
+
+Canvas.prototype.fillRect$NNNN = function (x, y, width, height) {
+	this.context.fillRect(x, y, width, height);
+};
+
+
+Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
+	this.context.drawImage(image, 0, 0);
+};
+
+
+Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
+	this.context.setTransform(m11, m12, m21, m22, dx, dy);
+};
+
+
 function Renderer() {
 };
 
 $__jsx_extend([Renderer], Object);
-Renderer.prototype.render$LElement$0$LCanvasRenderingContext2D$ = function (root, ctx) {
-	this._render$LElement$0$LCanvasRenderingContext2D$(root, ctx);
+Renderer.prototype.render$LElement$0$LCanvas$ = function (root, canvas) {
+	this._render$LElement$0$LCanvas$(root, canvas);
 };
 
 
-Renderer.prototype._render$LElement$0$LCanvasRenderingContext2D$ = function (element, ctx) {
+Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 	var $this = this;
 	var sprite;
 	if (element instanceof Sprite) {
 		sprite = (function ($v) {
 			if (! ($v == null || $v instanceof Sprite)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:25:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
+				throw new Error("[src/display/renderer.jsx:28:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
 			}
 			return $v;
 		}(element));
+		canvas.setTransform$NNNNNN(1, 0, 0, 1, sprite.position.x, sprite.position.y);
 		if (sprite.loaded === true) {
-			ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+			canvas.drawImage$LHTMLImageElement$(sprite.image);
 		} else {
-			ctx.fillRect(sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+			canvas.fillRect$NNNN(sprite.position.x, sprite.position.y, sprite.width, sprite.height);
 		}
 	}
 	if (element.children.length > 0) {
 		element.children.forEach((function (elm) {
-			$this._render$LElement$0$LCanvasRenderingContext2D$(elm, ctx);
+			$this._render$LElement$0$LCanvas$(elm, canvas);
 		}));
 	}
 };
@@ -1141,6 +1179,10 @@ var $__jsx_classMap = {
 		ShootingApp$LHTMLCanvasElement$: ShootingApp,
 		Player: Player,
 		Player$: Player
+	},
+	"src/graphics/canvas.jsx": {
+		Canvas: Canvas,
+		Canvas$LHTMLCanvasElement$: Canvas
 	},
 	"src/display/renderer.jsx": {
 		Renderer: Renderer,

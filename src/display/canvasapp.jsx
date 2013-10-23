@@ -5,25 +5,27 @@
 import "js/web.jsx";
 
 import "../app/baseapp.jsx";
+import "../graphics/canvas.jsx";
+
 import "renderer.jsx";
 
 /**
  * canvasapp class
  */
 class CanvasApp extends BaseApp {
-    var canvas: HTMLCanvasElement;
-    var context: CanvasRenderingContext2D;
+    var canvas: Canvas;
     var renderer: Renderer;
+    var bgColor: string;
     
     /**
      * constructor
      */
     function constructor(elm: HTMLCanvasElement) {
         super(elm);
-        this.canvas = elm as HTMLCanvasElement;
-        this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+        this.canvas = new Canvas(elm as HTMLCanvasElement);
 
         this.renderer = new Renderer();
+        this.bgColor = "#eee";
     }
     
     function setSize(width:number, height:number): CanvasApp {
@@ -37,8 +39,8 @@ class CanvasApp extends BaseApp {
         var scene = this.getCurrentScene();
         scene._update(this);
         
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.renderer.render(scene, this.context);
+        this.canvas.clear(this.bgColor);
+        this.renderer.render(scene, this.canvas);
         // this.renderer.render(5, this.context);
     }
 }
