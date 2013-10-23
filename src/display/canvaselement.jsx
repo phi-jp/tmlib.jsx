@@ -1,5 +1,5 @@
 
-import "object2d.jsx";
+import "../app/object2d.jsx";
 import "js/web.jsx";
 
 /**

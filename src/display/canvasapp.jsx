@@ -4,8 +4,8 @@
 
 import "js/web.jsx";
 
-import "baseapp.jsx";
-
+import "../app/baseapp.jsx";
+import "renderer.jsx";
 
 /**
  * canvasapp class
@@ -13,6 +13,7 @@ import "baseapp.jsx";
 class CanvasApp extends BaseApp {
     var canvas: HTMLCanvasElement;
     var context: CanvasRenderingContext2D;
+    var renderer: Renderer;
     
     /**
      * constructor
@@ -21,6 +22,8 @@ class CanvasApp extends BaseApp {
         super(elm);
         this.canvas = elm as HTMLCanvasElement;
         this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+
+        this.renderer = new Renderer();
     }
     
     function setSize(width:number, height:number): CanvasApp {
@@ -35,6 +38,7 @@ class CanvasApp extends BaseApp {
         scene._update(this);
         
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        scene._draw(this.context);
+        this.renderer.render(scene, this.context);
+        // this.renderer.render(5, this.context);
     }
 }

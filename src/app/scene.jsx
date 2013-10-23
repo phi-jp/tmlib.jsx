@@ -1,10 +1,10 @@
 
-import "canvaselement.jsx";
+import "element.jsx";
 
 /**
  * Scene class
  */
-class Scene extends CanvasElement {
+class Scene extends Element {
     
     /**
      * constructor

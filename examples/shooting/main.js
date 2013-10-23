@@ -1,4 +1,4 @@
-// generatedy by JSX compiler 0.9.44 (2013-06-25 09:37:20 +0900; 9591ad3b92a4fae6ef2dcde12a60e65f94bc7c1e)
+// generatedy by JSX compiler 0.9.67 (2013-10-23 12:05:19 +0900; e553dcac2c3666c454a7247e62e0c94d2385ce95)
 var JSX = {};
 (function (JSX) {
 /**
@@ -56,7 +56,7 @@ function $__jsx_div_assign(obj, prop, divisor) {
  */
 var $__jsx_parseInt = parseInt;
 var $__jsx_parseFloat = parseFloat;
-var $__jsx_isNaN = isNaN;
+function $__jsx_isNaN(n) { return n !== n; }
 var $__jsx_isFinite = isFinite;
 
 var $__jsx_encodeURIComponent = encodeURIComponent;
@@ -101,11 +101,13 @@ JSX.resetProfileResults = function () {
 	return $__jsx_profiler.resetResults();
 };
 JSX.DEBUG = true;
-function g_StopIteration() {
+function StopIteration() {
 	Error.call(this);
+	this.name = "StopIteration";
+	if (Error.captureStackTrace) Error.captureStackTrace(this, StopIteration);
 };
 
-$__jsx_extend([g_StopIteration], Error);
+$__jsx_extend([StopIteration], Error);
 function _Main() {
 };
 
@@ -129,15 +131,13 @@ function _Main$main$AS(args) {
 _Main.main = _Main$main$AS;
 _Main.main$AS = _Main$main$AS;
 
-function dom() {
-};
-
+function dom() {}
 $__jsx_extend([dom], Object);
 function dom$id$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -149,7 +149,7 @@ function dom$getElementById$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -161,7 +161,7 @@ function dom$createElement$S(tag) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.createElement(tag)));
@@ -291,6 +291,13 @@ function XMLHttpRequestOptions() {
 };
 
 $__jsx_extend([XMLHttpRequestOptions], Object);
+function ScrollOptions() {
+	this.x = 0;
+	this.y = 0;
+	this.behavior = "";
+};
+
+$__jsx_extend([ScrollOptions], Object);
 function TrackEventInit() {
 	EventInit.call(this);
 	this.track = null;
@@ -316,25 +323,21 @@ function PageTransitionEventInit() {
 };
 
 $__jsx_extend([PageTransitionEventInit], EventInit);
-function DragEventInit() {
+function ErrorEventInit() {
 	EventInit.call(this);
-	this.view = null;
-	this.detail = 0;
-	this.screenX = 0;
-	this.screenY = 0;
-	this.clientX = 0;
-	this.clientY = 0;
-	this.ctrlKey = false;
-	this.shiftKey = false;
-	this.altKey = false;
-	this.metaKey = false;
-	this.button = 0;
-	this.buttons = 0;
-	this.relatedTarget = null;
+	this.message = "";
+	this.filename = "";
+	this.lineno = 0;
+	this.column = 0;
+};
+
+$__jsx_extend([ErrorEventInit], EventInit);
+function DragEventInit() {
+	MouseEventInit.call(this);
 	this.dataTransfer = null;
 };
 
-$__jsx_extend([DragEventInit], EventInit);
+$__jsx_extend([DragEventInit], MouseEventInit);
 function CloseEventInit() {
 	EventInit.call(this);
 	this.wasClean = false;
@@ -363,14 +366,6 @@ function MessageEventInit() {
 };
 
 $__jsx_extend([MessageEventInit], EventInit);
-function ErrorEventInit() {
-	EventInit.call(this);
-	this.message = "";
-	this.filename = "";
-	this.lineno = 0;
-};
-
-$__jsx_extend([ErrorEventInit], EventInit);
 function EventSourceInit() {
 	this.withCredentials = false;
 };
@@ -508,6 +503,7 @@ function DeviceMotionEventInit() {
 };
 
 $__jsx_extend([DeviceMotionEventInit], EventInit);
+var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function Vector2() {
 	this.x = 0;
 	this.y = 0;
@@ -626,10 +622,8 @@ $__jsx_extend([BaseApp], Object);
 BaseApp.prototype.run$ = function () {
 	var $this = this;
 	var self;
-	var id;
 	self = this;
-	id = null;
-	id = Timer$setInterval$F$V$N((function () {
+	Timer$setInterval$F$V$N((function () {
 		self._loop$();
 	}), 1000 / 30);
 };
@@ -661,10 +655,11 @@ function CanvasApp(elm) {
 	this.context = (function ($v) {
 		if (! ($v == null || $v instanceof CanvasRenderingContext2D)) {
 			debugger;
-			throw new Error("[src/app/canvasapp.jsx:23:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
+			throw new Error("[src/display/canvasapp.jsx:24:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
 		}
 		return $v;
 	}(this.canvas.getContext('2d')));
+	this.renderer = new Renderer();
 };
 
 $__jsx_extend([CanvasApp], BaseApp);
@@ -680,7 +675,7 @@ CanvasApp.prototype._update$ = function () {
 	scene = this.getCurrentScene$();
 	scene._update$X(this);
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	scene._draw$LCanvasRenderingContext2D$(this.context);
+	this.renderer.render$LElement$0$LCanvasRenderingContext2D$(scene, this.context);
 };
 
 
@@ -695,6 +690,40 @@ function ShootingApp(elm) {
 };
 
 $__jsx_extend([ShootingApp], CanvasApp);
+function Renderer() {
+};
+
+$__jsx_extend([Renderer], Object);
+Renderer.prototype.render$LElement$0$LCanvasRenderingContext2D$ = function (root, ctx) {
+	this._render$LElement$0$LCanvasRenderingContext2D$(root, ctx);
+};
+
+
+Renderer.prototype._render$LElement$0$LCanvasRenderingContext2D$ = function (element, ctx) {
+	var $this = this;
+	var sprite;
+	if (element instanceof Sprite) {
+		sprite = (function ($v) {
+			if (! ($v == null || $v instanceof Sprite)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:25:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
+			}
+			return $v;
+		}(element));
+		if (sprite.loaded === true) {
+			ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+		} else {
+			ctx.fillRect(sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+		}
+	}
+	if (element.children.length > 0) {
+		element.children.forEach((function (elm) {
+			$this._render$LElement$0$LCanvasRenderingContext2D$(elm, ctx);
+		}));
+	}
+};
+
+
 function Timer() {
 };
 
@@ -703,10 +732,10 @@ function Timer$setTimeout$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
 		}
 		return $v;
-	}(js.global.setTimeout))(callback, intervalMS);
+	}(js$0.global.setTimeout))(callback, intervalMS);
 };
 
 Timer.setTimeout$F$V$N = Timer$setTimeout$F$V$N;
@@ -715,10 +744,10 @@ function Timer$clearTimeout$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
 		}
 		return $v;
-	}(js.global.clearTimeout))(timer);
+	}(js$0.global.clearTimeout))(timer);
 };
 
 Timer.clearTimeout$LTimerHandle$ = Timer$clearTimeout$LTimerHandle$;
@@ -727,10 +756,10 @@ function Timer$setInterval$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
 		}
 		return $v;
-	}(js.global.setInterval))(callback, intervalMS);
+	}(js$0.global.setInterval))(callback, intervalMS);
 };
 
 Timer.setInterval$F$V$N = Timer$setInterval$F$V$N;
@@ -739,10 +768,10 @@ function Timer$clearInterval$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
 		}
 		return $v;
-	}(js.global.clearInterval))(timer);
+	}(js$0.global.clearInterval))(timer);
 };
 
 Timer.clearInterval$LTimerHandle$ = Timer$clearInterval$LTimerHandle$;
@@ -767,65 +796,30 @@ function Timer$useNativeRAF$B(enable) {
 Timer.useNativeRAF$B = Timer$useNativeRAF$B;
 
 function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
+	var prefixes;
+	var i;
+	var name;
 	var lastTime;
 	if (useNativeImpl) {
-		if (js.global.requestAnimationFrame) {
-			return (function (callback) {
-				return (function ($v) {
-					if (! ($v == null || typeof $v === "function")) {
-						debugger;
-						throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:72:63] detected invalid cast, value is not a function or null\n                    return (js.global[\"requestAnimationFrame\"] as __noconvert__\n                                                               ^^\n");
-					}
-					return $v;
-				}(js.global.requestAnimationFrame))(callback);
-			});
-		} else {
-			if (js.global.webkitRequestAnimationFrame) {
+		prefixes = [ "r", "webkitR", "mozR", "oR", "msR" ];
+		for (i = 0; i < prefixes.length; ++ i) {
+			name = (function (v) {
+				if (! (v != null)) {
+					debugger;
+					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:72:35] null access\n                var name = prefixes[i] + \"equestAnimationFrame\";\n                                   ^\n");
+				}
+				return v;
+			}(prefixes[i])) + "equestAnimationFrame";
+			if (js$0.global[name] instanceof Function) {
 				return (function (callback) {
 					return (function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:78:69] detected invalid cast, value is not a function or null\n                    return (js.global[\"webkitRequestAnimationFrame\"] as __noconvert__\n                                                                     ^^\n");
+							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:75:48] detected invalid cast, value is not a function or null\n                        return (js.global[name] as __noconvert__\n                                                ^^\n");
 						}
 						return $v;
-					}(js.global.webkitRequestAnimationFrame))(callback);
+					}(js$0.global[name]))(callback);
 				});
-			} else {
-				if (js.global.mozRequestAnimationFrame) {
-					return (function (callback) {
-						return (function ($v) {
-							if (! ($v == null || typeof $v === "function")) {
-								debugger;
-								throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:84:66] detected invalid cast, value is not a function or null\n                    return (js.global[\"mozRequestAnimationFrame\"] as __noconvert__\n                                                                  ^^\n");
-							}
-							return $v;
-						}(js.global.mozRequestAnimationFrame))(callback);
-					});
-				} else {
-					if (js.global.oRequestAnimationFrame) {
-						return (function (callback) {
-							return (function ($v) {
-								if (! ($v == null || typeof $v === "function")) {
-									debugger;
-									throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:90:64] detected invalid cast, value is not a function or null\n                    return (js.global[\"oRequestAnimationFrame\"] as __noconvert__\n                                                                ^^\n");
-								}
-								return $v;
-							}(js.global.oRequestAnimationFrame))(callback);
-						});
-					} else {
-						if (js.global.msRequestAnimationFrame) {
-							return (function (callback) {
-								return (function ($v) {
-									if (! ($v == null || typeof $v === "function")) {
-										debugger;
-										throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:96:65] detected invalid cast, value is not a function or null\n                    return (js.global[\"msRequestAnimationFrame\"] as __noconvert__\n                                                                 ^^\n");
-									}
-									return $v;
-								}(js.global.msRequestAnimationFrame))(callback);
-							});
-						}
-					}
-				}
 			}
 		}
 	}
@@ -845,64 +839,29 @@ function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
 Timer._getRequestAnimationFrameImpl$B = Timer$_getRequestAnimationFrameImpl$B;
 
 function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
+	var prefixes;
+	var i;
+	var name;
 	if (useNativeImpl) {
-		if (js.global.cancelAnimationFrame) {
-			return (function (timer) {
-				(function ($v) {
-					if (! ($v == null || typeof $v === "function")) {
-						debugger;
-						throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:119:55] detected invalid cast, value is not a function or null\n                    (js.global[\"cancelAnimationFrame\"] as __noconvert__\n                                                       ^^\n");
-					}
-					return $v;
-				}(js.global.cancelAnimationFrame))(timer);
-			});
-		} else {
-			if (js.global.webkitCancelAnimationFrame) {
+		prefixes = [ "c", "webkitC", "mozC", "oC", "msC" ];
+		for (i = 0; i < prefixes.length; ++ i) {
+			name = (function (v) {
+				if (! (v != null)) {
+					debugger;
+					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:100:35] null access\n                var name = prefixes[i] + \"ancelAnimationFrame\";\n                                   ^\n");
+				}
+				return v;
+			}(prefixes[i])) + "ancelAnimationFrame";
+			if (js$0.global[name] instanceof Function) {
 				return (function (timer) {
 					(function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:125:61] detected invalid cast, value is not a function or null\n                    (js.global[\"webkitCancelAnimationFrame\"] as __noconvert__\n                                                             ^^\n");
+							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:103:41] detected invalid cast, value is not a function or null\n                        (js.global[name] as __noconvert__\n                                         ^^\n");
 						}
 						return $v;
-					}(js.global.webkitCancelAnimationFrame))(timer);
+					}(js$0.global[name]))(timer);
 				});
-			} else {
-				if (js.global.mozCancelAnimationFrame) {
-					return (function (timer) {
-						(function ($v) {
-							if (! ($v == null || typeof $v === "function")) {
-								debugger;
-								throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:131:58] detected invalid cast, value is not a function or null\n                    (js.global[\"mozCancelAnimationFrame\"] as __noconvert__\n                                                          ^^\n");
-							}
-							return $v;
-						}(js.global.mozCancelAnimationFrame))(timer);
-					});
-				} else {
-					if (js.global.oCancelAnimationFrame) {
-						return (function (timer) {
-							(function ($v) {
-								if (! ($v == null || typeof $v === "function")) {
-									debugger;
-									throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:137:56] detected invalid cast, value is not a function or null\n                    (js.global[\"oCancelAnimationFrame\"] as __noconvert__\n                                                        ^^\n");
-								}
-								return $v;
-							}(js.global.oCancelAnimationFrame))(timer);
-						});
-					} else {
-						if (js.global.msCancelAnimationFrame) {
-							return (function (timer) {
-								(function ($v) {
-									if (! ($v == null || typeof $v === "function")) {
-										debugger;
-										throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/timer.jsx:143:57] detected invalid cast, value is not a function or null\n                    (js.global[\"msCancelAnimationFrame\"] as __noconvert__\n                                                         ^^\n");
-									}
-									return $v;
-								}(js.global.msCancelAnimationFrame))(timer);
-							});
-						}
-					}
-				}
 			}
 		}
 	}
@@ -911,9 +870,7 @@ function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
 
 Timer._getCancelAnimationFrameImpl$B = Timer$_getCancelAnimationFrameImpl$B;
 
-function TimerHandle() {
-};
-
+function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
 function Element$0() {
 	this.children = [  ];
@@ -942,6 +899,11 @@ Element$0.prototype._update$X = function (app) {
 };
 
 
+function Scene() {
+	Element$0.call(this);
+};
+
+$__jsx_extend([Scene], Element$0);
 function Object2D() {
 	Element$0.call(this);
 	this.position = new Vector2();
@@ -963,7 +925,7 @@ CanvasElement.prototype._draw$LCanvasRenderingContext2D$ = function (ctx) {
 			(function ($v) {
 				if (! ($v == null || $v instanceof CanvasElement)) {
 					debugger;
-					throw new Error("[src/app/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
+					throw new Error("[src/display/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
 				}
 				return $v;
 			}(elm))._draw$LCanvasRenderingContext2D$(ctx);
@@ -994,7 +956,7 @@ function Sprite$0(src) {
 	this.image = (function ($v) {
 		if (! ($v == null || $v instanceof HTMLImageElement)) {
 			debugger;
-			throw new Error("[src/app/sprite.jsx:29:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
+			throw new Error("[src/display/sprite.jsx:29:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
 		}
 		return $v;
 	}(dom.document.createElement("img")));
@@ -1041,33 +1003,25 @@ Player.prototype.update$X = function (app) {
 	if (this.position.x > right) {
 		this.position.x = right;
 		this.velocity.x *= - 1;
-	} else {
-		if (this.position.x < left) {
-			this.position.x = left;
-			this.velocity.x *= - 1;
-		}
+	} else if (this.position.x < left) {
+		this.position.x = left;
+		this.velocity.x *= - 1;
 	}
 };
 
 
-function Scene() {
-	CanvasElement.call(this);
-};
-
-$__jsx_extend([Scene], CanvasElement);
 $__jsx_lazy_init(dom, "window", function () {
-	return js.global.window;
+	return js$0.global.window;
 });
 $__jsx_lazy_init(dom, "document", function () {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLDocument)) {
 			debugger;
-			throw new Error("[/Users/phi/.nvm/v0.10.0/lib/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
+			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
 		}
 		return $v;
-	}(js.global.document));
+	}(js$0.global.document));
 });
-var js = { global: function () { return this; }() };
 $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 	return Timer$_getRequestAnimationFrameImpl$B(true);
 });
@@ -1077,8 +1031,8 @@ $__jsx_lazy_init(Timer, "_cancelAnimationFrame", function () {
 
 var $__jsx_classMap = {
 	"system:lib/built-in.jsx": {
-		g_StopIteration: g_StopIteration,
-		g_StopIteration$: g_StopIteration
+		StopIteration: StopIteration,
+		StopIteration$: StopIteration
 	},
 	"examples/shooting/src/main.jsx": {
 		_Main: _Main,
@@ -1086,7 +1040,6 @@ var $__jsx_classMap = {
 	},
 	"system:lib/js/js/web.jsx": {
 		dom: dom,
-		dom$: dom,
 		EventInit: EventInit,
 		EventInit$: EventInit,
 		CustomEventInit: CustomEventInit,
@@ -1109,6 +1062,8 @@ var $__jsx_classMap = {
 		ProgressEventInit$: ProgressEventInit,
 		XMLHttpRequestOptions: XMLHttpRequestOptions,
 		XMLHttpRequestOptions$: XMLHttpRequestOptions,
+		ScrollOptions: ScrollOptions,
+		ScrollOptions$: ScrollOptions,
 		TrackEventInit: TrackEventInit,
 		TrackEventInit$: TrackEventInit,
 		PopStateEventInit: PopStateEventInit,
@@ -1117,6 +1072,8 @@ var $__jsx_classMap = {
 		HashChangeEventInit$: HashChangeEventInit,
 		PageTransitionEventInit: PageTransitionEventInit,
 		PageTransitionEventInit$: PageTransitionEventInit,
+		ErrorEventInit: ErrorEventInit,
+		ErrorEventInit$: ErrorEventInit,
 		DragEventInit: DragEventInit,
 		DragEventInit$: DragEventInit,
 		CloseEventInit: CloseEventInit,
@@ -1125,8 +1082,6 @@ var $__jsx_classMap = {
 		StorageEventInit$: StorageEventInit,
 		MessageEventInit: MessageEventInit,
 		MessageEventInit$: MessageEventInit,
-		ErrorEventInit: ErrorEventInit,
-		ErrorEventInit$: ErrorEventInit,
 		EventSourceInit: EventSourceInit,
 		EventSourceInit$: EventSourceInit,
 		IDBObjectStoreParameters: IDBObjectStoreParameters,
@@ -1177,7 +1132,7 @@ var $__jsx_classMap = {
 		BaseApp: BaseApp,
 		BaseApp$LHTMLElement$: BaseApp
 	},
-	"src/app/canvasapp.jsx": {
+	"src/display/canvasapp.jsx": {
 		CanvasApp: CanvasApp,
 		CanvasApp$LHTMLCanvasElement$: CanvasApp
 	},
@@ -1187,32 +1142,35 @@ var $__jsx_classMap = {
 		Player: Player,
 		Player$: Player
 	},
+	"src/display/renderer.jsx": {
+		Renderer: Renderer,
+		Renderer$: Renderer
+	},
 	"system:lib/js/timer.jsx": {
 		Timer: Timer,
 		Timer$: Timer,
-		TimerHandle: TimerHandle,
-		TimerHandle$: TimerHandle
+		TimerHandle: TimerHandle
 	},
 	"src/app/element.jsx": {
 		Element: Element$0,
 		Element$: Element$0
 	},
+	"src/app/scene.jsx": {
+		Scene: Scene,
+		Scene$: Scene
+	},
 	"src/app/object2d.jsx": {
 		Object2D: Object2D,
 		Object2D$: Object2D
 	},
-	"src/app/canvaselement.jsx": {
+	"src/display/canvaselement.jsx": {
 		CanvasElement: CanvasElement,
 		CanvasElement$: CanvasElement
 	},
-	"src/app/sprite.jsx": {
+	"src/display/sprite.jsx": {
 		Sprite: Sprite,
 		Sprite$: Sprite,
 		Sprite$S: Sprite$0
-	},
-	"src/app/scene.jsx": {
-		Scene: Scene,
-		Scene$: Scene
 	}
 };
 
@@ -1239,6 +1197,8 @@ JSX.runMain = function (sourceFile, args) {
  */
 JSX.runTests = function (sourceFile, tests) {
 	var module = JSX.require(sourceFile);
+	if (! module) return;
+
 	var testClass = module._Test;
 
 	if (!testClass) return; // skip if there's no test class
@@ -1277,7 +1237,7 @@ JSX.runTests = function (sourceFile, tests) {
 function $__jsx_onload (event) {
 	window.removeEventListener("load", $__jsx_onload);
 	document.removeEventListener("DOMContentLoaded", $__jsx_onload);
-	JSX.runMain("examples/shooting/src/main.jsx", [])
+	JSX.runMain("examples/shooting/src/main.jsx", []);
 }
 
 window.addEventListener("load", $__jsx_onload);

@@ -30,8 +30,8 @@ class BaseApp {
     
     function run(): void {
         var self = this;
-        var id: Nullable.<TimerHandle> = null;
-        id = Timer.setInterval(function(): void {
+        //var id: Nullable.<TimerHandle> = null;
+        Timer.setInterval(function(): void {
             self._loop();
         }, 1000/30);
     }

@@ -6,8 +6,8 @@ import "js/web.jsx";
 
 import "../../../src/geom/vector2.jsx";
 
-import "../../../src/app/canvasapp.jsx";
-import "../../../src/app/sprite.jsx";
+import "../../../src/display/canvasapp.jsx";
+import "../../../src/display/sprite.jsx";
 
 
 class ShootingApp extends CanvasApp {
@@ -37,7 +37,6 @@ class Player extends Sprite {
     override function update(app:variant): void {
         var canvasapp = app as CanvasApp;
         this.position.add(this.velocity);
-
 
         var left  = 0;
         var right = canvasapp.canvas.width;
