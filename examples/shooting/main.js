@@ -701,6 +701,7 @@ function Canvas(elm) {
 $__jsx_extend([Canvas], Object);
 Canvas.prototype.clear$ = function () {
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	return this;
 };
 
 
@@ -709,21 +710,25 @@ Canvas.prototype.clear$S = function (color) {
 	this.context.fillStyle = color;
 	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	this.context.restore();
+	return this;
 };
 
 
 Canvas.prototype.fillRect$NNNN = function (x, y, width, height) {
 	this.context.fillRect(x, y, width, height);
+	return this;
 };
 
 
 Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
 	this.context.drawImage(image, 0, 0);
+	return this;
 };
 
 
 Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
 	this.context.setTransform(m11, m12, m21, m22, dx, dy);
+	return this;
 };
 
 
@@ -751,7 +756,7 @@ Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 		if (sprite.loaded === true) {
 			canvas.drawImage$LHTMLImageElement$(sprite.image);
 		} else {
-			canvas.fillRect$NNNN(sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+			canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
 		}
 	}
 	if (element.children.length > 0) {
@@ -917,6 +922,13 @@ function Element$0() {
 $__jsx_extend([Element$0], Object);
 Element$0.prototype.addChild$LElement$0$ = function (child) {
 	this.children.push(child);
+	return this;
+};
+
+
+Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
+	parent.addChild$LElement$0$(this);
+	return this;
 };
 
 

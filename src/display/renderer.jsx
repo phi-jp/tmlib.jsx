@@ -33,7 +33,7 @@ class Renderer {
                 canvas.drawImage(sprite.image);
             }
             else {
-                canvas.fillRect(sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+                canvas.fillRect(0, 0, sprite.width, sprite.height);
             }
         }
         else {

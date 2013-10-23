@@ -17,8 +17,16 @@ class Element {
         this.children = []: Element[];
     }
     
-    function addChild(child: Element): void {
+    function addChild(child: Element): Element {
         this.children.push(child);
+
+        return this;
+    }
+
+    function addChildTo(parent: Element): Element {
+        parent.addChild(this);
+
+        return this;
     }
     
     function update(app: variant): void {
