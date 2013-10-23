@@ -20,4 +20,9 @@ class Object2D extends Element {
         this.position = new Vector2();
     }
 
+    function setPosition(x: number, y: number): Object2D {
+    	this.position.set(x, y);
+    	return this;
+    }
+
 }

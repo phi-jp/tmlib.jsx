@@ -6,23 +6,36 @@ import "js/web.jsx";
 
 import "../../../src/geom/vector2.jsx";
 
+import "../../../src/app/scene.jsx";
 import "../../../src/display/canvasapp.jsx";
 import "../../../src/display/sprite.jsx";
+import "../../../src/display/label.jsx";
 
 
 class ShootingApp extends CanvasApp {
-    
     /**
      * constructor
      */
     function constructor(elm: HTMLCanvasElement) {
         super(elm);
-        var scene = this.getCurrentScene();
-        var player = new Player();
 
+        var scene = new GameScene();
+
+        this.replaceScene(scene);
+    }
+}
+
+class GameScene extends Scene {
+    function constructor() {
+        super();
+
+        var player = new Player();
         player.position.set(0, 50);
-        
-        scene.addChild(player);
+        this.addChild(player);
+
+        var label = new Label("GameScene");
+        label.setPosition(8, 16);
+        this.addChild(label);
     }
 }
 

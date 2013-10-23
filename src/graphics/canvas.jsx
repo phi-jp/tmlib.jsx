@@ -39,6 +39,11 @@ class Canvas {
     	return this;
     }
 
+    function fillText(text:string, x:number, y:number): Canvas {
+    	this.context.fillText(text, x, y);
+    	return this;
+    }
+
     function drawImage(image: HTMLImageElement): Canvas {
     	this.context.drawImage(image, 0, 0);
     	return this;

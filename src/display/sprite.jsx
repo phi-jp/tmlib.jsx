@@ -35,14 +35,5 @@ class Sprite extends CanvasElement {
             self.height= self.image.height;
         });
     }
-    
-    override function draw(ctx: CanvasRenderingContext2D): void {
-        if (this.loaded == true) {
-            ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-        }
-        else {
-            ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-        }
-    }
 }
 

@@ -35,6 +35,11 @@ class BaseApp {
             self._loop();
         }, 1000/30);
     }
+
+    function replaceScene(scene: Scene): BaseApp {
+        this.scenes[this.sceneIndex] = scene;
+        return this;
+    }
     
     function getCurrentScene(): Scene {
         return this.scenes[this.sceneIndex];

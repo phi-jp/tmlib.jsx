@@ -6,6 +6,7 @@ import "../graphics/canvas.jsx";
 
 import "canvaselement.jsx";
 import "sprite.jsx";
+import "label.jsx";
 
 /**
  * group class
@@ -35,6 +36,12 @@ class Renderer {
             else {
                 canvas.fillRect(0, 0, sprite.width, sprite.height);
             }
+        }
+        else if(element instanceof Label) {
+            var label = element as Label;
+            canvas.setTransform(1, 0, 0, 1, label.position.x, label.position.y);
+
+            canvas.fillText(label.text, 0, 0);
         }
         else {
 

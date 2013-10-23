@@ -612,6 +612,58 @@ function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
 
 Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
+function Element$0() {
+	this.children = [  ];
+};
+
+$__jsx_extend([Element$0], Object);
+Element$0.prototype.addChild$LElement$0$ = function (child) {
+	this.children.push(child);
+	return this;
+};
+
+
+Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
+	parent.addChild$LElement$0$(this);
+	return this;
+};
+
+
+Element$0.prototype.update$X = function (app) {
+};
+
+
+Element$0.prototype._update$X = function (app) {
+	var $this = this;
+	if (this.update$X) {
+		this.update$X(app);
+	}
+	if (this.children.length > 0) {
+		this.children.forEach((function (elm) {
+			elm._update$X(app);
+		}));
+	}
+};
+
+
+function Scene() {
+	Element$0.call(this);
+};
+
+$__jsx_extend([Scene], Element$0);
+function GameScene() {
+	var player;
+	var label;
+	Scene.call(this);
+	player = new Player();
+	player.position.set$NN(0, 50);
+	this.addChild$LElement$0$(player);
+	label = new Label$0("GameScene");
+	label.setPosition$NN(8, 16);
+	this.addChild$LElement$0$(label);
+};
+
+$__jsx_extend([GameScene], Scene);
 function BaseApp(elm) {
 	this.element = elm;
 	this.scenes = [ new Scene() ];
@@ -626,6 +678,12 @@ BaseApp.prototype.run$ = function () {
 	Timer$setInterval$F$V$N((function () {
 		self._loop$();
 	}), 1000 / 30);
+};
+
+
+BaseApp.prototype.replaceScene$LScene$ = function (scene) {
+	this.scenes[this.sceneIndex] = scene;
+	return this;
 };
 
 
@@ -675,12 +733,9 @@ CanvasApp.prototype._update$ = function () {
 
 function ShootingApp(elm) {
 	var scene;
-	var player;
 	CanvasApp.call(this, elm);
-	scene = this.getCurrentScene$();
-	player = new Player();
-	player.position.set$NN(0, 50);
-	scene.addChild$LElement$0$(player);
+	scene = new GameScene();
+	this.replaceScene$LScene$(scene);
 };
 
 $__jsx_extend([ShootingApp], CanvasApp);
@@ -720,6 +775,12 @@ Canvas.prototype.fillRect$NNNN = function (x, y, width, height) {
 };
 
 
+Canvas.prototype.fillText$SNN = function (text, x, y) {
+	this.context.fillText(text, x, y);
+	return this;
+};
+
+
 Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
 	this.context.drawImage(image, 0, 0);
 	return this;
@@ -744,11 +805,12 @@ Renderer.prototype.render$LElement$0$LCanvas$ = function (root, canvas) {
 Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 	var $this = this;
 	var sprite;
+	var label;
 	if (element instanceof Sprite) {
 		sprite = (function ($v) {
 			if (! ($v == null || $v instanceof Sprite)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:28:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
+				throw new Error("[src/display/renderer.jsx:29:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
 			}
 			return $v;
 		}(element));
@@ -758,6 +820,16 @@ Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 		} else {
 			canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
 		}
+	} else if (element instanceof Label) {
+		label = (function ($v) {
+			if (! ($v == null || $v instanceof Label)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:41:32] detected invalid cast, value is not an instance of the designated type or null\n            var label = element as Label;\n                                ^^\n");
+			}
+			return $v;
+		}(element));
+		canvas.setTransform$NNNNNN(1, 0, 0, 1, label.position.x, label.position.y);
+		canvas.fillText$SNN(label.text, 0, 0);
 	}
 	if (element.children.length > 0) {
 		element.children.forEach((function (elm) {
@@ -915,51 +987,18 @@ Timer._getCancelAnimationFrameImpl$B = Timer$_getCancelAnimationFrameImpl$B;
 
 function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
-function Element$0() {
-	this.children = [  ];
-};
-
-$__jsx_extend([Element$0], Object);
-Element$0.prototype.addChild$LElement$0$ = function (child) {
-	this.children.push(child);
-	return this;
-};
-
-
-Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
-	parent.addChild$LElement$0$(this);
-	return this;
-};
-
-
-Element$0.prototype.update$X = function (app) {
-};
-
-
-Element$0.prototype._update$X = function (app) {
-	var $this = this;
-	if (this.update$X) {
-		this.update$X(app);
-	}
-	if (this.children.length > 0) {
-		this.children.forEach((function (elm) {
-			elm._update$X(app);
-		}));
-	}
-};
-
-
-function Scene() {
-	Element$0.call(this);
-};
-
-$__jsx_extend([Scene], Element$0);
 function Object2D() {
 	Element$0.call(this);
 	this.position = new Vector2();
 };
 
 $__jsx_extend([Object2D], Element$0);
+Object2D.prototype.setPosition$NN = function (x, y) {
+	this.position.set$NN(x, y);
+	return this;
+};
+
+
 function CanvasElement() {
 	Object2D.call(this);
 };
@@ -1020,15 +1059,6 @@ function Sprite$0(src) {
 };
 
 $__jsx_extend([Sprite, Sprite$0], CanvasElement);
-Sprite.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
-	if (this.loaded === true) {
-		ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-	} else {
-		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-	}
-};
-
-
 function Player() {
 	Sprite$0.call(this, "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png");
 	this.velocity = new Vector2$0(2, 0);
@@ -1043,7 +1073,7 @@ Player.prototype.update$X = function (app) {
 	canvasapp = (function ($v) {
 		if (! ($v == null || $v instanceof CanvasApp)) {
 			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:38:28] detected invalid cast, value is not an instance of the designated type or null\n        var canvasapp = app as CanvasApp;\n                            ^^\n");
+			throw new Error("[examples/shooting/src/shootingapp.jsx:51:28] detected invalid cast, value is not an instance of the designated type or null\n        var canvasapp = app as CanvasApp;\n                            ^^\n");
 		}
 		return $v;
 	}(app));
@@ -1060,6 +1090,17 @@ Player.prototype.update$X = function (app) {
 };
 
 
+function Label() {
+	CanvasElement.call(this);
+	this.text = "";
+};
+
+function Label$0(text) {
+	CanvasElement.call(this);
+	this.text = text;
+};
+
+$__jsx_extend([Label, Label$0], CanvasElement);
 $__jsx_lazy_init(dom, "window", function () {
 	return js$0.global.window;
 });
@@ -1178,6 +1219,22 @@ var $__jsx_classMap = {
 		Vector2$: Vector2,
 		Vector2$NN: Vector2$0
 	},
+	"src/app/element.jsx": {
+		Element: Element$0,
+		Element$: Element$0
+	},
+	"src/app/scene.jsx": {
+		Scene: Scene,
+		Scene$: Scene
+	},
+	"examples/shooting/src/shootingapp.jsx": {
+		GameScene: GameScene,
+		GameScene$: GameScene,
+		ShootingApp: ShootingApp,
+		ShootingApp$LHTMLCanvasElement$: ShootingApp,
+		Player: Player,
+		Player$: Player
+	},
 	"src/app/baseapp.jsx": {
 		BaseApp: BaseApp,
 		BaseApp$LHTMLElement$: BaseApp
@@ -1185,12 +1242,6 @@ var $__jsx_classMap = {
 	"src/display/canvasapp.jsx": {
 		CanvasApp: CanvasApp,
 		CanvasApp$LHTMLCanvasElement$: CanvasApp
-	},
-	"examples/shooting/src/shootingapp.jsx": {
-		ShootingApp: ShootingApp,
-		ShootingApp$LHTMLCanvasElement$: ShootingApp,
-		Player: Player,
-		Player$: Player
 	},
 	"src/graphics/canvas.jsx": {
 		Canvas: Canvas,
@@ -1205,14 +1256,6 @@ var $__jsx_classMap = {
 		Timer$: Timer,
 		TimerHandle: TimerHandle
 	},
-	"src/app/element.jsx": {
-		Element: Element$0,
-		Element$: Element$0
-	},
-	"src/app/scene.jsx": {
-		Scene: Scene,
-		Scene$: Scene
-	},
 	"src/app/object2d.jsx": {
 		Object2D: Object2D,
 		Object2D$: Object2D
@@ -1225,6 +1268,11 @@ var $__jsx_classMap = {
 		Sprite: Sprite,
 		Sprite$: Sprite,
 		Sprite$S: Sprite$0
+	},
+	"src/display/label.jsx": {
+		Label: Label,
+		Label$: Label,
+		Label$S: Label$0
 	}
 };
 
