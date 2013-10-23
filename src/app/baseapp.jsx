@@ -7,7 +7,9 @@ import "js/web.jsx";
 
 import "console.jsx";
 
+import "../input/Pointing.jsx";
 import "scene.jsx";
+
 
 /**
  * baseapp class
@@ -16,6 +18,7 @@ class BaseApp {
     var element: HTMLElement;
     var scenes: Scene[];
     var sceneIndex: int;
+    var pointing: Pointing;
     
     /**
      * constructor
@@ -26,6 +29,7 @@ class BaseApp {
             new Scene()
         ]: Scene[];
         this.sceneIndex = 0;
+        this.pointing = new Pointing(elm);
     }
     
     function run(): void {
@@ -46,6 +50,8 @@ class BaseApp {
     }
     
     function _loop(): void {
+        this.pointing.update();
+        
         this._update();
         this._draw();
     }

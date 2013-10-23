@@ -35,6 +35,15 @@ class Vector2 {
     }
     
     /**
+     * set
+     */
+    function set(v: Vector2): Vector2 {
+        this.x = v.x;
+        this.y = v.y;
+        return this;
+    }
+    
+    /**
      * add value
      */
     function add(x:number, y:number): Vector2 {

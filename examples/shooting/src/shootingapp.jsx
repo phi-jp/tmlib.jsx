@@ -6,6 +6,7 @@ import "js/web.jsx";
 
 import "../../../src/geom/vector2.jsx";
 
+import "../../../src/app/baseapp.jsx";
 import "../../../src/app/scene.jsx";
 import "../../../src/display/canvasapp.jsx";
 import "../../../src/display/sprite.jsx";
@@ -37,6 +38,8 @@ class GameScene extends Scene {
         label.setPosition(8, 16);
         this.addChild(label);
     }
+    override function update(app:variant): void {
+    }
 }
 
 class Player extends Sprite {
@@ -62,5 +65,11 @@ class Player extends Sprite {
             this.position.x = left;
             this.velocity.x *= -1;
         }
+
+        var baseApp = app as BaseApp;
+        var p = baseApp.pointing;
+        this.position.set(p.position.x, p.position.y);
     }
 }
+
+
