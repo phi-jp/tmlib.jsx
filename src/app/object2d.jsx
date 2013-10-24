@@ -12,6 +12,8 @@ import "element.jsx";
  */
 class Object2D extends Element {
     var position: Vector2;
+    var width  = 32;
+    var height = 32;
     
     /**
      * constructor

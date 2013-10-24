@@ -11,6 +11,7 @@ import "../../../src/app/scene.jsx";
 import "../../../src/display/canvasapp.jsx";
 import "../../../src/display/sprite.jsx";
 import "../../../src/display/label.jsx";
+import "../../../src/display/shape.jsx";
 
 
 class ShootingApp extends CanvasApp {
@@ -37,6 +38,11 @@ class GameScene extends Scene {
         var label = new Label("GameScene");
         label.setPosition(8, 16);
         this.addChild(label);
+
+        var shape = new Shape();
+        shape.setPosition(30, 30);
+        shape.canvas.clear("blue");
+        this.addChild(shape);
     }
     override function update(app:variant): void {
     }

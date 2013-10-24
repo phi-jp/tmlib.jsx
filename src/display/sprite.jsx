@@ -9,8 +9,6 @@ import "canvaselement.jsx";
  */
 class Sprite extends CanvasElement {
     var image: HTMLImageElement;
-    var width  = 32;
-    var height = 32;
     var loaded = false;
 
     /**
