@@ -19,11 +19,11 @@ class _Main {
         
         var app = new TouchColorApp(canvas as HTMLCanvasElement);
         app.canvas.setSize(640, 960);
+        app.bgColor = "rgb(245, 245, 250)";
+        app.canvas.fit();
         app.run();
     }
 }
-
-
 
 class TouchColorApp extends CanvasApp {
     /**

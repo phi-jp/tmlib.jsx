@@ -48,6 +48,9 @@ class Pointing {
 
 			this._tempPosition.x = mouseEvent.x - rect.left;
 			this._tempPosition.y = mouseEvent.y - rect.top;
+			
+			this._tempPosition.x *= ((element as variant)['width']  as number) / (element.style.width.replace('px', '')  as number);
+			this._tempPosition.y *= ((element as variant)['height'] as number) / (element.style.height.replace('px', '') as number);
 		});
 	}
 

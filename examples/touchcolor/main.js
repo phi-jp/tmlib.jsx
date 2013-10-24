@@ -125,6 +125,8 @@ function _Main$main$AS(args) {
 		return $v;
 	}(canvas)));
 	app.canvas.setSize$NN(640, 960);
+	app.bgColor = "rgb(245, 245, 250)";
+	app.canvas.fit$();
 	app.run$();
 };
 
@@ -743,6 +745,32 @@ Canvas.prototype.clear$ = function () {
 };
 
 
+Canvas.prototype.fit$ = function () {
+	var s;
+	var rateWidth;
+	var rateHeight;
+	var rate;
+	s = this.canvas.style;
+	s.position = "absolute";
+	s.margin = "auto";
+	s.top = "0px";
+	s.right = "0px";
+	s.bottom = "0px";
+	s.left = "0px";
+	rateWidth = this.width / dom.window.innerWidth;
+	rateHeight = this.height / dom.window.innerHeight;
+	rate = this.height / this.width;
+	if (rateWidth > rateHeight) {
+		s.width = (dom.window.innerWidth + "") + "px";
+		s.height = (dom.window.innerWidth * rate + "") + "px";
+	} else {
+		s.width = (dom.window.innerHeight / rate + "") + "px";
+		s.height = (dom.window.innerHeight + "") + "px";
+	}
+	return this;
+};
+
+
 Canvas.prototype.clear$S = function (color) {
 	this.context.save();
 	this.context.fillStyle = color;
@@ -1181,6 +1209,8 @@ function Pointing(elm) {
 		rect = element.getBoundingClientRect();
 		$this._tempPosition.x = mouseEvent.x - rect.left;
 		$this._tempPosition.y = mouseEvent.y - rect.top;
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
 	}));
 };
 
@@ -1198,7 +1228,7 @@ Pointing.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:65:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+			throw new Error("[src/input/Pointing.jsx:68:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
 		}
 		return v;
 	}(Pointing.BUTTON_MAP[button]))) !== 0;

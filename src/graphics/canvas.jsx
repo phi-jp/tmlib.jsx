@@ -36,6 +36,31 @@ class Canvas {
     	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     	return this;
     }
+    
+    function fit(): Canvas {
+        var s = this.canvas.style;
+        s.position = "absolute";
+        s.margin = "auto";
+        s.top    = "0px";
+        s.right  = "0px";
+        s.bottom = "0px";
+        s.left   = "0px";
+        
+        var rateWidth  = this.width/dom.window.innerWidth;
+        var rateHeight = this.height/dom.window.innerHeight;
+        var rate = this.height/this.width;
+        
+        if (rateWidth > rateHeight) {
+            s.width = dom.window.innerWidth+"px";
+            s.height = dom.window.innerWidth*rate+"px";
+        }
+        else {
+            s.width = dom.window.innerHeight/rate+"px";
+            s.height = dom.window.innerHeight+"px";
+        }
+        
+        return this;
+    }
 
     function clear(color: string): Canvas {
     	this.context.save();

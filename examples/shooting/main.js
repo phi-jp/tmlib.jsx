@@ -897,6 +897,8 @@ function Pointing(elm) {
 		rect = element.getBoundingClientRect();
 		$this._tempPosition.x = mouseEvent.x - rect.left;
 		$this._tempPosition.y = mouseEvent.y - rect.top;
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
 	}));
 };
 
@@ -914,7 +916,7 @@ Pointing.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:65:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+			throw new Error("[src/input/Pointing.jsx:68:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
 		}
 		return v;
 	}(Pointing.BUTTON_MAP[button]))) !== 0;
@@ -1032,6 +1034,32 @@ Canvas.prototype.init$LHTMLCanvasElement$ = function (elm) {
 
 Canvas.prototype.clear$ = function () {
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	return this;
+};
+
+
+Canvas.prototype.fit$ = function () {
+	var s;
+	var rateWidth;
+	var rateHeight;
+	var rate;
+	s = this.canvas.style;
+	s.position = "absolute";
+	s.margin = "auto";
+	s.top = "0px";
+	s.right = "0px";
+	s.bottom = "0px";
+	s.left = "0px";
+	rateWidth = this.width / dom.window.innerWidth;
+	rateHeight = this.height / dom.window.innerHeight;
+	rate = this.height / this.width;
+	if (rateWidth > rateHeight) {
+		s.width = (dom.window.innerWidth + "") + "px";
+		s.height = (dom.window.innerWidth * rate + "") + "px";
+	} else {
+		s.width = (dom.window.innerHeight / rate + "") + "px";
+		s.height = (dom.window.innerHeight + "") + "px";
+	}
 	return this;
 };
 
