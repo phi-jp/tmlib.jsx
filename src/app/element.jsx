@@ -28,6 +28,12 @@ class Element {
 
         return this;
     }
+
+    function removeChild(child: Element): Element {
+        log("hoge");
+
+        return this;
+    }
     
     function update(app: variant): void {
         
