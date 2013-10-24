@@ -34,6 +34,11 @@ module.exports = function(grunt) {
         dest: 'examples/shooting/main.js',
         executable: "web",
       },
+      touchnumber: {
+        src: 'examples/touchnumber/src/main.jsx',
+        dest: 'examples/touchnumber/main.js',
+        executable: "web",
+      },
     },
   });
 

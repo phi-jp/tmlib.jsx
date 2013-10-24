@@ -117,15 +117,15 @@ function _Main$main$AS(args) {
 	var app;
 	canvas = dom.window.document.createElement("canvas");
 	dom.window.document.body.appendChild(canvas);
-	app = new ShootingApp((function ($v) {
+	app = new TouchNumberApp((function ($v) {
 		if (! ($v == null || $v instanceof HTMLCanvasElement)) {
 			debugger;
-			throw new Error("[examples/shooting/src/main.jsx:13:41] detected invalid cast, value is not an instance of the designated type or null\n        var app = new ShootingApp(canvas as HTMLCanvasElement);\n                                         ^^\n");
+			throw new Error("[examples/touchnumber/src/main.jsx:20:44] detected invalid cast, value is not an instance of the designated type or null\n        var app = new TouchNumberApp(canvas as HTMLCanvasElement);\n                                            ^^\n");
 		}
 		return $v;
 	}(canvas)));
+	app.canvas.setSize$NN(640, 960);
 	app.run$();
-	console.dir(canvas);
 };
 
 _Main.main = _Main$main$AS;
@@ -504,120 +504,67 @@ function DeviceMotionEventInit() {
 
 $__jsx_extend([DeviceMotionEventInit], EventInit);
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
-function Vector2() {
-	this.x = 0;
-	this.y = 0;
+function Element$0() {
+	this.children = [  ];
 };
 
-function Vector2$0(x, y) {
-	this.x = x;
-	this.y = y;
-};
-
-$__jsx_extend([Vector2, Vector2$0], Object);
-Vector2.prototype.set$NN = function (x, y) {
-	this.x = x;
-	this.y = y;
+$__jsx_extend([Element$0], Object);
+Element$0.prototype.addChild$LElement$0$ = function (child) {
+	this.children.push(child);
 	return this;
 };
 
 
-Vector2.prototype.set$LVector2$ = function (v) {
-	this.x = v.x;
-	this.y = v.y;
+Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
+	parent.addChild$LElement$0$(this);
 	return this;
 };
 
 
-Vector2.prototype.add$NN = function (x, y) {
-	this.x += x;
-	this.y += y;
-	return this;
+Element$0.prototype.update$X = function (app) {
 };
 
 
-Vector2.prototype.add$LVector2$ = function (v) {
-	return this.add$NN(v.x, v.y);
+Element$0.prototype._update$X = function (app) {
+	var $this = this;
+	if (this.update$X) {
+		this.update$X(app);
+	}
+	if (this.children.length > 0) {
+		this.children.forEach((function (elm) {
+			elm._update$X(app);
+		}));
+	}
 };
 
 
-Vector2.prototype.sub$NN = function (x, y) {
-	this.x -= x;
-	this.y -= y;
-	return this;
+function Scene() {
+	Element$0.call(this);
 };
 
-
-Vector2.prototype.sub$LVector2$ = function (v) {
-	return this.sub$NN(v.x, v.y);
+$__jsx_extend([Scene], Element$0);
+function GameScene() {
+	var i;
+	var j;
+	var x;
+	var y;
+	var piece;
+	Scene.call(this);
+	for (i = 0; i < 5; ++ i) {
+		for (j = 0; j < 5; ++ j) {
+			x = j * 100;
+			y = i * 100;
+			piece = new Piece();
+			piece.setPosition$NN(x + 85, y + 100);
+			this.addChild$LElement$0$(piece);
+		}
+	}
 };
 
-
-Vector2.prototype.mul$N = function (value) {
-	this.x *= value;
-	this.y *= value;
-	return this;
+$__jsx_extend([GameScene], Scene);
+GameScene.prototype.update$X = function (app) {
 };
 
-
-Vector2.prototype.div$N = function (value) {
-	this.x /= value;
-	this.y /= value;
-	return this;
-};
-
-
-Vector2.prototype.length$ = function () {
-	return Math.sqrt(this.lengthSquare$());
-};
-
-
-Vector2.prototype.lengthSquare$ = function () {
-	return this.x * this.x + this.y * this.y;
-};
-
-
-Vector2.prototype.normalize$ = function () {
-	var len;
-	len = this.length$();
-	this.x /= len;
-	this.y /= len;
-	return this;
-};
-
-
-Vector2.prototype.equals$NN = function (x, y) {
-	return this.x === x && this.y === y;
-};
-
-
-Vector2.prototype.equals$LVector2$ = function (v) {
-	return this.x === v.x && this.y === v.y;
-};
-
-
-Vector2.prototype.toString = function () {
-	return "(" + this.x.toString() + "," + this.y.toString() + ")";
-};
-
-
-Vector2.prototype.log$ = function () {
-	console.log(this.toString());
-	return this;
-};
-
-
-function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.x + lhs.y * rhs.y;
-};
-
-Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
-
-function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.y - lhs.y * rhs.x;
-};
-
-Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
 function BaseApp(elm) {
 	this.element = elm;
@@ -688,14 +635,300 @@ CanvasApp.prototype._update$ = function () {
 };
 
 
-function ShootingApp(elm) {
+function TouchNumberApp(elm) {
 	var scene;
 	CanvasApp.call(this, elm);
 	scene = new GameScene();
 	this.replaceScene$LScene$(scene);
 };
 
-$__jsx_extend([ShootingApp], CanvasApp);
+$__jsx_extend([TouchNumberApp], CanvasApp);
+function Canvas() {
+	var elm;
+	this.element = null;
+	this.canvas = null;
+	this.context = null;
+	this.width = 0;
+	this.height = 0;
+	elm = dom.window.document.createElement("canvas");
+	this.init$LHTMLCanvasElement$((function ($v) {
+		if (! ($v == null || $v instanceof HTMLCanvasElement)) {
+			debugger;
+			throw new Error("[src/graphics/canvas.jsx:18:22] detected invalid cast, value is not an instance of the designated type or null\n        this.init(elm as HTMLCanvasElement);\n                      ^^\n");
+		}
+		return $v;
+	}(elm)));
+};
+
+function Canvas$0(elm) {
+	this.element = null;
+	this.canvas = null;
+	this.context = null;
+	this.width = 0;
+	this.height = 0;
+	this.init$LHTMLCanvasElement$(elm);
+};
+
+$__jsx_extend([Canvas, Canvas$0], Object);
+Canvas.prototype.init$LHTMLCanvasElement$ = function (elm) {
+	this.canvas = elm;
+	this.context = (function ($v) {
+		if (! ($v == null || $v instanceof CanvasRenderingContext2D)) {
+			debugger;
+			throw new Error("[src/graphics/canvas.jsx:27:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
+		}
+		return $v;
+	}(this.canvas.getContext('2d')));
+	this.width = this.canvas.width;
+	this.height = this.canvas.height;
+	return this;
+};
+
+
+Canvas.prototype.clear$ = function () {
+	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	return this;
+};
+
+
+Canvas.prototype.clear$S = function (color) {
+	this.context.save();
+	this.context.fillStyle = color;
+	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	this.context.restore();
+	return this;
+};
+
+
+Canvas.prototype.fillRect$NNNN = function (x, y, width, height) {
+	this.context.fillRect(x, y, width, height);
+	return this;
+};
+
+
+Canvas.prototype.fillText$SNN = function (text, x, y) {
+	this.context.fillText(text, x, y);
+	return this;
+};
+
+
+Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
+	this.context.drawImage(image, 0, 0);
+	return this;
+};
+
+
+Canvas.prototype.drawCanvas$LCanvas$ = function (canvas) {
+	this.context.drawImage(canvas.canvas, 0, 0);
+	return this;
+};
+
+
+Canvas.prototype.translate$NN = function (x, y) {
+	this.context.translate(x, y);
+	return this;
+};
+
+
+Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
+	this.context.setTransform(m11, m12, m21, m22, dx, dy);
+	return this;
+};
+
+
+Canvas.prototype.setSize$NN = function (width, height) {
+	this.width = this.canvas.width = width;
+	this.height = this.canvas.height = height;
+	return this;
+};
+
+
+function Renderer() {
+};
+
+$__jsx_extend([Renderer], Object);
+Renderer.prototype.render$LElement$0$LCanvas$ = function (root, canvas) {
+	canvas.context.save();
+	this._render$LElement$0$LCanvas$(root, canvas);
+	canvas.context.restore();
+};
+
+
+Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
+	var $this = this;
+	var sprite;
+	var label;
+	var shape;
+	var canvaselement;
+	canvas.context.save();
+	if (element instanceof Sprite) {
+		sprite = (function ($v) {
+			if (! ($v == null || $v instanceof Sprite)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:33:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
+			}
+			return $v;
+		}(element));
+		canvas.translate$NN(sprite.position.x, sprite.position.y);
+		if (sprite.loaded === true) {
+			canvas.drawImage$LHTMLImageElement$(sprite.image);
+		} else {
+			canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
+		}
+	} else if (element instanceof Label) {
+		label = (function ($v) {
+			if (! ($v == null || $v instanceof Label)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:45:32] detected invalid cast, value is not an instance of the designated type or null\n            var label = element as Label;\n                                ^^\n");
+			}
+			return $v;
+		}(element));
+		canvas.translate$NN(label.position.x, label.position.y);
+		canvas.context.fillStyle = label.fontColor;
+		canvas.fillText$SNN(label.text, 0, 0);
+	} else if (element instanceof Shape) {
+		shape = (function ($v) {
+			if (! ($v == null || $v instanceof Shape)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:52:32] detected invalid cast, value is not an instance of the designated type or null\n            var shape = element as Shape;\n                                ^^\n");
+			}
+			return $v;
+		}(element));
+		canvas.translate$NN(shape.position.x, shape.position.y);
+		canvas.drawCanvas$LCanvas$(shape.canvas);
+	} else if (element instanceof CanvasElement) {
+		canvaselement = (function ($v) {
+			if (! ($v == null || $v instanceof CanvasElement)) {
+				debugger;
+				throw new Error("[src/display/renderer.jsx:58:40] detected invalid cast, value is not an instance of the designated type or null\n            var canvaselement = element as CanvasElement;\n                                        ^^\n");
+			}
+			return $v;
+		}(element));
+		canvas.translate$NN(canvaselement.position.x, canvaselement.position.y);
+	}
+	if (element.children.length > 0) {
+		element.children.forEach((function (elm) {
+			$this._render$LElement$0$LCanvas$(elm, canvas);
+		}));
+	}
+	canvas.context.restore();
+};
+
+
+function Object2D() {
+	Element$0.call(this);
+	this.width = 32;
+	this.height = 32;
+	this.position = new Vector2();
+	this.origin = new Vector2();
+};
+
+$__jsx_extend([Object2D], Element$0);
+Object2D.prototype.setPosition$NN = function (x, y) {
+	this.position.set$NN(x, y);
+	return this;
+};
+
+
+function CanvasElement() {
+	Object2D.call(this);
+};
+
+$__jsx_extend([CanvasElement], Object2D);
+CanvasElement.prototype._draw$LCanvasRenderingContext2D$ = function (ctx) {
+	var $this = this;
+	if (this.draw$LCanvasRenderingContext2D$) {
+		this.draw$LCanvasRenderingContext2D$(ctx);
+	}
+	if (this.children.length > 0) {
+		this.children.forEach((function (elm) {
+			(function ($v) {
+				if (! ($v == null || $v instanceof CanvasElement)) {
+					debugger;
+					throw new Error("[src/display/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
+				}
+				return $v;
+			}(elm))._draw$LCanvasRenderingContext2D$(ctx);
+		}));
+	}
+};
+
+
+CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
+};
+
+
+function Shape(width, height) {
+	CanvasElement.call(this);
+	this.loaded = false;
+	this.canvas = new Canvas();
+	this.canvas.setSize$NN(width, height);
+};
+
+function Shape$0(width) {
+	Shape.call(this, width, 32);
+};
+
+function Shape$1() {
+	Shape.call(this, 32, 32);
+};
+
+$__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
+function Label() {
+	CanvasElement.call(this);
+	this.text = "";
+	this.fontColor = "black";
+};
+
+function Label$0(text) {
+	CanvasElement.call(this);
+	this.fontColor = "black";
+	this.text = text;
+};
+
+$__jsx_extend([Label, Label$0], CanvasElement);
+function Sprite() {
+	CanvasElement.call(this);
+	this.image = null;
+	this.loaded = false;
+};
+
+function Sprite$0(src) {
+	var $this = this;
+	var self;
+	CanvasElement.call(this);
+	this.loaded = false;
+	this.image = (function ($v) {
+		if (! ($v == null || $v instanceof HTMLImageElement)) {
+			debugger;
+			throw new Error("[src/display/sprite.jsx:27:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
+		}
+		return $v;
+	}(dom.document.createElement("img")));
+	this.image.src = src;
+	self = this;
+	this.image.addEventListener("load", (function (e) {
+		self.loaded = true;
+		self.width = self.image.width;
+		self.height = self.image.height;
+	}));
+};
+
+$__jsx_extend([Sprite, Sprite$0], CanvasElement);
+function Piece() {
+	var shape;
+	var label;
+	CanvasElement.call(this);
+	shape = new Shape(64, 64);
+	shape.canvas.clear$S("black");
+	this.addChild$LElement$0$(shape);
+	label = new Label$0("TEST");
+	label.fontColor = "white";
+	label.setPosition$NN(20, 35);
+	this.addChild$LElement$0$(label);
+};
+
+$__jsx_extend([Piece], CanvasElement);
 function Timer() {
 };
 
@@ -869,238 +1102,120 @@ Pointing.prototype.update$ = function () {
 };
 
 
-function Element$0() {
-	this.children = [  ];
+function Vector2() {
+	this.x = 0;
+	this.y = 0;
 };
 
-$__jsx_extend([Element$0], Object);
-Element$0.prototype.addChild$LElement$0$ = function (child) {
-	this.children.push(child);
+function Vector2$0(x, y) {
+	this.x = x;
+	this.y = y;
+};
+
+$__jsx_extend([Vector2, Vector2$0], Object);
+Vector2.prototype.set$NN = function (x, y) {
+	this.x = x;
+	this.y = y;
 	return this;
 };
 
 
-Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
-	parent.addChild$LElement$0$(this);
+Vector2.prototype.set$LVector2$ = function (v) {
+	this.x = v.x;
+	this.y = v.y;
 	return this;
 };
 
 
-Element$0.prototype.update$X = function (app) {
-};
-
-
-Element$0.prototype._update$X = function (app) {
-	var $this = this;
-	if (this.update$X) {
-		this.update$X(app);
-	}
-	if (this.children.length > 0) {
-		this.children.forEach((function (elm) {
-			elm._update$X(app);
-		}));
-	}
-};
-
-
-function Scene() {
-	Element$0.call(this);
-};
-
-$__jsx_extend([Scene], Element$0);
-function GameScene() {
-	var player;
-	var label;
-	var shape;
-	Scene.call(this);
-	player = new Player();
-	player.position.set$NN(0, 50);
-	this.addChild$LElement$0$(player);
-	label = new Label$0("GameScene");
-	label.setPosition$NN(8, 16);
-	this.addChild$LElement$0$(label);
-	shape = new Shape$1();
-	shape.setPosition$NN(30, 30);
-	shape.canvas.clear$S("blue");
-	this.addChild$LElement$0$(shape);
-};
-
-$__jsx_extend([GameScene], Scene);
-GameScene.prototype.update$X = function (app) {
-};
-
-
-function Canvas() {
-	var elm;
-	this.element = null;
-	this.canvas = null;
-	this.context = null;
-	this.width = 0;
-	this.height = 0;
-	elm = dom.window.document.createElement("canvas");
-	this.init$LHTMLCanvasElement$((function ($v) {
-		if (! ($v == null || $v instanceof HTMLCanvasElement)) {
-			debugger;
-			throw new Error("[src/graphics/canvas.jsx:18:22] detected invalid cast, value is not an instance of the designated type or null\n        this.init(elm as HTMLCanvasElement);\n                      ^^\n");
-		}
-		return $v;
-	}(elm)));
-};
-
-function Canvas$0(elm) {
-	this.element = null;
-	this.canvas = null;
-	this.context = null;
-	this.width = 0;
-	this.height = 0;
-	this.init$LHTMLCanvasElement$(elm);
-};
-
-$__jsx_extend([Canvas, Canvas$0], Object);
-Canvas.prototype.init$LHTMLCanvasElement$ = function (elm) {
-	this.canvas = elm;
-	this.context = (function ($v) {
-		if (! ($v == null || $v instanceof CanvasRenderingContext2D)) {
-			debugger;
-			throw new Error("[src/graphics/canvas.jsx:27:52] detected invalid cast, value is not an instance of the designated type or null\n        this.context = this.canvas.getContext(\'2d\') as CanvasRenderingContext2D;\n                                                    ^^\n");
-		}
-		return $v;
-	}(this.canvas.getContext('2d')));
-	this.width = this.canvas.width;
-	this.height = this.canvas.height;
+Vector2.prototype.add$NN = function (x, y) {
+	this.x += x;
+	this.y += y;
 	return this;
 };
 
 
-Canvas.prototype.clear$ = function () {
-	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+Vector2.prototype.add$LVector2$ = function (v) {
+	return this.add$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.sub$NN = function (x, y) {
+	this.x -= x;
+	this.y -= y;
 	return this;
 };
 
 
-Canvas.prototype.clear$S = function (color) {
-	this.context.save();
-	this.context.fillStyle = color;
-	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-	this.context.restore();
+Vector2.prototype.sub$LVector2$ = function (v) {
+	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.mul$N = function (value) {
+	this.x *= value;
+	this.y *= value;
 	return this;
 };
 
 
-Canvas.prototype.fillRect$NNNN = function (x, y, width, height) {
-	this.context.fillRect(x, y, width, height);
+Vector2.prototype.div$N = function (value) {
+	this.x /= value;
+	this.y /= value;
 	return this;
 };
 
 
-Canvas.prototype.fillText$SNN = function (text, x, y) {
-	this.context.fillText(text, x, y);
+Vector2.prototype.length$ = function () {
+	return Math.sqrt(this.lengthSquare$());
+};
+
+
+Vector2.prototype.lengthSquare$ = function () {
+	return this.x * this.x + this.y * this.y;
+};
+
+
+Vector2.prototype.normalize$ = function () {
+	var len;
+	len = this.length$();
+	this.x /= len;
+	this.y /= len;
 	return this;
 };
 
 
-Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
-	this.context.drawImage(image, 0, 0);
+Vector2.prototype.equals$NN = function (x, y) {
+	return this.x === x && this.y === y;
+};
+
+
+Vector2.prototype.equals$LVector2$ = function (v) {
+	return this.x === v.x && this.y === v.y;
+};
+
+
+Vector2.prototype.toString = function () {
+	return "(" + this.x.toString() + "," + this.y.toString() + ")";
+};
+
+
+Vector2.prototype.log$ = function () {
+	console.log(this.toString());
 	return this;
 };
 
 
-Canvas.prototype.drawCanvas$LCanvas$ = function (canvas) {
-	this.context.drawImage(canvas.canvas, 0, 0);
-	return this;
+function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.x + lhs.y * rhs.y;
 };
 
+Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
 
-Canvas.prototype.translate$NN = function (x, y) {
-	this.context.translate(x, y);
-	return this;
+function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.y - lhs.y * rhs.x;
 };
 
-
-Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
-	this.context.setTransform(m11, m12, m21, m22, dx, dy);
-	return this;
-};
-
-
-Canvas.prototype.setSize$NN = function (width, height) {
-	this.width = this.canvas.width = width;
-	this.height = this.canvas.height = height;
-	return this;
-};
-
-
-function Renderer() {
-};
-
-$__jsx_extend([Renderer], Object);
-Renderer.prototype.render$LElement$0$LCanvas$ = function (root, canvas) {
-	canvas.context.save();
-	this._render$LElement$0$LCanvas$(root, canvas);
-	canvas.context.restore();
-};
-
-
-Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
-	var $this = this;
-	var sprite;
-	var label;
-	var shape;
-	var canvaselement;
-	canvas.context.save();
-	if (element instanceof Sprite) {
-		sprite = (function ($v) {
-			if (! ($v == null || $v instanceof Sprite)) {
-				debugger;
-				throw new Error("[src/display/renderer.jsx:33:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
-			}
-			return $v;
-		}(element));
-		canvas.translate$NN(sprite.position.x, sprite.position.y);
-		if (sprite.loaded === true) {
-			canvas.drawImage$LHTMLImageElement$(sprite.image);
-		} else {
-			canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
-		}
-	} else if (element instanceof Label) {
-		label = (function ($v) {
-			if (! ($v == null || $v instanceof Label)) {
-				debugger;
-				throw new Error("[src/display/renderer.jsx:45:32] detected invalid cast, value is not an instance of the designated type or null\n            var label = element as Label;\n                                ^^\n");
-			}
-			return $v;
-		}(element));
-		canvas.translate$NN(label.position.x, label.position.y);
-		canvas.context.fillStyle = label.fontColor;
-		canvas.fillText$SNN(label.text, 0, 0);
-	} else if (element instanceof Shape) {
-		shape = (function ($v) {
-			if (! ($v == null || $v instanceof Shape)) {
-				debugger;
-				throw new Error("[src/display/renderer.jsx:52:32] detected invalid cast, value is not an instance of the designated type or null\n            var shape = element as Shape;\n                                ^^\n");
-			}
-			return $v;
-		}(element));
-		canvas.translate$NN(shape.position.x, shape.position.y);
-		canvas.drawCanvas$LCanvas$(shape.canvas);
-	} else if (element instanceof CanvasElement) {
-		canvaselement = (function ($v) {
-			if (! ($v == null || $v instanceof CanvasElement)) {
-				debugger;
-				throw new Error("[src/display/renderer.jsx:58:40] detected invalid cast, value is not an instance of the designated type or null\n            var canvaselement = element as CanvasElement;\n                                        ^^\n");
-			}
-			return $v;
-		}(element));
-		canvas.translate$NN(canvaselement.position.x, canvaselement.position.y);
-	}
-	if (element.children.length > 0) {
-		element.children.forEach((function (elm) {
-			$this._render$LElement$0$LCanvas$(elm, canvas);
-		}));
-	}
-	canvas.context.restore();
-};
-
+Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
 function Vector2$1() {
 	this.x = 0;
@@ -1217,148 +1332,6 @@ function Vector2$1$cross$LVector2$1$LVector2$1$(lhs, rhs) {
 
 Vector2$1.cross$LVector2$1$LVector2$1$ = Vector2$1$cross$LVector2$1$LVector2$1$;
 
-function Object2D() {
-	Element$0.call(this);
-	this.width = 32;
-	this.height = 32;
-	this.position = new Vector2();
-	this.origin = new Vector2();
-};
-
-$__jsx_extend([Object2D], Element$0);
-Object2D.prototype.setPosition$NN = function (x, y) {
-	this.position.set$NN(x, y);
-	return this;
-};
-
-
-function CanvasElement() {
-	Object2D.call(this);
-};
-
-$__jsx_extend([CanvasElement], Object2D);
-CanvasElement.prototype._draw$LCanvasRenderingContext2D$ = function (ctx) {
-	var $this = this;
-	if (this.draw$LCanvasRenderingContext2D$) {
-		this.draw$LCanvasRenderingContext2D$(ctx);
-	}
-	if (this.children.length > 0) {
-		this.children.forEach((function (elm) {
-			(function ($v) {
-				if (! ($v == null || $v instanceof CanvasElement)) {
-					debugger;
-					throw new Error("[src/display/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
-				}
-				return $v;
-			}(elm))._draw$LCanvasRenderingContext2D$(ctx);
-		}));
-	}
-};
-
-
-CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
-};
-
-
-function Sprite() {
-	CanvasElement.call(this);
-	this.image = null;
-	this.loaded = false;
-};
-
-function Sprite$0(src) {
-	var $this = this;
-	var self;
-	CanvasElement.call(this);
-	this.loaded = false;
-	this.image = (function ($v) {
-		if (! ($v == null || $v instanceof HTMLImageElement)) {
-			debugger;
-			throw new Error("[src/display/sprite.jsx:27:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
-		}
-		return $v;
-	}(dom.document.createElement("img")));
-	this.image.src = src;
-	self = this;
-	this.image.addEventListener("load", (function (e) {
-		self.loaded = true;
-		self.width = self.image.width;
-		self.height = self.image.height;
-	}));
-};
-
-$__jsx_extend([Sprite, Sprite$0], CanvasElement);
-function Player() {
-	Sprite$0.call(this, "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png");
-	this.velocity = new Vector2$0(2, 0);
-	console.log(this.velocity);
-};
-
-$__jsx_extend([Player], Sprite);
-Player.prototype.update$X = function (app) {
-	var canvasapp;
-	var left;
-	var right;
-	var baseApp;
-	var p;
-	canvasapp = (function ($v) {
-		if (! ($v == null || $v instanceof CanvasApp)) {
-			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:60:28] detected invalid cast, value is not an instance of the designated type or null\n        var canvasapp = app as CanvasApp;\n                            ^^\n");
-		}
-		return $v;
-	}(app));
-	this.position.add$LVector2$(this.velocity);
-	left = 0;
-	right = canvasapp.canvas.width;
-	if (this.position.x > right) {
-		this.position.x = right;
-		this.velocity.x *= - 1;
-	} else if (this.position.x < left) {
-		this.position.x = left;
-		this.velocity.x *= - 1;
-	}
-	baseApp = (function ($v) {
-		if (! ($v == null || $v instanceof BaseApp)) {
-			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:75:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
-		}
-		return $v;
-	}(app));
-	p = baseApp.pointing;
-	this.position.set$NN(p.position.x, p.position.y);
-};
-
-
-function Label() {
-	CanvasElement.call(this);
-	this.text = "";
-	this.fontColor = "black";
-};
-
-function Label$0(text) {
-	CanvasElement.call(this);
-	this.fontColor = "black";
-	this.text = text;
-};
-
-$__jsx_extend([Label, Label$0], CanvasElement);
-function Shape(width, height) {
-	CanvasElement.call(this);
-	this.loaded = false;
-	this.canvas = new Canvas();
-	this.canvas.setSize$NN(width, height);
-};
-
-function Shape$0(width) {
-	Shape.call(this, width, 32);
-};
-
-function Shape$1() {
-	Shape.call(this, 32, 32);
-};
-
-$__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
 $__jsx_lazy_init(dom, "window", function () {
 	return js$0.global.window;
 });
@@ -1383,9 +1356,15 @@ var $__jsx_classMap = {
 		StopIteration: StopIteration,
 		StopIteration$: StopIteration
 	},
-	"examples/shooting/src/main.jsx": {
+	"examples/touchnumber/src/main.jsx": {
 		_Main: _Main,
-		_Main$: _Main
+		_Main$: _Main,
+		GameScene: GameScene,
+		GameScene$: GameScene,
+		TouchNumberApp: TouchNumberApp,
+		TouchNumberApp$LHTMLCanvasElement$: TouchNumberApp,
+		Piece: Piece,
+		Piece$: Piece
 	},
 	"system:lib/js/js/web.jsx": {
 		dom: dom,
@@ -1472,10 +1451,13 @@ var $__jsx_classMap = {
 		DeviceMotionEventInit: DeviceMotionEventInit,
 		DeviceMotionEventInit$: DeviceMotionEventInit
 	},
-	"src/geom/vector2.jsx": {
-		Vector2: Vector2,
-		Vector2$: Vector2,
-		Vector2$NN: Vector2$0
+	"src/app/element.jsx": {
+		Element: Element$0,
+		Element$: Element$0
+	},
+	"src/app/scene.jsx": {
+		Scene: Scene,
+		Scene$: Scene
 	},
 	"src/app/baseapp.jsx": {
 		BaseApp: BaseApp,
@@ -1484,31 +1466,6 @@ var $__jsx_classMap = {
 	"src/display/canvasapp.jsx": {
 		CanvasApp: CanvasApp,
 		CanvasApp$LHTMLCanvasElement$: CanvasApp
-	},
-	"examples/shooting/src/shootingapp.jsx": {
-		ShootingApp: ShootingApp,
-		ShootingApp$LHTMLCanvasElement$: ShootingApp,
-		GameScene: GameScene,
-		GameScene$: GameScene,
-		Player: Player,
-		Player$: Player
-	},
-	"system:lib/js/timer.jsx": {
-		Timer: Timer,
-		Timer$: Timer,
-		TimerHandle: TimerHandle
-	},
-	"src/input/Pointing.jsx": {
-		Pointing: Pointing,
-		Pointing$LHTMLElement$: Pointing
-	},
-	"src/app/element.jsx": {
-		Element: Element$0,
-		Element$: Element$0
-	},
-	"src/app/scene.jsx": {
-		Scene: Scene,
-		Scene$: Scene
 	},
 	"src/graphics/canvas.jsx": {
 		Canvas: Canvas,
@@ -1519,11 +1476,6 @@ var $__jsx_classMap = {
 		Renderer: Renderer,
 		Renderer$: Renderer
 	},
-	"src/geom/Vector2.jsx": {
-		Vector2: Vector2$1,
-		Vector2$: Vector2$1,
-		Vector2$NN: Vector2$2
-	},
 	"src/app/object2d.jsx": {
 		Object2D: Object2D,
 		Object2D$: Object2D
@@ -1532,21 +1484,40 @@ var $__jsx_classMap = {
 		CanvasElement: CanvasElement,
 		CanvasElement$: CanvasElement
 	},
-	"src/display/sprite.jsx": {
-		Sprite: Sprite,
-		Sprite$: Sprite,
-		Sprite$S: Sprite$0
+	"src/display/shape.jsx": {
+		Shape: Shape,
+		Shape$NN: Shape,
+		Shape$N: Shape$0,
+		Shape$: Shape$1
 	},
 	"src/display/label.jsx": {
 		Label: Label,
 		Label$: Label,
 		Label$S: Label$0
 	},
-	"src/display/shape.jsx": {
-		Shape: Shape,
-		Shape$NN: Shape,
-		Shape$N: Shape$0,
-		Shape$: Shape$1
+	"src/display/sprite.jsx": {
+		Sprite: Sprite,
+		Sprite$: Sprite,
+		Sprite$S: Sprite$0
+	},
+	"system:lib/js/timer.jsx": {
+		Timer: Timer,
+		Timer$: Timer,
+		TimerHandle: TimerHandle
+	},
+	"src/input/Pointing.jsx": {
+		Pointing: Pointing,
+		Pointing$LHTMLElement$: Pointing
+	},
+	"src/geom/vector2.jsx": {
+		Vector2: Vector2,
+		Vector2$: Vector2,
+		Vector2$NN: Vector2$0
+	},
+	"src/geom/Vector2.jsx": {
+		Vector2: Vector2$1,
+		Vector2$: Vector2$1,
+		Vector2$NN: Vector2$2
 	}
 };
 
@@ -1613,7 +1584,7 @@ JSX.runTests = function (sourceFile, tests) {
 function $__jsx_onload (event) {
 	window.removeEventListener("load", $__jsx_onload);
 	document.removeEventListener("DOMContentLoaded", $__jsx_onload);
-	JSX.runMain("examples/shooting/src/main.jsx", []);
+	JSX.runMain("examples/touchnumber/src/main.jsx", []);
 }
 
 window.addEventListener("load", $__jsx_onload);

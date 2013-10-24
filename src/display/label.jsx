@@ -9,6 +9,7 @@ import "canvaselement.jsx";
  */
 class Label extends CanvasElement {
     var text: string;
+    var fontColor: string = "black";
 
     /**
      * constructor

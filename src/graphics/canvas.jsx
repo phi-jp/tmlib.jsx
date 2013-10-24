@@ -65,6 +65,11 @@ class Canvas {
         return this;
     }
 
+    function translate(x:number, y:number): Canvas {
+        this.context.translate(x, y);
+        return this;
+    }
+
     function setTransform(m11:number, m12:number, m21:number, m22:number, dx:number, dy:number): Canvas {
     	this.context.setTransform(m11, m12, m21, m22, dx, dy);
     	return this;

@@ -12,6 +12,7 @@ import "element.jsx";
  */
 class Object2D extends Element {
     var position: Vector2;
+    var origin: Vector2;
     var width  = 32;
     var height = 32;
     
@@ -20,6 +21,7 @@ class Object2D extends Element {
      */
     function constructor() {
         this.position = new Vector2();
+        this.origin   = new Vector2();
     }
 
     function setPosition(x: number, y: number): Object2D {

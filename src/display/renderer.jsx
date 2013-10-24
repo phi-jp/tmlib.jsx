@@ -27,10 +27,11 @@ class Renderer {
     }
 
     function _render(element: tm.Element, canvas: Canvas): void {
+        canvas.context.save();
 
         if (element instanceof Sprite) {
             var sprite = element as Sprite;
-            canvas.setTransform(1, 0, 0, 1, sprite.position.x, sprite.position.y);
+            canvas.translate(sprite.position.x, sprite.position.y);
 
             if (sprite.loaded == true) {
                 // ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
@@ -42,18 +43,20 @@ class Renderer {
         }
         else if (element instanceof Label) {
             var label = element as Label;
-            canvas.setTransform(1, 0, 0, 1, label.position.x, label.position.y);
+            canvas.translate(label.position.x, label.position.y);
 
+            canvas.context.fillStyle = label.fontColor;
             canvas.fillText(label.text, 0, 0);
         }
         else if (element instanceof Shape) {
             var shape = element as Shape;
-            canvas.setTransform(1, 0, 0, 1, shape.position.x, shape.position.y);
+            canvas.translate(shape.position.x, shape.position.y);
 
             canvas.drawCanvas(shape.canvas);
         }
-        else {
-
+        else if (element instanceof CanvasElement) {
+            var canvaselement = element as CanvasElement;
+            canvas.translate(canvaselement.position.x, canvaselement.position.y);
         }
 
         // draw children
@@ -62,6 +65,8 @@ class Renderer {
                 this._render(elm, canvas);
             });
         }
+
+        canvas.context.restore();
     }
 }
 
