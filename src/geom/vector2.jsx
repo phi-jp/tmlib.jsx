@@ -60,6 +60,13 @@ class Vector2 {
     }
     
     /**
+     * add value by Vector2
+     */
+    function add(lhs:Vector2, rhs:Vector2): Vector2 {
+        return this.set(lhs.x+rhs.x, lhs.y+rhs.y);
+    }
+    
+    /**
      * sub value
      */
     function sub(x:number, y:number): Vector2 {
@@ -73,6 +80,13 @@ class Vector2 {
      */
     function sub(v:Vector2): Vector2 {
         return this.sub(v.x, v.y);
+    }
+    
+    /**
+     * sub value by Vector2
+     */
+    function sub(lhs:Vector2, rhs:Vector2): Vector2 {
+        return this.set(lhs.x-rhs.x, lhs.y-rhs.y);
     }
     
     /**

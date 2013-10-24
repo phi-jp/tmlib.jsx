@@ -10,8 +10,10 @@ import "../geom/Vector2.jsx";
 
 class Pointing {
 	var element: HTMLElement;
-	var position: Vector2;
-	var _tempPosition: Vector2;
+	var position: Vector2 = new Vector2();
+	var deltaPosition: Vector2 = new Vector2();
+	var prevPosition: Vector2 = new Vector2();
+	var _tempPosition: Vector2 = new Vector2();
 
 	var button: int;
 	var last: int;
@@ -30,8 +32,6 @@ class Pointing {
 
 	function constructor(elm: HTMLElement) {
 		this.element = elm;
-		this.position = new Vector2();
-		this._tempPosition = new Vector2();
 
 		this.element.addEventListener("mousedown", (e) -> {
 			var mouseEvent = e as MouseEvent;
@@ -59,10 +59,24 @@ class Pointing {
         this.press = this.button;
         this.down = (this.press ^ this.last) & this.press;
         this.up   = (this.press ^ this.last) & this.last;
-
+        
+        // update delta position
+        this.deltaPosition.sub(this._tempPosition, this.prevPosition);
+        
+        // save prev position
+        this.prevPosition.set(this.position);
+        
+        // update now position
 		this.position.set(this._tempPosition);
 	}
-
+    
+    function getPointingStart(): boolean {
+        return (this.down & Pointing.BUTTON_MAP["left"]) != 0;
+    }
+    
+    function getPointing(): boolean {
+        return (this.press & Pointing.BUTTON_MAP["left"]) != 0;
+    }
 
 	function getButtonDown(button: string):boolean {
 		return (this.down & Pointing.BUTTON_MAP[button]) != 0;

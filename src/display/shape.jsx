@@ -15,8 +15,11 @@ class Shape extends CanvasElement {
     /**
      * constructor
      */
-    function constructor(width: number = 32, height: number = 32) {
+    function constructor(width: number = 64, height: number = 64) {
         super();
+        
+        this.width  = width;
+        this.height = height;
         
         this.canvas = new Canvas();
         this.canvas.setSize(width, height);

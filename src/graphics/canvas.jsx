@@ -84,10 +84,35 @@ class Canvas {
         this.context.drawImage(image, 0, 0);
         return this;
     }
-
+    
+    function drawImage(image: HTMLImageElement, dx:number, dy:number, dw:number, dh:number): Canvas {
+        this.context.drawImage(image, dx, dy, dw, dh);
+        return this;
+    }
+    
+    function drawImage(image: HTMLImageElement, sx:number, sy:number, sw:number, sh:number, dx:number, dy:number, dw:number, dh:number): Canvas {
+        this.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+        return this;
+    }
+    
     function drawCanvas(canvas: Canvas): Canvas {
         this.context.drawImage(canvas.canvas, 0, 0);
         return this;
+    }
+
+    function drawCanvas(canvas: Canvas, dx:number, dy:number, dw:number, dh:number): Canvas {
+        this.context.drawImage(canvas.canvas, dx, dy, dw, dh);
+        return this;
+    }
+    
+    function drawCanvas(canvas: Canvas, sx:number, sy:number, sw:number, sh:number, dx:number, dy:number, dw:number, dh:number): Canvas {
+        this.context.drawImage(canvas.canvas, sx, sy, sw, sh, dx, dy, dw, dh);
+        return this;
+    }
+
+    function setTransform(m11:number, m12:number, m21:number, m22:number, dx:number, dy:number): Canvas {
+    	this.context.setTransform(m11, m12, m21, m22, dx, dy);
+    	return this;
     }
 
     function translate(x:number, y:number): Canvas {
@@ -95,9 +120,14 @@ class Canvas {
         return this;
     }
 
-    function setTransform(m11:number, m12:number, m21:number, m22:number, dx:number, dy:number): Canvas {
-    	this.context.setTransform(m11, m12, m21, m22, dx, dy);
-    	return this;
+    function rotate(angle:number): Canvas {
+        this.context.rotate(angle);
+        return this;
+    }
+
+    function scale(x:number, y:number): Canvas {
+        this.context.scale(x, y);
+        return this;
     }
 
     function setSize(width:number, height:number): Canvas {

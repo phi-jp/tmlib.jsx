@@ -11,8 +11,10 @@ import "element.jsx";
  * element class
  */
 class Object2D extends Element {
-    var position: Vector2;
-    var origin: Vector2;
+    var position: Vector2 = new Vector2();
+    var origin: Vector2 = new Vector2(0.5, 0.5);
+    var scale: Vector2 = new Vector2(1.0, 1.0);
+    var rotation = 0;
     var width  = 32;
     var height = 32;
     
@@ -20,8 +22,6 @@ class Object2D extends Element {
      * constructor
      */
     function constructor() {
-        this.position = new Vector2();
-        this.origin   = new Vector2();
     }
 
     function setPosition(x: number, y: number): Object2D {
@@ -32,10 +32,27 @@ class Object2D extends Element {
     function isHit(p:Vector2): boolean {
         var x = p.x;
         var y = p.y;
-        var checkHorizon = (this.position.x < x && x < (this.position.x+this.width));
-        var checkVertical= (this.position.y < y && y < (this.position.y+this.height));
+        
+        var checkHorizon = (this.getLeft() < x && x < this.getRight());
+        var checkVertical= (this.getTop() < y && y < this.getBottom());
         
         return checkHorizon && checkVertical;
+    }
+    
+    function getLeft(): number {
+        return this.position.x - this.width*this.origin.x;
+    }
+    
+    function getRight(): number {
+        return this.position.x + this.width*(1-this.origin.x);
+    }
+    
+    function getTop(): number {
+        return this.position.y - this.height*this.origin.y;
+    }
+    
+    function getBottom(): number {
+        return this.position.y + this.height*(1-this.origin.y);
     }
 
 }

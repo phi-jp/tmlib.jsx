@@ -2,6 +2,7 @@
 import "js/web.jsx";
 
 import "../app/element.jsx" into tm;
+import "../app/object2d.jsx";
 import "../graphics/canvas.jsx";
 
 import "canvaselement.jsx";
@@ -30,33 +31,17 @@ class Renderer {
         canvas.context.save();
 
         if (element instanceof Sprite) {
-            var sprite = element as Sprite;
-            canvas.translate(sprite.position.x, sprite.position.y);
-
-            if (sprite.loaded == true) {
-                // ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
-                canvas.drawImage(sprite.image);
-            }
-            else {
-                canvas.fillRect(0, 0, sprite.width, sprite.height);
-            }
+            this._drawSprite(element as Sprite, canvas);
         }
         else if (element instanceof Label) {
-            var label = element as Label;
-            canvas.translate(label.position.x, label.position.y);
-
-            canvas.context.fillStyle = label.fontColor;
-            canvas.fillText(label.text, 0, 0);
+            this._drawLabel(element as Label, canvas);
         }
         else if (element instanceof Shape) {
-            var shape = element as Shape;
-            canvas.translate(shape.position.x, shape.position.y);
-
-            canvas.drawCanvas(shape.canvas);
+            this._drawShape(element as Shape, canvas);
         }
         else if (element instanceof CanvasElement) {
             var canvaselement = element as CanvasElement;
-            canvas.translate(canvaselement.position.x, canvaselement.position.y);
+            this._transform(canvaselement, canvas);
         }
 
         // draw children
@@ -67,6 +52,55 @@ class Renderer {
         }
 
         canvas.context.restore();
+    }
+    
+    function _drawSprite(sprite:Sprite, canvas: Canvas): Renderer {
+        this._transform(sprite, canvas);
+
+        if (sprite.loaded == true) {
+            // ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
+            // canvas.drawImage(sprite.image);
+            canvas.drawImage(
+                sprite.image,
+                -sprite.width*sprite.origin.x,
+                -sprite.height*sprite.origin.y,
+                sprite.width,
+                sprite.height);
+        }
+        else {
+            canvas.fillRect(0, 0, sprite.width, sprite.height);
+        }
+
+        return this;
+    }
+    
+    function _drawLabel(label:Label, canvas: Canvas): Renderer {
+        this._transform(label, canvas);
+
+        canvas.context.fillStyle = label.fontColor;
+        canvas.fillText(label.text, -label.width*label.origin.x, -label.height*label.origin.y);
+        return this;
+    }
+    
+    function _drawShape(shape:Shape, canvas: Canvas): Renderer {
+        this._transform(shape, canvas);
+        
+        canvas.drawCanvas(
+            shape.canvas,
+            -shape.width*shape.origin.x,
+            -shape.height*shape.origin.y,
+            shape.width,
+            shape.height);
+        
+        return this;
+    }
+    
+    function _transform(obj: Object2D, canvas: Canvas): Renderer {
+        canvas.translate(obj.position.x, obj.position.y);
+        canvas.rotate(obj.rotation);
+        canvas.scale(obj.scale.x, obj.scale.y);
+        
+        return this;
     }
 }
 
