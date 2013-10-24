@@ -39,6 +39,11 @@ module.exports = function(grunt) {
         dest: 'examples/touchnumber/main.js',
         executable: "web",
       },
+      touchcolor: {
+        src: 'examples/touchcolor/src/main.jsx',
+        dest: 'examples/touchcolor/main.js',
+        executable: "web",
+      },
     },
   });
 

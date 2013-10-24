@@ -521,6 +521,12 @@ Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
 };
 
 
+Element$0.prototype.removeChild$LElement$0$ = function (child) {
+	console.log("hoge");
+	return this;
+};
+
+
 Element$0.prototype.update$X = function (app) {
 };
 
@@ -1079,26 +1085,78 @@ function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
 function Pointing(elm) {
 	var $this = this;
+	this.button = 0;
+	this.last = 0;
+	this.press = 0;
+	this.up = 0;
+	this.down = 0;
 	this.element = elm;
 	this.position = new Vector2$1();
 	this._tempPosition = new Vector2$1();
-	this.element.addEventListener("mousemove", (function (e) {
+	this.element.addEventListener("mousedown", (function (e) {
 		var mouseEvent;
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:22:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/Pointing.jsx:37:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
-		$this._tempPosition.x = mouseEvent.x;
-		$this._tempPosition.y = mouseEvent.y;
+		$this.button |= 1 << mouseEvent.button;
+	}));
+	this.element.addEventListener("mouseup", (function (e) {
+		var mouseEvent;
+		mouseEvent = (function ($v) {
+			if (! ($v == null || $v instanceof MouseEvent)) {
+				debugger;
+				throw new Error("[src/input/Pointing.jsx:41:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		$this.button &= ~ (1 << mouseEvent.button);
+	}));
+	this.element.addEventListener("mousemove", (function (e) {
+		var mouseEvent;
+		var element;
+		var rect;
+		mouseEvent = (function ($v) {
+			if (! ($v == null || $v instanceof MouseEvent)) {
+				debugger;
+				throw new Error("[src/input/Pointing.jsx:45:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/Pointing.jsx:46:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		rect = element.getBoundingClientRect();
+		$this._tempPosition.x = mouseEvent.x - rect.left;
+		$this._tempPosition.y = mouseEvent.y - rect.top;
 	}));
 };
 
 $__jsx_extend([Pointing], Object);
 Pointing.prototype.update$ = function () {
+	this.last = this.press;
+	this.press = this.button;
+	this.down = (this.press ^ this.last) & this.press;
+	this.up = (this.press ^ this.last) & this.last;
 	this.position.set$LVector2$1$(this._tempPosition);
+};
+
+
+Pointing.prototype.getButtonDown$S = function (button) {
+	return (this.down & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/Pointing.jsx:65:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+		}
+		return v;
+	}(Pointing.BUTTON_MAP[button]))) !== 0;
 };
 
 
@@ -1349,6 +1407,12 @@ $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 });
 $__jsx_lazy_init(Timer, "_cancelAnimationFrame", function () {
 	return Timer$_getCancelAnimationFrameImpl$B(true);
+});
+Pointing.BUTTON_LEFT = 0x1;
+Pointing.BUTTON_MIDDLE = 0x2;
+Pointing.BUTTON_RIGHT = 0x4;
+$__jsx_lazy_init(Pointing, "BUTTON_MAP", function () {
+	return ({ "left": Pointing.BUTTON_LEFT, "middle": Pointing.BUTTON_MIDDLE, "right": Pointing.BUTTON_RIGHT });
 });
 
 var $__jsx_classMap = {
