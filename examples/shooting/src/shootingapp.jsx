@@ -28,15 +28,15 @@ class ShootingApp extends CanvasApp {
 }
 
 class GameScene extends Scene {
+    var player = new Player();
     function constructor() {
         super();
 
-        var player = new Player();
-        player.position.set(0, 50);
-        this.addChild(player);
+        this.player.position.set(0, 50);
+        this.addChild(this.player);
 
         var label = new Label("GameScene");
-        label.setPosition(8, 16);
+        label.setPosition(30, 30);
         this.addChild(label);
 
         var shape = new Shape();
@@ -52,13 +52,14 @@ class Player extends Sprite {
     var velocity: Vector2;
     function constructor() {
         super("http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png");
+        this.scale.x = 4;
+        this.scale.y = 4;
         this.velocity = new Vector2(2, 0);
-        log(this.velocity);
     }
     
     override function update(app:variant): void {
         var canvasapp = app as CanvasApp;
-        this.position.add(this.velocity);
+//        this.position.add(this.velocity);
 
         var left  = 0;
         var right = canvasapp.canvas.width;
@@ -74,7 +75,10 @@ class Player extends Sprite {
 
         var baseApp = app as BaseApp;
         var p = baseApp.pointing;
-        this.position.set(p.position.x, p.position.y);
+        if (p.getPointing()) {
+            var temp = new Vector2(p.deltaPosition.x, p.deltaPosition.y);
+            this.position.add(temp.div(2));
+        }
     }
 }
 

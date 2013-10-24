@@ -750,8 +750,38 @@ Canvas.prototype.drawImage$LHTMLImageElement$ = function (image) {
 };
 
 
+Canvas.prototype.drawImage$LHTMLImageElement$NNNN = function (image, dx, dy, dw, dh) {
+	this.context.drawImage(image, dx, dy, dw, dh);
+	return this;
+};
+
+
+Canvas.prototype.drawImage$LHTMLImageElement$NNNNNNNN = function (image, sx, sy, sw, sh, dx, dy, dw, dh) {
+	this.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+	return this;
+};
+
+
 Canvas.prototype.drawCanvas$LCanvas$ = function (canvas) {
 	this.context.drawImage(canvas.canvas, 0, 0);
+	return this;
+};
+
+
+Canvas.prototype.drawCanvas$LCanvas$NNNN = function (canvas, dx, dy, dw, dh) {
+	this.context.drawImage(canvas.canvas, dx, dy, dw, dh);
+	return this;
+};
+
+
+Canvas.prototype.drawCanvas$LCanvas$NNNNNNNN = function (canvas, sx, sy, sw, sh, dx, dy, dw, dh) {
+	this.context.drawImage(canvas.canvas, sx, sy, sw, sh, dx, dy, dw, dh);
+	return this;
+};
+
+
+Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
+	this.context.setTransform(m11, m12, m21, m22, dx, dy);
 	return this;
 };
 
@@ -762,8 +792,14 @@ Canvas.prototype.translate$NN = function (x, y) {
 };
 
 
-Canvas.prototype.setTransform$NNNNNN = function (m11, m12, m21, m22, dx, dy) {
-	this.context.setTransform(m11, m12, m21, m22, dx, dy);
+Canvas.prototype.rotate$N = function (angle) {
+	this.context.rotate(angle);
+	return this;
+};
+
+
+Canvas.prototype.scale$NN = function (x, y) {
+	this.context.scale(x, y);
 	return this;
 };
 
@@ -788,55 +824,41 @@ Renderer.prototype.render$LElement$0$LCanvas$ = function (root, canvas) {
 
 Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 	var $this = this;
-	var sprite;
-	var label;
-	var shape;
 	var canvaselement;
 	canvas.context.save();
 	if (element instanceof Sprite) {
-		sprite = (function ($v) {
+		this._drawSprite$LSprite$LCanvas$((function ($v) {
 			if (! ($v == null || $v instanceof Sprite)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:33:33] detected invalid cast, value is not an instance of the designated type or null\n            var sprite = element as Sprite;\n                                 ^^\n");
+				throw new Error("[src/display/renderer.jsx:34:37] detected invalid cast, value is not an instance of the designated type or null\n            this._drawSprite(element as Sprite, canvas);\n                                     ^^\n");
 			}
 			return $v;
-		}(element));
-		canvas.translate$NN(sprite.position.x, sprite.position.y);
-		if (sprite.loaded === true) {
-			canvas.drawImage$LHTMLImageElement$(sprite.image);
-		} else {
-			canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
-		}
+		}(element)), canvas);
 	} else if (element instanceof Label) {
-		label = (function ($v) {
+		this._drawLabel$LLabel$LCanvas$((function ($v) {
 			if (! ($v == null || $v instanceof Label)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:45:32] detected invalid cast, value is not an instance of the designated type or null\n            var label = element as Label;\n                                ^^\n");
+				throw new Error("[src/display/renderer.jsx:37:36] detected invalid cast, value is not an instance of the designated type or null\n            this._drawLabel(element as Label, canvas);\n                                    ^^\n");
 			}
 			return $v;
-		}(element));
-		canvas.translate$NN(label.position.x, label.position.y);
-		canvas.context.fillStyle = label.fontColor;
-		canvas.fillText$SNN(label.text, 0, 0);
+		}(element)), canvas);
 	} else if (element instanceof Shape) {
-		shape = (function ($v) {
+		this._drawShape$LShape$LCanvas$((function ($v) {
 			if (! ($v == null || $v instanceof Shape)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:52:32] detected invalid cast, value is not an instance of the designated type or null\n            var shape = element as Shape;\n                                ^^\n");
+				throw new Error("[src/display/renderer.jsx:40:36] detected invalid cast, value is not an instance of the designated type or null\n            this._drawShape(element as Shape, canvas);\n                                    ^^\n");
 			}
 			return $v;
-		}(element));
-		canvas.translate$NN(shape.position.x, shape.position.y);
-		canvas.drawCanvas$LCanvas$(shape.canvas);
+		}(element)), canvas);
 	} else if (element instanceof CanvasElement) {
 		canvaselement = (function ($v) {
 			if (! ($v == null || $v instanceof CanvasElement)) {
 				debugger;
-				throw new Error("[src/display/renderer.jsx:58:40] detected invalid cast, value is not an instance of the designated type or null\n            var canvaselement = element as CanvasElement;\n                                        ^^\n");
+				throw new Error("[src/display/renderer.jsx:43:40] detected invalid cast, value is not an instance of the designated type or null\n            var canvaselement = element as CanvasElement;\n                                        ^^\n");
 			}
 			return $v;
 		}(element));
-		canvas.translate$NN(canvaselement.position.x, canvaselement.position.y);
+		this._transform$LObject2D$LCanvas$(canvaselement, canvas);
 	}
 	if (element.children.length > 0) {
 		element.children.forEach((function (elm) {
@@ -847,12 +869,48 @@ Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 };
 
 
+Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
+	this._transform$LObject2D$LCanvas$(sprite, canvas);
+	if (sprite.loaded === true) {
+		canvas.drawImage$LHTMLImageElement$NNNN(sprite.image, - sprite.width * sprite.origin.x, - sprite.height * sprite.origin.y, sprite.width, sprite.height);
+	} else {
+		canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
+	}
+	return this;
+};
+
+
+Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
+	this._transform$LObject2D$LCanvas$(label, canvas);
+	canvas.context.fillStyle = label.fontColor;
+	canvas.fillText$SNN(label.text, - label.width * label.origin.x, - label.height * label.origin.y);
+	return this;
+};
+
+
+Renderer.prototype._drawShape$LShape$LCanvas$ = function (shape, canvas) {
+	this._transform$LObject2D$LCanvas$(shape, canvas);
+	canvas.drawCanvas$LCanvas$NNNN(shape.canvas, - shape.width * shape.origin.x, - shape.height * shape.origin.y, shape.width, shape.height);
+	return this;
+};
+
+
+Renderer.prototype._transform$LObject2D$LCanvas$ = function (obj, canvas) {
+	canvas.translate$NN(obj.position.x, obj.position.y);
+	canvas.rotate$N(obj.rotation);
+	canvas.scale$NN(obj.scale.x, obj.scale.y);
+	return this;
+};
+
+
 function Object2D() {
 	Element$0.call(this);
+	this.position = new Vector2();
+	this.origin = new Vector2$0(0.5, 0.5);
+	this.scale = new Vector2$0(1.0, 1.0);
+	this.rotation = 0;
 	this.width = 32;
 	this.height = 32;
-	this.position = new Vector2();
-	this.origin = new Vector2();
 };
 
 $__jsx_extend([Object2D], Element$0);
@@ -869,9 +927,29 @@ Object2D.prototype.isHit$LVector2$ = function (p) {
 	var checkVertical;
 	x = p.x;
 	y = p.y;
-	checkHorizon = this.position.x < x && x < this.position.x + this.width;
-	checkVertical = this.position.y < y && y < this.position.y + this.height;
+	checkHorizon = this.getLeft$() < x && x < this.getRight$();
+	checkVertical = this.getTop$() < y && y < this.getBottom$();
 	return checkHorizon && checkVertical;
+};
+
+
+Object2D.prototype.getLeft$ = function () {
+	return this.position.x - this.width * this.origin.x;
+};
+
+
+Object2D.prototype.getRight$ = function () {
+	return this.position.x + this.width * (1 - this.origin.x);
+};
+
+
+Object2D.prototype.getTop$ = function () {
+	return this.position.y - this.height * this.origin.y;
+};
+
+
+Object2D.prototype.getBottom$ = function () {
+	return this.position.y + this.height * (1 - this.origin.y);
 };
 
 
@@ -906,16 +984,18 @@ CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
 function Shape(width, height) {
 	CanvasElement.call(this);
 	this.loaded = false;
+	this.width = width;
+	this.height = height;
 	this.canvas = new Canvas();
 	this.canvas.setSize$NN(width, height);
 };
 
 function Shape$0(width) {
-	Shape.call(this, width, 32);
+	Shape.call(this, width, 64);
 };
 
 function Shape$1() {
-	Shape.call(this, 32, 32);
+	Shape.call(this, 64, 64);
 };
 
 $__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
@@ -1124,14 +1204,16 @@ function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
 function Pointing(elm) {
 	var $this = this;
+	this.position = new Vector2$1();
+	this.deltaPosition = new Vector2$1();
+	this.prevPosition = new Vector2$1();
+	this._tempPosition = new Vector2$1();
 	this.button = 0;
 	this.last = 0;
 	this.press = 0;
 	this.up = 0;
 	this.down = 0;
 	this.element = elm;
-	this.position = new Vector2$1();
-	this._tempPosition = new Vector2$1();
 	this.element.addEventListener("mousedown", (function (e) {
 		var mouseEvent;
 		mouseEvent = (function ($v) {
@@ -1186,7 +1268,31 @@ Pointing.prototype.update$ = function () {
 	this.press = this.button;
 	this.down = (this.press ^ this.last) & this.press;
 	this.up = (this.press ^ this.last) & this.last;
+	this.deltaPosition.sub$LVector2$1$LVector2$1$(this._tempPosition, this.prevPosition);
+	this.prevPosition.set$LVector2$1$(this.position);
 	this.position.set$LVector2$1$(this._tempPosition);
+};
+
+
+Pointing.prototype.getPointingStart$ = function () {
+	return (this.down & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/Pointing.jsx:74:47] null access\n        return (this.down & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                               ^\n");
+		}
+		return v;
+	}(Pointing.BUTTON_MAP.left))) !== 0;
+};
+
+
+Pointing.prototype.getPointing$ = function () {
+	return (this.press & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/Pointing.jsx:78:48] null access\n        return (this.press & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                                ^\n");
+		}
+		return v;
+	}(Pointing.BUTTON_MAP.left))) !== 0;
 };
 
 
@@ -1194,7 +1300,7 @@ Pointing.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:68:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+			throw new Error("[src/input/Pointing.jsx:82:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
 		}
 		return v;
 	}(Pointing.BUTTON_MAP[button]))) !== 0;
@@ -1238,6 +1344,11 @@ Vector2.prototype.add$LVector2$ = function (v) {
 };
 
 
+Vector2.prototype.add$LVector2$LVector2$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x + rhs.x, lhs.y + rhs.y);
+};
+
+
 Vector2.prototype.sub$NN = function (x, y) {
 	this.x -= x;
 	this.y -= y;
@@ -1247,6 +1358,11 @@ Vector2.prototype.sub$NN = function (x, y) {
 
 Vector2.prototype.sub$LVector2$ = function (v) {
 	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.sub$LVector2$LVector2$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x - rhs.x, lhs.y - rhs.y);
 };
 
 
@@ -1353,6 +1469,11 @@ Vector2$1.prototype.add$LVector2$1$ = function (v) {
 };
 
 
+Vector2$1.prototype.add$LVector2$1$LVector2$1$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x + rhs.x, lhs.y + rhs.y);
+};
+
+
 Vector2$1.prototype.sub$NN = function (x, y) {
 	this.x -= x;
 	this.y -= y;
@@ -1362,6 +1483,11 @@ Vector2$1.prototype.sub$NN = function (x, y) {
 
 Vector2$1.prototype.sub$LVector2$1$ = function (v) {
 	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2$1.prototype.sub$LVector2$1$LVector2$1$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x - rhs.x, lhs.y - rhs.y);
 };
 
 

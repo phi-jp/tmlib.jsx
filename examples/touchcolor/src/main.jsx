@@ -57,7 +57,7 @@ class GameScene extends Scene {
         		var y = i*100;
                 var angle = (360/25)*index;
 		        var piece = new Piece(angle);
-		        piece.setPosition(x+85, y+100);
+		        piece.setPosition(x+115, y+100);
 		        this.pieceGroup.addChild(piece);
         	}
         }
@@ -78,6 +78,8 @@ class GameScene extends Scene {
             
             if (canvasElement.isHit(temp)) {
                 this.pieceGroup.removeChild(elm);
+                canvasElement.scale.x *= 1.1;
+                canvasElement.scale.y *= 1.1;
             }
         });
     }
