@@ -3,11 +3,15 @@ import "js/web.jsx";
 
 import "../../../src/app/scene.jsx";
 
+import "../../../src/geom/vector2.jsx";
+
 import "../../../src/display/canvasapp.jsx";
 import "../../../src/display/canvaselement.jsx";
 import "../../../src/display/sprite.jsx";
 import "../../../src/display/label.jsx";
 import "../../../src/display/shape.jsx";
+
+import "../../../src/input/pointing.jsx";
 
 /**
  * main
@@ -66,15 +70,13 @@ class GameScene extends Scene {
         var baseApp = app as CanvasApp;
         var p = baseApp.pointing;
         if (!p.getButtonDown("left")) { return ; }
-
+        
+        var temp = new Vector2(p.position.x, p.position.y);
+        
         this.pieceGroup.children.forEach(function(elm) {
             var canvasElement = elm as CanvasElement;
-            var x = p.position.x;
-            var y = p.position.y;
-            var checkHorizon = (canvasElement.position.x < x && x < (canvasElement.position.x+canvasElement.width));
-            var checkVertical= (canvasElement.position.y < y && y < (canvasElement.position.y+canvasElement.height));
-
-            if (checkHorizon && checkVertical) {
+            
+            if (canvasElement.isHit(temp)) {
                 this.pieceGroup.removeChild(elm);
             }
         });

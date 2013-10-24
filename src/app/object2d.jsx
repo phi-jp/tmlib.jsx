@@ -28,5 +28,14 @@ class Object2D extends Element {
     	this.position.set(x, y);
     	return this;
     }
+    
+    function isHit(p:Vector2): boolean {
+        var x = p.x;
+        var y = p.y;
+        var checkHorizon = (this.position.x < x && x < (this.position.x+this.width));
+        var checkVertical= (this.position.y < y && y < (this.position.y+this.height));
+        
+        return checkHorizon && checkVertical;
+    }
 
 }

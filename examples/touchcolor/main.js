@@ -120,7 +120,7 @@ function _Main$main$AS(args) {
 	app = new TouchColorApp((function ($v) {
 		if (! ($v == null || $v instanceof HTMLCanvasElement)) {
 			debugger;
-			throw new Error("[examples/touchcolor/src/main.jsx:20:43] detected invalid cast, value is not an instance of the designated type or null\n        var app = new TouchColorApp(canvas as HTMLCanvasElement);\n                                           ^^\n");
+			throw new Error("[examples/touchcolor/src/main.jsx:24:43] detected invalid cast, value is not an instance of the designated type or null\n        var app = new TouchColorApp(canvas as HTMLCanvasElement);\n                                           ^^\n");
 		}
 		return $v;
 	}(canvas)));
@@ -505,6 +505,200 @@ function DeviceMotionEventInit() {
 };
 
 $__jsx_extend([DeviceMotionEventInit], EventInit);
+function Vector2() {
+	this.x = 0;
+	this.y = 0;
+};
+
+function Vector2$0(x, y) {
+	this.x = x;
+	this.y = y;
+};
+
+$__jsx_extend([Vector2, Vector2$0], Object);
+Vector2.prototype.set$NN = function (x, y) {
+	this.x = x;
+	this.y = y;
+	return this;
+};
+
+
+Vector2.prototype.set$LVector2$ = function (v) {
+	this.x = v.x;
+	this.y = v.y;
+	return this;
+};
+
+
+Vector2.prototype.add$NN = function (x, y) {
+	this.x += x;
+	this.y += y;
+	return this;
+};
+
+
+Vector2.prototype.add$LVector2$ = function (v) {
+	return this.add$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.sub$NN = function (x, y) {
+	this.x -= x;
+	this.y -= y;
+	return this;
+};
+
+
+Vector2.prototype.sub$LVector2$ = function (v) {
+	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.mul$N = function (value) {
+	this.x *= value;
+	this.y *= value;
+	return this;
+};
+
+
+Vector2.prototype.div$N = function (value) {
+	this.x /= value;
+	this.y /= value;
+	return this;
+};
+
+
+Vector2.prototype.length$ = function () {
+	return Math.sqrt(this.lengthSquare$());
+};
+
+
+Vector2.prototype.lengthSquare$ = function () {
+	return this.x * this.x + this.y * this.y;
+};
+
+
+Vector2.prototype.normalize$ = function () {
+	var len;
+	len = this.length$();
+	this.x /= len;
+	this.y /= len;
+	return this;
+};
+
+
+Vector2.prototype.equals$NN = function (x, y) {
+	return this.x === x && this.y === y;
+};
+
+
+Vector2.prototype.equals$LVector2$ = function (v) {
+	return this.x === v.x && this.y === v.y;
+};
+
+
+Vector2.prototype.toString = function () {
+	return "(" + this.x.toString() + "," + this.y.toString() + ")";
+};
+
+
+Vector2.prototype.log$ = function () {
+	console.log(this.toString());
+	return this;
+};
+
+
+function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.x + lhs.y * rhs.y;
+};
+
+Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
+
+function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.y - lhs.y * rhs.x;
+};
+
+Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
+
+function Pointing(elm) {
+	var $this = this;
+	this.button = 0;
+	this.last = 0;
+	this.press = 0;
+	this.up = 0;
+	this.down = 0;
+	this.element = elm;
+	this.position = new Vector2$1();
+	this._tempPosition = new Vector2$1();
+	this.element.addEventListener("mousedown", (function (e) {
+		var mouseEvent;
+		mouseEvent = (function ($v) {
+			if (! ($v == null || $v instanceof MouseEvent)) {
+				debugger;
+				throw new Error("[src/input/pointing.jsx:37:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		$this.button |= 1 << mouseEvent.button;
+	}));
+	this.element.addEventListener("mouseup", (function (e) {
+		var mouseEvent;
+		mouseEvent = (function ($v) {
+			if (! ($v == null || $v instanceof MouseEvent)) {
+				debugger;
+				throw new Error("[src/input/pointing.jsx:41:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		$this.button &= ~ (1 << mouseEvent.button);
+	}));
+	this.element.addEventListener("mousemove", (function (e) {
+		var mouseEvent;
+		var element;
+		var rect;
+		mouseEvent = (function ($v) {
+			if (! ($v == null || $v instanceof MouseEvent)) {
+				debugger;
+				throw new Error("[src/input/pointing.jsx:45:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/pointing.jsx:46:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		rect = element.getBoundingClientRect();
+		$this._tempPosition.x = mouseEvent.x - rect.left;
+		$this._tempPosition.y = mouseEvent.y - rect.top;
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
+	}));
+};
+
+$__jsx_extend([Pointing], Object);
+Pointing.prototype.update$ = function () {
+	this.last = this.press;
+	this.press = this.button;
+	this.down = (this.press ^ this.last) & this.press;
+	this.up = (this.press ^ this.last) & this.last;
+	this.position.set$LVector2$1$(this._tempPosition);
+};
+
+
+Pointing.prototype.getButtonDown$S = function (button) {
+	return (this.down & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/pointing.jsx:68:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+		}
+		return v;
+	}(Pointing.BUTTON_MAP[button]))) !== 0;
+};
+
+
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function Element$0() {
 	this.children = [  ];
@@ -585,10 +779,11 @@ GameScene.prototype.checkCollision$X = function (app) {
 	var $this = this;
 	var baseApp;
 	var p;
+	var temp;
 	baseApp = (function ($v) {
 		if (! ($v == null || $v instanceof CanvasApp)) {
 			debugger;
-			throw new Error("[examples/touchcolor/src/main.jsx:66:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as CanvasApp;\n                          ^^\n");
+			throw new Error("[examples/touchcolor/src/main.jsx:70:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as CanvasApp;\n                          ^^\n");
 		}
 		return $v;
 	}(app));
@@ -596,24 +791,17 @@ GameScene.prototype.checkCollision$X = function (app) {
 	if (! p.getButtonDown$S("left")) {
 		return;
 	}
+	temp = new Vector2$0(p.position.x, p.position.y);
 	this.pieceGroup.children.forEach((function (elm) {
 		var canvasElement;
-		var x;
-		var y;
-		var checkHorizon;
-		var checkVertical;
 		canvasElement = (function ($v) {
 			if (! ($v == null || $v instanceof CanvasElement)) {
 				debugger;
-				throw new Error("[examples/touchcolor/src/main.jsx:71:36] detected invalid cast, value is not an instance of the designated type or null\n            var canvasElement = elm as CanvasElement;\n                                    ^^\n");
+				throw new Error("[examples/touchcolor/src/main.jsx:77:36] detected invalid cast, value is not an instance of the designated type or null\n            var canvasElement = elm as CanvasElement;\n                                    ^^\n");
 			}
 			return $v;
 		}(elm));
-		x = p.position.x;
-		y = p.position.y;
-		checkHorizon = canvasElement.position.x < x && x < canvasElement.position.x + canvasElement.width;
-		checkVertical = canvasElement.position.y < y && y < canvasElement.position.y + canvasElement.height;
-		if (checkHorizon && checkVertical) {
+		if (canvasElement.isHit$LVector2$(temp)) {
 			$this.pieceGroup.removeChild$LElement$0$(elm);
 		}
 	}));
@@ -624,7 +812,7 @@ function BaseApp(elm) {
 	this.element = elm;
 	this.scenes = [ new Scene() ];
 	this.sceneIndex = 0;
-	this.pointing = new Pointing(elm);
+	this.pointing = new Pointing$0(elm);
 };
 
 $__jsx_extend([BaseApp], Object);
@@ -910,6 +1098,19 @@ Object2D.prototype.setPosition$NN = function (x, y) {
 };
 
 
+Object2D.prototype.isHit$LVector2$ = function (p) {
+	var x;
+	var y;
+	var checkHorizon;
+	var checkVertical;
+	x = p.x;
+	y = p.y;
+	checkHorizon = this.position.x < x && x < this.position.x + this.width;
+	checkVertical = this.position.y < y && y < this.position.y + this.height;
+	return checkHorizon && checkVertical;
+};
+
+
 function CanvasElement() {
 	Object2D.call(this);
 };
@@ -1008,6 +1209,121 @@ function Piece(angle) {
 };
 
 $__jsx_extend([Piece], CanvasElement);
+function Vector2$1() {
+	this.x = 0;
+	this.y = 0;
+};
+
+function Vector2$2(x, y) {
+	this.x = x;
+	this.y = y;
+};
+
+$__jsx_extend([Vector2$1, Vector2$2], Object);
+Vector2$1.prototype.set$NN = function (x, y) {
+	this.x = x;
+	this.y = y;
+	return this;
+};
+
+
+Vector2$1.prototype.set$LVector2$1$ = function (v) {
+	this.x = v.x;
+	this.y = v.y;
+	return this;
+};
+
+
+Vector2$1.prototype.add$NN = function (x, y) {
+	this.x += x;
+	this.y += y;
+	return this;
+};
+
+
+Vector2$1.prototype.add$LVector2$1$ = function (v) {
+	return this.add$NN(v.x, v.y);
+};
+
+
+Vector2$1.prototype.sub$NN = function (x, y) {
+	this.x -= x;
+	this.y -= y;
+	return this;
+};
+
+
+Vector2$1.prototype.sub$LVector2$1$ = function (v) {
+	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2$1.prototype.mul$N = function (value) {
+	this.x *= value;
+	this.y *= value;
+	return this;
+};
+
+
+Vector2$1.prototype.div$N = function (value) {
+	this.x /= value;
+	this.y /= value;
+	return this;
+};
+
+
+Vector2$1.prototype.length$ = function () {
+	return Math.sqrt(this.lengthSquare$());
+};
+
+
+Vector2$1.prototype.lengthSquare$ = function () {
+	return this.x * this.x + this.y * this.y;
+};
+
+
+Vector2$1.prototype.normalize$ = function () {
+	var len;
+	len = this.length$();
+	this.x /= len;
+	this.y /= len;
+	return this;
+};
+
+
+Vector2$1.prototype.equals$NN = function (x, y) {
+	return this.x === x && this.y === y;
+};
+
+
+Vector2$1.prototype.equals$LVector2$1$ = function (v) {
+	return this.x === v.x && this.y === v.y;
+};
+
+
+Vector2$1.prototype.toString = function () {
+	return "(" + this.x.toString() + "," + this.y.toString() + ")";
+};
+
+
+Vector2$1.prototype.log$ = function () {
+	console.log(this.toString());
+	return this;
+};
+
+
+function Vector2$1$dot$LVector2$1$LVector2$1$(lhs, rhs) {
+	return lhs.x * rhs.x + lhs.y * rhs.y;
+};
+
+Vector2$1.dot$LVector2$1$LVector2$1$ = Vector2$1$dot$LVector2$1$LVector2$1$;
+
+function Vector2$1$cross$LVector2$1$LVector2$1$(lhs, rhs) {
+	return lhs.x * rhs.y - lhs.y * rhs.x;
+};
+
+Vector2$1.cross$LVector2$1$LVector2$1$ = Vector2$1$cross$LVector2$1$LVector2$1$;
+
 function Timer() {
 };
 
@@ -1156,7 +1472,7 @@ Timer._getCancelAnimationFrameImpl$B = Timer$_getCancelAnimationFrameImpl$B;
 
 function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
-function Pointing(elm) {
+function Pointing$0(elm) {
 	var $this = this;
 	this.button = 0;
 	this.last = 0;
@@ -1214,8 +1530,8 @@ function Pointing(elm) {
 	}));
 };
 
-$__jsx_extend([Pointing], Object);
-Pointing.prototype.update$ = function () {
+$__jsx_extend([Pointing$0], Object);
+Pointing$0.prototype.update$ = function () {
 	this.last = this.press;
 	this.press = this.button;
 	this.down = (this.press ^ this.last) & this.press;
@@ -1224,246 +1540,16 @@ Pointing.prototype.update$ = function () {
 };
 
 
-Pointing.prototype.getButtonDown$S = function (button) {
+Pointing$0.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
 			throw new Error("[src/input/Pointing.jsx:68:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
 		}
 		return v;
-	}(Pointing.BUTTON_MAP[button]))) !== 0;
+	}(Pointing$0.BUTTON_MAP[button]))) !== 0;
 };
 
-
-function Vector2() {
-	this.x = 0;
-	this.y = 0;
-};
-
-function Vector2$0(x, y) {
-	this.x = x;
-	this.y = y;
-};
-
-$__jsx_extend([Vector2, Vector2$0], Object);
-Vector2.prototype.set$NN = function (x, y) {
-	this.x = x;
-	this.y = y;
-	return this;
-};
-
-
-Vector2.prototype.set$LVector2$ = function (v) {
-	this.x = v.x;
-	this.y = v.y;
-	return this;
-};
-
-
-Vector2.prototype.add$NN = function (x, y) {
-	this.x += x;
-	this.y += y;
-	return this;
-};
-
-
-Vector2.prototype.add$LVector2$ = function (v) {
-	return this.add$NN(v.x, v.y);
-};
-
-
-Vector2.prototype.sub$NN = function (x, y) {
-	this.x -= x;
-	this.y -= y;
-	return this;
-};
-
-
-Vector2.prototype.sub$LVector2$ = function (v) {
-	return this.sub$NN(v.x, v.y);
-};
-
-
-Vector2.prototype.mul$N = function (value) {
-	this.x *= value;
-	this.y *= value;
-	return this;
-};
-
-
-Vector2.prototype.div$N = function (value) {
-	this.x /= value;
-	this.y /= value;
-	return this;
-};
-
-
-Vector2.prototype.length$ = function () {
-	return Math.sqrt(this.lengthSquare$());
-};
-
-
-Vector2.prototype.lengthSquare$ = function () {
-	return this.x * this.x + this.y * this.y;
-};
-
-
-Vector2.prototype.normalize$ = function () {
-	var len;
-	len = this.length$();
-	this.x /= len;
-	this.y /= len;
-	return this;
-};
-
-
-Vector2.prototype.equals$NN = function (x, y) {
-	return this.x === x && this.y === y;
-};
-
-
-Vector2.prototype.equals$LVector2$ = function (v) {
-	return this.x === v.x && this.y === v.y;
-};
-
-
-Vector2.prototype.toString = function () {
-	return "(" + this.x.toString() + "," + this.y.toString() + ")";
-};
-
-
-Vector2.prototype.log$ = function () {
-	console.log(this.toString());
-	return this;
-};
-
-
-function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.x + lhs.y * rhs.y;
-};
-
-Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
-
-function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.y - lhs.y * rhs.x;
-};
-
-Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
-
-function Vector2$1() {
-	this.x = 0;
-	this.y = 0;
-};
-
-function Vector2$2(x, y) {
-	this.x = x;
-	this.y = y;
-};
-
-$__jsx_extend([Vector2$1, Vector2$2], Object);
-Vector2$1.prototype.set$NN = function (x, y) {
-	this.x = x;
-	this.y = y;
-	return this;
-};
-
-
-Vector2$1.prototype.set$LVector2$1$ = function (v) {
-	this.x = v.x;
-	this.y = v.y;
-	return this;
-};
-
-
-Vector2$1.prototype.add$NN = function (x, y) {
-	this.x += x;
-	this.y += y;
-	return this;
-};
-
-
-Vector2$1.prototype.add$LVector2$1$ = function (v) {
-	return this.add$NN(v.x, v.y);
-};
-
-
-Vector2$1.prototype.sub$NN = function (x, y) {
-	this.x -= x;
-	this.y -= y;
-	return this;
-};
-
-
-Vector2$1.prototype.sub$LVector2$1$ = function (v) {
-	return this.sub$NN(v.x, v.y);
-};
-
-
-Vector2$1.prototype.mul$N = function (value) {
-	this.x *= value;
-	this.y *= value;
-	return this;
-};
-
-
-Vector2$1.prototype.div$N = function (value) {
-	this.x /= value;
-	this.y /= value;
-	return this;
-};
-
-
-Vector2$1.prototype.length$ = function () {
-	return Math.sqrt(this.lengthSquare$());
-};
-
-
-Vector2$1.prototype.lengthSquare$ = function () {
-	return this.x * this.x + this.y * this.y;
-};
-
-
-Vector2$1.prototype.normalize$ = function () {
-	var len;
-	len = this.length$();
-	this.x /= len;
-	this.y /= len;
-	return this;
-};
-
-
-Vector2$1.prototype.equals$NN = function (x, y) {
-	return this.x === x && this.y === y;
-};
-
-
-Vector2$1.prototype.equals$LVector2$1$ = function (v) {
-	return this.x === v.x && this.y === v.y;
-};
-
-
-Vector2$1.prototype.toString = function () {
-	return "(" + this.x.toString() + "," + this.y.toString() + ")";
-};
-
-
-Vector2$1.prototype.log$ = function () {
-	console.log(this.toString());
-	return this;
-};
-
-
-function Vector2$1$dot$LVector2$1$LVector2$1$(lhs, rhs) {
-	return lhs.x * rhs.x + lhs.y * rhs.y;
-};
-
-Vector2$1.dot$LVector2$1$LVector2$1$ = Vector2$1$dot$LVector2$1$LVector2$1$;
-
-function Vector2$1$cross$LVector2$1$LVector2$1$(lhs, rhs) {
-	return lhs.x * rhs.y - lhs.y * rhs.x;
-};
-
-Vector2$1.cross$LVector2$1$LVector2$1$ = Vector2$1$cross$LVector2$1$LVector2$1$;
 
 $__jsx_lazy_init(dom, "window", function () {
 	return js$0.global.window;
@@ -1477,17 +1563,23 @@ $__jsx_lazy_init(dom, "document", function () {
 		return $v;
 	}(js$0.global.document));
 });
+Pointing.BUTTON_LEFT = 0x1;
+Pointing.BUTTON_MIDDLE = 0x2;
+Pointing.BUTTON_RIGHT = 0x4;
+$__jsx_lazy_init(Pointing, "BUTTON_MAP", function () {
+	return ({ "left": Pointing.BUTTON_LEFT, "middle": Pointing.BUTTON_MIDDLE, "right": Pointing.BUTTON_RIGHT });
+});
 $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 	return Timer$_getRequestAnimationFrameImpl$B(true);
 });
 $__jsx_lazy_init(Timer, "_cancelAnimationFrame", function () {
 	return Timer$_getCancelAnimationFrameImpl$B(true);
 });
-Pointing.BUTTON_LEFT = 0x1;
-Pointing.BUTTON_MIDDLE = 0x2;
-Pointing.BUTTON_RIGHT = 0x4;
-$__jsx_lazy_init(Pointing, "BUTTON_MAP", function () {
-	return ({ "left": Pointing.BUTTON_LEFT, "middle": Pointing.BUTTON_MIDDLE, "right": Pointing.BUTTON_RIGHT });
+Pointing$0.BUTTON_LEFT = 0x1;
+Pointing$0.BUTTON_MIDDLE = 0x2;
+Pointing$0.BUTTON_RIGHT = 0x4;
+$__jsx_lazy_init(Pointing$0, "BUTTON_MAP", function () {
+	return ({ "left": Pointing$0.BUTTON_LEFT, "middle": Pointing$0.BUTTON_MIDDLE, "right": Pointing$0.BUTTON_RIGHT });
 });
 
 var $__jsx_classMap = {
@@ -1590,6 +1682,15 @@ var $__jsx_classMap = {
 		DeviceMotionEventInit: DeviceMotionEventInit,
 		DeviceMotionEventInit$: DeviceMotionEventInit
 	},
+	"src/geom/vector2.jsx": {
+		Vector2: Vector2,
+		Vector2$: Vector2,
+		Vector2$NN: Vector2$0
+	},
+	"src/input/pointing.jsx": {
+		Pointing: Pointing,
+		Pointing$LHTMLElement$: Pointing
+	},
 	"src/app/element.jsx": {
 		Element: Element$0,
 		Element$: Element$0
@@ -1639,24 +1740,19 @@ var $__jsx_classMap = {
 		Sprite$: Sprite,
 		Sprite$S: Sprite$0
 	},
+	"src/geom/Vector2.jsx": {
+		Vector2: Vector2$1,
+		Vector2$: Vector2$1,
+		Vector2$NN: Vector2$2
+	},
 	"system:lib/js/timer.jsx": {
 		Timer: Timer,
 		Timer$: Timer,
 		TimerHandle: TimerHandle
 	},
 	"src/input/Pointing.jsx": {
-		Pointing: Pointing,
-		Pointing$LHTMLElement$: Pointing
-	},
-	"src/geom/vector2.jsx": {
-		Vector2: Vector2,
-		Vector2$: Vector2,
-		Vector2$NN: Vector2$0
-	},
-	"src/geom/Vector2.jsx": {
-		Vector2: Vector2$1,
-		Vector2$: Vector2$1,
-		Vector2$NN: Vector2$2
+		Pointing: Pointing$0,
+		Pointing$LHTMLElement$: Pointing$0
 	}
 };
 

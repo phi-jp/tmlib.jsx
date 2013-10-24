@@ -862,6 +862,19 @@ Object2D.prototype.setPosition$NN = function (x, y) {
 };
 
 
+Object2D.prototype.isHit$LVector2$ = function (p) {
+	var x;
+	var y;
+	var checkHorizon;
+	var checkVertical;
+	x = p.x;
+	y = p.y;
+	checkHorizon = this.position.x < x && x < this.position.x + this.width;
+	checkVertical = this.position.y < y && y < this.position.y + this.height;
+	return checkHorizon && checkVertical;
+};
+
+
 function CanvasElement() {
 	Object2D.call(this);
 };
