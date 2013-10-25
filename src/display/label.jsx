@@ -8,8 +8,10 @@ import "canvaselement.jsx";
  * Scene class
  */
 class Label extends CanvasElement {
-    var text: string;
-    var fontColor: string = "black";
+    var text = "";
+    var align = "center";
+    var baseline = "middle";
+    var fontColor = "black";
 
     /**
      * constructor
