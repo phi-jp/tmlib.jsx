@@ -573,19 +573,18 @@ GameScene.prototype.update$X = function (app) {
 
 
 function BaseApp(elm) {
+	this.sceneIndex = 0;
+	this.frame = 0;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
-	this.sceneIndex = 0;
 	this.pointing = new Pointing(elm);
 };
 
 $__jsx_extend([BaseApp], Object);
 BaseApp.prototype.run$ = function () {
 	var $this = this;
-	var self;
-	self = this;
 	Timer$setInterval$F$V$N((function () {
-		self._loop$();
+		$this._loop$();
 	}), 1000 / 30);
 };
 
@@ -605,6 +604,7 @@ BaseApp.prototype._loop$ = function () {
 	this.pointing.update$();
 	this._update$();
 	this._draw$();
+	++ this.frame;
 };
 
 
@@ -871,11 +871,7 @@ Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 
 Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 	this._transform$LObject2D$LCanvas$(sprite, canvas);
-	if (sprite.loaded === true) {
-		canvas.drawImage$LHTMLImageElement$NNNN(sprite.image, - sprite.width * sprite.origin.x, - sprite.height * sprite.origin.y, sprite.width, sprite.height);
-	} else {
-		canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
-	}
+	canvas.drawImage$LHTMLImageElement$NNNN(sprite.image, - sprite.width * sprite.origin.x, - sprite.height * sprite.origin.y, sprite.width, sprite.height);
 	return this;
 };
 
@@ -1015,28 +1011,14 @@ $__jsx_extend([Label, Label$0], CanvasElement);
 function Sprite() {
 	CanvasElement.call(this);
 	this.image = null;
-	this.loaded = false;
 };
 
-function Sprite$0(src) {
-	var $this = this;
-	var self;
+function Sprite$0(key) {
 	CanvasElement.call(this);
-	this.loaded = false;
-	this.image = (function ($v) {
-		if (! ($v == null || $v instanceof HTMLImageElement)) {
-			debugger;
-			throw new Error("[src/display/sprite.jsx:27:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
-		}
-		return $v;
-	}(dom.document.createElement("img")));
-	this.image.src = src;
-	self = this;
-	this.image.addEventListener("load", (function (e) {
-		self.loaded = true;
-		self.width = self.image.width;
-		self.height = self.image.height;
-	}));
+	this.image = AssetManager$getImage$S(key);
+	console.log(this.image);
+	this.width = this.image.width;
+	this.height = this.image.height;
 };
 
 $__jsx_extend([Sprite, Sprite$0], CanvasElement);
@@ -1054,6 +1036,52 @@ function Piece() {
 };
 
 $__jsx_extend([Piece], CanvasElement);
+function AssetManager() {
+};
+
+$__jsx_extend([AssetManager], Object);
+function AssetManager$load$HSF$HXV$(assets, callback) {
+	var flow;
+	flow = new Flow((Object.keys(assets).length | 0), callback);
+	Object.keys(assets).forEach((function (key) {
+		var value;
+		var image;
+		value = assets[key];
+		image = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLImageElement)) {
+				debugger;
+				throw new Error("[src/asset/assetmanager.jsx:16:58] detected invalid cast, value is not an instance of the designated type or null\n            var image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                          ^^\n");
+			}
+			return $v;
+		}(dom.document.createElement("img")));
+		image.src = (function (v) {
+			if (! (v != null)) {
+				debugger;
+				throw new Error("[src/asset/assetmanager.jsx:18:24] null access\n            image.src = value;\n                        ^^^^^\n");
+			}
+			return v;
+		}(value));
+		image.addEventListener("load", (function (e) {
+			flow.pass$();
+		}));
+		AssetManager.assets[key] = image;
+	}));
+};
+
+AssetManager.load$HSF$HXV$ = AssetManager$load$HSF$HXV$;
+
+function AssetManager$getImage$S(key) {
+	return (function ($v) {
+		if (! ($v == null || $v instanceof HTMLImageElement)) {
+			debugger;
+			throw new Error("[src/asset/assetmanager.jsx:28:40] detected invalid cast, value is not an instance of the designated type or null\n        return AssetManager.assets[key] as HTMLImageElement;\n                                        ^^\n");
+		}
+		return $v;
+	}(AssetManager.assets[key]));
+};
+
+AssetManager.getImage$S = AssetManager$getImage$S;
+
 function Timer() {
 };
 
@@ -1432,6 +1460,42 @@ function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
 
 Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
+function Flow(waits, callback) {
+	this.counter = 0;
+	this.args = ({  });
+	this.waits = waits;
+	this.callback = callback;
+};
+
+$__jsx_extend([Flow], Object);
+Flow.prototype.pass$ = function () {
+	++ this.counter;
+	this._check$();
+};
+
+
+Flow.prototype.pass$SX = function (key, value) {
+	++ this.counter;
+	this.args[key] = value;
+	this._check$();
+};
+
+
+Flow.prototype._check$ = function () {
+	if (this.counter === this.waits) {
+		this._dispatch$();
+	}
+};
+
+
+Flow.prototype._dispatch$ = function () {
+	if (this.callback) {
+		this.callback(this.args);
+		this.callback = null;
+	}
+};
+
+
 function Vector2$1() {
 	this.x = 0;
 	this.y = 0;
@@ -1568,6 +1632,9 @@ $__jsx_lazy_init(dom, "document", function () {
 		}
 		return $v;
 	}(js$0.global.document));
+});
+$__jsx_lazy_init(AssetManager, "assets", function () {
+	return ({  });
 });
 $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 	return Timer$_getRequestAnimationFrameImpl$B(true);
@@ -1731,6 +1798,10 @@ var $__jsx_classMap = {
 		Sprite$: Sprite,
 		Sprite$S: Sprite$0
 	},
+	"src/asset/assetmanager.jsx": {
+		AssetManager: AssetManager,
+		AssetManager$: AssetManager
+	},
 	"system:lib/js/timer.jsx": {
 		Timer: Timer,
 		Timer$: Timer,
@@ -1744,6 +1815,10 @@ var $__jsx_classMap = {
 		Vector2: Vector2,
 		Vector2$: Vector2,
 		Vector2$NN: Vector2$0
+	},
+	"src/util/flow.jsx": {
+		Flow: Flow,
+		Flow$IF$HXV$: Flow
 	},
 	"src/geom/Vector2.jsx": {
 		Vector2: Vector2$1,

@@ -4,7 +4,12 @@
 
 import "js/web.jsx";
 
+import "../../../src/util/random.jsx";
+import "../../../src/util/flow.jsx";
+
 import "../../../src/geom/vector2.jsx";
+
+import "../../../src/asset/assetmanager.jsx";
 
 import "../../../src/app/baseapp.jsx";
 import "../../../src/app/scene.jsx";
@@ -15,15 +20,25 @@ import "../../../src/display/shape.jsx";
 
 
 class ShootingApp extends CanvasApp {
+
+    static const SCREEN_WIDTH   = 240;
+    static const SCREEN_HEIGHT  = 320;
+    static const SCREEN_CENTER_X= ShootingApp.SCREEN_WIDTH/2;
+    static const SCREEN_CENTER_Y= ShootingApp.SCREEN_HEIGHT/2;
+
     /**
      * constructor
      */
     function constructor(elm: HTMLCanvasElement) {
         super(elm);
 
-        var scene = new GameScene();
-
-        this.replaceScene(scene);
+        AssetManager.load({
+            "my": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png",
+            "rock": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/rock1.png",
+        }, (hoge):void -> {
+            var scene = new GameScene();
+            this.replaceScene(scene);
+        });
     }
 }
 
@@ -32,28 +47,34 @@ class GameScene extends Scene {
     function constructor() {
         super();
 
-        this.player.position.set(0, 50);
+        this.player.position.set(ShootingApp.SCREEN_CENTER_X, ShootingApp.SCREEN_HEIGHT-30);
         this.addChild(this.player);
 
-        var label = new Label("GameScene");
-        label.setPosition(30, 30);
-        this.addChild(label);
+        // var label = new Label("GameScene");
+        // label.setPosition(30, 30);
+        // this.addChild(label);
 
-        var shape = new Shape();
-        shape.setPosition(30, 30);
-        shape.canvas.clear("blue");
-        this.addChild(shape);
+        // var shape = new Shape();
+        // shape.setPosition(30, 30);
+        // shape.canvas.clear("blue");
+        // this.addChild(shape);
     }
     override function update(app:variant): void {
+        var baseApp = app as BaseApp;
+        
+        if (baseApp.frame % 30 == 0) {
+            var enemy = new Enemy();
+            var x = Random.randint(0, ShootingApp.SCREEN_WIDTH);
+            enemy.setPosition(x, -60);
+            this.addChild(enemy);
+        }
     }
 }
 
 class Player extends Sprite {
     var velocity: Vector2;
     function constructor() {
-        super("http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png");
-        this.scale.x = 4;
-        this.scale.y = 4;
+        super("my");
         this.velocity = new Vector2(2, 0);
     }
     
@@ -81,5 +102,20 @@ class Player extends Sprite {
         }
     }
 }
+
+
+class Enemy extends Sprite {
+    var velocity = new Vector2(0, 4);
+    
+    function constructor() {
+        super("rock");
+    }
+    
+    override function update(app:variant): void {
+        this.position.add(this.velocity);
+    }
+}
+
+
 
 

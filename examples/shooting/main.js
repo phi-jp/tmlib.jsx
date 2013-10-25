@@ -124,7 +124,7 @@ function _Main$main$AS(args) {
 		}
 		return $v;
 	}(canvas)));
-	app.canvas.setSize$NN(640, 960);
+	app.canvas.setSize$NN(ShootingApp.SCREEN_WIDTH, ShootingApp.SCREEN_HEIGHT);
 	app.bgColor = "rgb(245, 245, 250)";
 	app.canvas.fit$();
 	app.run$();
@@ -506,6 +506,64 @@ function DeviceMotionEventInit() {
 
 $__jsx_extend([DeviceMotionEventInit], EventInit);
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
+function Random() {
+};
+
+$__jsx_extend([Random], Object);
+function Random$randint$II(min, max) {
+	return (Math.floor(Math.random() * (max - min + 1)) + min | 0);
+};
+
+Random.randint$II = Random$randint$II;
+
+function Random$radfloat$NN(min, max) {
+	return Math.random() * (max - min) + min;
+};
+
+Random.radfloat$NN = Random$radfloat$NN;
+
+function Random$randbool$() {
+	return Random$randint$II(0, 1) === 1;
+};
+
+Random.randbool$ = Random$randbool$;
+
+function Flow(waits, callback) {
+	this.counter = 0;
+	this.args = ({  });
+	this.waits = waits;
+	this.callback = callback;
+};
+
+$__jsx_extend([Flow], Object);
+Flow.prototype.pass$ = function () {
+	++ this.counter;
+	this._check$();
+};
+
+
+Flow.prototype.pass$SX = function (key, value) {
+	++ this.counter;
+	this.args[key] = value;
+	this._check$();
+};
+
+
+Flow.prototype._check$ = function () {
+	if (this.counter === this.waits) {
+		this._dispatch$();
+	}
+};
+
+
+Flow.prototype._dispatch$ = function () {
+	if (this.callback) {
+		this.callback(this.args);
+		this.callback = null;
+	}
+};
+
+
 function Vector2() {
 	this.x = 0;
 	this.y = 0;
@@ -631,20 +689,65 @@ function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
 
 Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
+function AssetManager() {
+};
+
+$__jsx_extend([AssetManager], Object);
+function AssetManager$load$HSF$HXV$(assets, callback) {
+	var flow;
+	flow = new Flow((Object.keys(assets).length | 0), callback);
+	Object.keys(assets).forEach((function (key) {
+		var value;
+		var image;
+		value = assets[key];
+		image = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLImageElement)) {
+				debugger;
+				throw new Error("[src/asset/assetmanager.jsx:16:58] detected invalid cast, value is not an instance of the designated type or null\n            var image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                          ^^\n");
+			}
+			return $v;
+		}(dom.document.createElement("img")));
+		image.src = (function (v) {
+			if (! (v != null)) {
+				debugger;
+				throw new Error("[src/asset/assetmanager.jsx:18:24] null access\n            image.src = value;\n                        ^^^^^\n");
+			}
+			return v;
+		}(value));
+		image.addEventListener("load", (function (e) {
+			flow.pass$();
+		}));
+		AssetManager.assets[key] = image;
+	}));
+};
+
+AssetManager.load$HSF$HXV$ = AssetManager$load$HSF$HXV$;
+
+function AssetManager$getImage$S(key) {
+	return (function ($v) {
+		if (! ($v == null || $v instanceof HTMLImageElement)) {
+			debugger;
+			throw new Error("[src/asset/assetmanager.jsx:28:40] detected invalid cast, value is not an instance of the designated type or null\n        return AssetManager.assets[key] as HTMLImageElement;\n                                        ^^\n");
+		}
+		return $v;
+	}(AssetManager.assets[key]));
+};
+
+AssetManager.getImage$S = AssetManager$getImage$S;
+
 function BaseApp(elm) {
+	this.sceneIndex = 0;
+	this.frame = 0;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
-	this.sceneIndex = 0;
 	this.pointing = new Pointing(elm);
 };
 
 $__jsx_extend([BaseApp], Object);
 BaseApp.prototype.run$ = function () {
 	var $this = this;
-	var self;
-	self = this;
 	Timer$setInterval$F$V$N((function () {
-		self._loop$();
+		$this._loop$();
 	}), 1000 / 30);
 };
 
@@ -664,6 +767,7 @@ BaseApp.prototype._loop$ = function () {
 	this.pointing.update$();
 	this._update$();
 	this._draw$();
+	++ this.frame;
 };
 
 
@@ -701,10 +805,13 @@ CanvasApp.prototype._update$ = function () {
 
 
 function ShootingApp(elm) {
-	var scene;
+	var $this = this;
 	CanvasApp.call(this, elm);
-	scene = new GameScene();
-	this.replaceScene$LScene$(scene);
+	AssetManager$load$HSF$HXV$(({ "my": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png", "rock": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/rock1.png" }), (function (hoge) {
+		var scene;
+		scene = new GameScene();
+		$this.replaceScene$LScene$(scene);
+	}));
 };
 
 $__jsx_extend([ShootingApp], CanvasApp);
@@ -1007,23 +1114,30 @@ function Scene() {
 
 $__jsx_extend([Scene], Element$0);
 function GameScene() {
-	var label;
-	var shape;
 	Scene.call(this);
 	this.player = new Player();
-	this.player.position.set$NN(0, 50);
+	this.player.position.set$NN(ShootingApp.SCREEN_CENTER_X, ShootingApp.SCREEN_HEIGHT - 30);
 	this.addChild$LElement$0$(this.player);
-	label = new Label$0("GameScene");
-	label.setPosition$NN(30, 30);
-	this.addChild$LElement$0$(label);
-	shape = new Shape$1();
-	shape.setPosition$NN(30, 30);
-	shape.canvas.clear$S("blue");
-	this.addChild$LElement$0$(shape);
 };
 
 $__jsx_extend([GameScene], Scene);
 GameScene.prototype.update$X = function (app) {
+	var baseApp;
+	var enemy;
+	var x;
+	baseApp = (function ($v) {
+		if (! ($v == null || $v instanceof BaseApp)) {
+			debugger;
+			throw new Error("[examples/shooting/src/shootingapp.jsx:63:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
+		}
+		return $v;
+	}(app));
+	if (baseApp.frame % 30 === 0) {
+		enemy = new Enemy();
+		x = Random$randint$II(0, (ShootingApp.SCREEN_WIDTH | 0));
+		enemy.setPosition$NN(x, - 60);
+		this.addChild$LElement$0$(enemy);
+	}
 };
 
 
@@ -1249,11 +1363,7 @@ Renderer.prototype._render$LElement$0$LCanvas$ = function (element, canvas) {
 
 Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 	this._transform$LObject2D$LCanvas$(sprite, canvas);
-	if (sprite.loaded === true) {
-		canvas.drawImage$LHTMLImageElement$NNNN(sprite.image, - sprite.width * sprite.origin.x, - sprite.height * sprite.origin.y, sprite.width, sprite.height);
-	} else {
-		canvas.fillRect$NNNN(0, 0, sprite.width, sprite.height);
-	}
+	canvas.drawImage$LHTMLImageElement$NNNN(sprite.image, - sprite.width * sprite.origin.x, - sprite.height * sprite.origin.y, sprite.width, sprite.height);
 	return this;
 };
 
@@ -1487,36 +1597,30 @@ CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
 function Sprite() {
 	CanvasElement.call(this);
 	this.image = null;
-	this.loaded = false;
 };
 
-function Sprite$0(src) {
-	var $this = this;
-	var self;
+function Sprite$0(key) {
 	CanvasElement.call(this);
-	this.loaded = false;
-	this.image = (function ($v) {
-		if (! ($v == null || $v instanceof HTMLImageElement)) {
-			debugger;
-			throw new Error("[src/display/sprite.jsx:27:55] detected invalid cast, value is not an instance of the designated type or null\n        this.image = dom.document.createElement(\"img\") as HTMLImageElement;\n                                                       ^^\n");
-		}
-		return $v;
-	}(dom.document.createElement("img")));
-	this.image.src = src;
-	self = this;
-	this.image.addEventListener("load", (function (e) {
-		self.loaded = true;
-		self.width = self.image.width;
-		self.height = self.image.height;
-	}));
+	this.image = AssetManager$getImage$S(key);
+	console.log(this.image);
+	this.width = this.image.width;
+	this.height = this.image.height;
 };
 
 $__jsx_extend([Sprite, Sprite$0], CanvasElement);
+function Enemy() {
+	Sprite$0.call(this, "rock");
+	this.velocity = new Vector2$0(0, 4);
+};
+
+$__jsx_extend([Enemy], Sprite);
+Enemy.prototype.update$X = function (app) {
+	this.position.add$LVector2$(this.velocity);
+};
+
+
 function Player() {
-	Sprite$0.call(this, "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png");
-	this.velocity = null;
-	this.scale.x = 4;
-	this.scale.y = 4;
+	Sprite$0.call(this, "my");
 	this.velocity = new Vector2$0(2, 0);
 };
 
@@ -1531,7 +1635,7 @@ Player.prototype.update$X = function (app) {
 	canvasapp = (function ($v) {
 		if (! ($v == null || $v instanceof CanvasApp)) {
 			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:61:28] detected invalid cast, value is not an instance of the designated type or null\n        var canvasapp = app as CanvasApp;\n                            ^^\n");
+			throw new Error("[examples/shooting/src/shootingapp.jsx:82:28] detected invalid cast, value is not an instance of the designated type or null\n        var canvasapp = app as CanvasApp;\n                            ^^\n");
 		}
 		return $v;
 	}(app));
@@ -1547,7 +1651,7 @@ Player.prototype.update$X = function (app) {
 	baseApp = (function ($v) {
 		if (! ($v == null || $v instanceof BaseApp)) {
 			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:76:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
+			throw new Error("[examples/shooting/src/shootingapp.jsx:97:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
 		}
 		return $v;
 	}(app));
@@ -1601,6 +1705,17 @@ $__jsx_lazy_init(dom, "document", function () {
 		}
 		return $v;
 	}(js$0.global.document));
+});
+$__jsx_lazy_init(AssetManager, "assets", function () {
+	return ({  });
+});
+ShootingApp.SCREEN_WIDTH = 240;
+ShootingApp.SCREEN_HEIGHT = 320;
+$__jsx_lazy_init(ShootingApp, "SCREEN_CENTER_X", function () {
+	return ShootingApp.SCREEN_WIDTH / 2;
+});
+$__jsx_lazy_init(ShootingApp, "SCREEN_CENTER_Y", function () {
+	return ShootingApp.SCREEN_HEIGHT / 2;
 });
 $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 	return Timer$_getRequestAnimationFrameImpl$B(true);
@@ -1709,10 +1824,22 @@ var $__jsx_classMap = {
 		DeviceMotionEventInit: DeviceMotionEventInit,
 		DeviceMotionEventInit$: DeviceMotionEventInit
 	},
+	"src/util/random.jsx": {
+		Random: Random,
+		Random$: Random
+	},
+	"src/util/flow.jsx": {
+		Flow: Flow,
+		Flow$IF$HXV$: Flow
+	},
 	"src/geom/vector2.jsx": {
 		Vector2: Vector2,
 		Vector2$: Vector2,
 		Vector2$NN: Vector2$0
+	},
+	"src/asset/assetmanager.jsx": {
+		AssetManager: AssetManager,
+		AssetManager$: AssetManager
 	},
 	"src/app/baseapp.jsx": {
 		BaseApp: BaseApp,
@@ -1727,6 +1854,8 @@ var $__jsx_classMap = {
 		ShootingApp$LHTMLCanvasElement$: ShootingApp,
 		GameScene: GameScene,
 		GameScene$: GameScene,
+		Enemy: Enemy,
+		Enemy$: Enemy,
 		Player: Player,
 		Player$: Player
 	},

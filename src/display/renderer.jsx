@@ -57,19 +57,12 @@ class Renderer {
     function _drawSprite(sprite:Sprite, canvas: Canvas): Renderer {
         this._transform(sprite, canvas);
 
-        if (sprite.loaded == true) {
-            // ctx.drawImage(sprite.image, sprite.position.x, sprite.position.y, sprite.width, sprite.height);
-            // canvas.drawImage(sprite.image);
-            canvas.drawImage(
-                sprite.image,
-                -sprite.width*sprite.origin.x,
-                -sprite.height*sprite.origin.y,
-                sprite.width,
-                sprite.height);
-        }
-        else {
-            canvas.fillRect(0, 0, sprite.width, sprite.height);
-        }
+        canvas.drawImage(
+            sprite.image,
+            -sprite.width*sprite.origin.x,
+            -sprite.height*sprite.origin.y,
+            sprite.width,
+            sprite.height);
 
         return this;
     }
