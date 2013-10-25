@@ -1230,11 +1230,15 @@ $__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
 function Label() {
 	CanvasElement.call(this);
 	this.text = "";
+	this.align = "center";
+	this.baseline = "middle";
 	this.fontColor = "black";
 };
 
 function Label$0(text) {
 	CanvasElement.call(this);
+	this.align = "center";
+	this.baseline = "middle";
 	this.fontColor = "black";
 	this.text = text;
 };
@@ -1653,7 +1657,9 @@ Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
 	this._transform$LObject2D$LCanvas$(label, canvas);
 	canvas.context.fillStyle = label.fontColor;
-	canvas.fillText$SNN(label.text, - label.width * label.origin.x, - label.height * label.origin.y);
+	canvas.context.textAlign = label.align;
+	canvas.context.textBaseline = label.baseline;
+	canvas.fillText$SNN(label.text, 0, 0);
 	return this;
 };
 

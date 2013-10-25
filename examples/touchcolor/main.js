@@ -737,12 +737,14 @@ Pointing.prototype.getButtonDown$S = function (button) {
 
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function Element$0() {
+	this.parent = null;
 	this.children = [  ];
 };
 
 $__jsx_extend([Element$0], Object);
 Element$0.prototype.addChild$LElement$0$ = function (child) {
 	this.children.push(child);
+	child.parent = this;
 	return this;
 };
 
@@ -753,8 +755,19 @@ Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
 };
 
 
+Element$0.prototype.remove$ = function () {
+	this.parent.removeChild$LElement$0$(this);
+	return this;
+};
+
+
 Element$0.prototype.removeChild$LElement$0$ = function (child) {
-	console.log("hoge");
+	var index;
+	index = this.children.indexOf(child);
+	if (index !== - 1) {
+		this.children.splice(index, 1);
+		child.parent = null;
+	}
 	return this;
 };
 
@@ -1153,7 +1166,9 @@ Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
 	this._transform$LObject2D$LCanvas$(label, canvas);
 	canvas.context.fillStyle = label.fontColor;
-	canvas.fillText$SNN(label.text, - label.width * label.origin.x, - label.height * label.origin.y);
+	canvas.context.textAlign = label.align;
+	canvas.context.textBaseline = label.baseline;
+	canvas.fillText$SNN(label.text, 0, 0);
 	return this;
 };
 
@@ -1181,6 +1196,7 @@ function Object2D() {
 	this.rotation = 0;
 	this.width = 32;
 	this.height = 32;
+	this.radius = 32;
 };
 
 $__jsx_extend([Object2D], Element$0);
@@ -1200,6 +1216,15 @@ Object2D.prototype.isHit$LVector2$ = function (p) {
 	checkHorizon = this.getLeft$() < x && x < this.getRight$();
 	checkVertical = this.getTop$() < y && y < this.getBottom$();
 	return checkHorizon && checkVertical;
+};
+
+
+Object2D.prototype.isHit$LObject2D$ = function (object) {
+	var dir;
+	var lenSq;
+	dir = new Vector2().sub$LVector2$LVector2$(this.position, object.position);
+	lenSq = dir.lengthSquare$();
+	return lenSq < (this.radius + object.radius) * (this.radius + object.radius);
 };
 
 
@@ -1272,11 +1297,15 @@ $__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
 function Label() {
 	CanvasElement.call(this);
 	this.text = "";
+	this.align = "center";
+	this.baseline = "middle";
 	this.fontColor = "black";
 };
 
 function Label$0(text) {
 	CanvasElement.call(this);
+	this.align = "center";
+	this.baseline = "middle";
 	this.fontColor = "black";
 	this.text = text;
 };
@@ -1290,7 +1319,6 @@ function Sprite() {
 function Sprite$0(key) {
 	CanvasElement.call(this);
 	this.image = AssetManager$getImage$S(key);
-	console.log(this.image);
 	this.width = this.image.width;
 	this.height = this.image.height;
 };

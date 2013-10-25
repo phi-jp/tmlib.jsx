@@ -120,11 +120,13 @@ function _Main$main$AS(args) {
 	app = new TouchNumberApp((function ($v) {
 		if (! ($v == null || $v instanceof HTMLCanvasElement)) {
 			debugger;
-			throw new Error("[examples/touchnumber/src/main.jsx:20:44] detected invalid cast, value is not an instance of the designated type or null\n        var app = new TouchNumberApp(canvas as HTMLCanvasElement);\n                                            ^^\n");
+			throw new Error("[examples/touchnumber/src/main.jsx:26:44] detected invalid cast, value is not an instance of the designated type or null\n        var app = new TouchNumberApp(canvas as HTMLCanvasElement);\n                                            ^^\n");
 		}
 		return $v;
 	}(canvas)));
-	app.canvas.setSize$NN(640, 960);
+	app.canvas.setSize$NN(TouchNumberApp.SCREEN_WIDTH, TouchNumberApp.SCREEN_HEIGHT);
+	app.bgColor = "rgb(245, 245, 250)";
+	app.canvas.fit$();
 	app.run$();
 };
 
@@ -503,14 +505,163 @@ function DeviceMotionEventInit() {
 };
 
 $__jsx_extend([DeviceMotionEventInit], EventInit);
+function Vector2() {
+	this.x = 0;
+	this.y = 0;
+};
+
+function Vector2$0(x, y) {
+	this.x = x;
+	this.y = y;
+};
+
+$__jsx_extend([Vector2, Vector2$0], Object);
+Vector2.prototype.set$NN = function (x, y) {
+	this.x = x;
+	this.y = y;
+	return this;
+};
+
+
+Vector2.prototype.set$LVector2$ = function (v) {
+	this.x = v.x;
+	this.y = v.y;
+	return this;
+};
+
+
+Vector2.prototype.add$NN = function (x, y) {
+	this.x += x;
+	this.y += y;
+	return this;
+};
+
+
+Vector2.prototype.add$LVector2$ = function (v) {
+	return this.add$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.add$LVector2$LVector2$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x + rhs.x, lhs.y + rhs.y);
+};
+
+
+Vector2.prototype.sub$NN = function (x, y) {
+	this.x -= x;
+	this.y -= y;
+	return this;
+};
+
+
+Vector2.prototype.sub$LVector2$ = function (v) {
+	return this.sub$NN(v.x, v.y);
+};
+
+
+Vector2.prototype.sub$LVector2$LVector2$ = function (lhs, rhs) {
+	return this.set$NN(lhs.x - rhs.x, lhs.y - rhs.y);
+};
+
+
+Vector2.prototype.mul$N = function (value) {
+	this.x *= value;
+	this.y *= value;
+	return this;
+};
+
+
+Vector2.prototype.div$N = function (value) {
+	this.x /= value;
+	this.y /= value;
+	return this;
+};
+
+
+Vector2.prototype.length$ = function () {
+	return Math.sqrt(this.lengthSquare$());
+};
+
+
+Vector2.prototype.lengthSquare$ = function () {
+	return this.x * this.x + this.y * this.y;
+};
+
+
+Vector2.prototype.normalize$ = function () {
+	var len;
+	len = this.length$();
+	this.x /= len;
+	this.y /= len;
+	return this;
+};
+
+
+Vector2.prototype.equals$NN = function (x, y) {
+	return this.x === x && this.y === y;
+};
+
+
+Vector2.prototype.equals$LVector2$ = function (v) {
+	return this.x === v.x && this.y === v.y;
+};
+
+
+Vector2.prototype.toString = function () {
+	return "(" + this.x.toString() + "," + this.y.toString() + ")";
+};
+
+
+Vector2.prototype.log$ = function () {
+	console.log(this.toString());
+	return this;
+};
+
+
+function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.x + lhs.y * rhs.y;
+};
+
+Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
+
+function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
+	return lhs.x * rhs.y - lhs.y * rhs.x;
+};
+
+Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
+
+function Util() {
+};
+
+$__jsx_extend([Util], Object);
+function Util$shuffle$AX(arr) {
+	var i;
+	var len;
+	var j;
+	var t;
+	for ((i = 0, len = arr.length); i < len; ++ i) {
+		j = Math.floor(Math.random() * len);
+		if (i !== j) {
+			t = arr[i];
+			arr[i] = arr[j];
+			arr[j] = t;
+		}
+	}
+	return arr;
+};
+
+Util.shuffle$AX = Util$shuffle$AX;
+
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function Element$0() {
+	this.parent = null;
 	this.children = [  ];
 };
 
 $__jsx_extend([Element$0], Object);
 Element$0.prototype.addChild$LElement$0$ = function (child) {
 	this.children.push(child);
+	child.parent = this;
 	return this;
 };
 
@@ -521,8 +672,19 @@ Element$0.prototype.addChildTo$LElement$0$ = function (parent) {
 };
 
 
+Element$0.prototype.remove$ = function () {
+	this.parent.removeChild$LElement$0$(this);
+	return this;
+};
+
+
 Element$0.prototype.removeChild$LElement$0$ = function (child) {
-	console.log("hoge");
+	var index;
+	index = this.children.indexOf(child);
+	if (index !== - 1) {
+		this.children.splice(index, 1);
+		child.parent = null;
+	}
 	return this;
 };
 
@@ -551,27 +713,234 @@ function Scene() {
 $__jsx_extend([Scene], Element$0);
 function GameScene() {
 	var i;
+	var piece;
 	var j;
+	var index;
 	var x;
 	var y;
-	var piece;
+	var p;
 	Scene.call(this);
+	this.currentNumber = 1;
+	this.pieceGroup = new CanvasElement();
+	this.addChild$LElement$0$(this.pieceGroup);
+	for (i = 0; i < 25; ++ i) {
+		piece = new Piece(i + 1);
+		this.pieceGroup.addChild$LElement$0$(piece);
+	}
+	Util$shuffle$AX((function ($v) {
+		if (! ($v == null || $v instanceof Array)) {
+			debugger;
+			throw new Error("[examples/touchnumber/src/main.jsx:69:60] detected invalid cast, value is not an Array or null\n        Util.shuffle( (this.pieceGroup.children as variant) as Array.<variant> );\n                                                            ^^\n");
+		}
+		return $v;
+	}(this.pieceGroup.children)));
 	for (i = 0; i < 5; ++ i) {
 		for (j = 0; j < 5; ++ j) {
-			x = j * 100;
-			y = i * 100;
-			piece = new Piece();
-			piece.setPosition$NN(x + 85, y + 100);
-			this.addChild$LElement$0$(piece);
+			index = i * 5 + j;
+			x = j * 88;
+			y = i * 88;
+			p = (function ($v) {
+				if (! ($v == null || $v instanceof Object2D)) {
+					debugger;
+					throw new Error("[examples/touchnumber/src/main.jsx:76:56] detected invalid cast, value is not an instance of the designated type or null\n                var p = this.pieceGroup.children[index] as Object2D;\n                                                        ^^\n");
+				}
+				return $v;
+			}(this.pieceGroup.children[index]));
+			p.setPosition$NN(x + 65, y + 100);
 		}
 	}
 };
 
 $__jsx_extend([GameScene], Scene);
 GameScene.prototype.update$X = function (app) {
+	this.checkTouch$X(app);
 };
 
 
+GameScene.prototype.checkTouch$X = function (app) {
+	var $this = this;
+	var baseApp;
+	var p;
+	var temp;
+	baseApp = (function ($v) {
+		if (! ($v == null || $v instanceof CanvasApp)) {
+			debugger;
+			throw new Error("[examples/touchnumber/src/main.jsx:86:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as CanvasApp;\n                          ^^\n");
+		}
+		return $v;
+	}(app));
+	p = baseApp.pointing;
+	if (! p.getButtonDown$S("left")) {
+		return;
+	}
+	temp = new Vector2$0(p.position.x, p.position.y);
+	this.pieceGroup.children.forEach((function (elm) {
+		var piece;
+		piece = (function ($v) {
+			if (! ($v == null || $v instanceof Piece)) {
+				debugger;
+				throw new Error("[examples/touchnumber/src/main.jsx:93:28] detected invalid cast, value is not an instance of the designated type or null\n            var piece = elm as Piece;\n                            ^^\n");
+			}
+			return $v;
+		}(elm));
+		if (piece.isHit$LVector2$(temp) && $this.currentNumber === piece.number) {
+			$this.pieceGroup.removeChild$LElement$0$(piece);
+			++ $this.currentNumber;
+		}
+	}));
+};
+
+
+function Object2D() {
+	Element$0.call(this);
+	this.position = new Vector2();
+	this.origin = new Vector2$0(0.5, 0.5);
+	this.scale = new Vector2$0(1.0, 1.0);
+	this.rotation = 0;
+	this.width = 32;
+	this.height = 32;
+	this.radius = 32;
+};
+
+$__jsx_extend([Object2D], Element$0);
+Object2D.prototype.setPosition$NN = function (x, y) {
+	this.position.set$NN(x, y);
+	return this;
+};
+
+
+Object2D.prototype.isHit$LVector2$ = function (p) {
+	var x;
+	var y;
+	var checkHorizon;
+	var checkVertical;
+	x = p.x;
+	y = p.y;
+	checkHorizon = this.getLeft$() < x && x < this.getRight$();
+	checkVertical = this.getTop$() < y && y < this.getBottom$();
+	return checkHorizon && checkVertical;
+};
+
+
+Object2D.prototype.isHit$LObject2D$ = function (object) {
+	var dir;
+	var lenSq;
+	dir = new Vector2().sub$LVector2$LVector2$(this.position, object.position);
+	lenSq = dir.lengthSquare$();
+	return lenSq < (this.radius + object.radius) * (this.radius + object.radius);
+};
+
+
+Object2D.prototype.getLeft$ = function () {
+	return this.position.x - this.width * this.origin.x;
+};
+
+
+Object2D.prototype.getRight$ = function () {
+	return this.position.x + this.width * (1 - this.origin.x);
+};
+
+
+Object2D.prototype.getTop$ = function () {
+	return this.position.y - this.height * this.origin.y;
+};
+
+
+Object2D.prototype.getBottom$ = function () {
+	return this.position.y + this.height * (1 - this.origin.y);
+};
+
+
+function CanvasElement() {
+	Object2D.call(this);
+};
+
+$__jsx_extend([CanvasElement], Object2D);
+CanvasElement.prototype._draw$LCanvasRenderingContext2D$ = function (ctx) {
+	var $this = this;
+	if (this.draw$LCanvasRenderingContext2D$) {
+		this.draw$LCanvasRenderingContext2D$(ctx);
+	}
+	if (this.children.length > 0) {
+		this.children.forEach((function (elm) {
+			(function ($v) {
+				if (! ($v == null || $v instanceof CanvasElement)) {
+					debugger;
+					throw new Error("[src/display/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
+				}
+				return $v;
+			}(elm))._draw$LCanvasRenderingContext2D$(ctx);
+		}));
+	}
+};
+
+
+CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
+};
+
+
+function Shape(width, height) {
+	CanvasElement.call(this);
+	this.loaded = false;
+	this.width = width;
+	this.height = height;
+	this.canvas = new Canvas();
+	this.canvas.setSize$NN(width, height);
+};
+
+function Shape$0(width) {
+	Shape.call(this, width, 64);
+};
+
+function Shape$1() {
+	Shape.call(this, 64, 64);
+};
+
+$__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
+function Label() {
+	CanvasElement.call(this);
+	this.text = "";
+	this.align = "center";
+	this.baseline = "middle";
+	this.fontColor = "black";
+};
+
+function Label$0(text) {
+	CanvasElement.call(this);
+	this.align = "center";
+	this.baseline = "middle";
+	this.fontColor = "black";
+	this.text = text;
+};
+
+$__jsx_extend([Label, Label$0], CanvasElement);
+function Sprite() {
+	CanvasElement.call(this);
+	this.image = null;
+};
+
+function Sprite$0(key) {
+	CanvasElement.call(this);
+	this.image = AssetManager$getImage$S(key);
+	this.width = this.image.width;
+	this.height = this.image.height;
+};
+
+$__jsx_extend([Sprite, Sprite$0], CanvasElement);
+function Piece(number) {
+	var shape;
+	var label;
+	CanvasElement.call(this);
+	this.number = number;
+	shape = new Shape(64, 64);
+	shape.canvas.clear$S("hsl(160, 70%, 60%)");
+	this.addChild$LElement$0$(shape);
+	label = new Label$0(number + "");
+	label.fontColor = "white";
+	this.addChild$LElement$0$(label);
+};
+
+$__jsx_extend([Piece], CanvasElement);
 function BaseApp(elm) {
 	this.sceneIndex = 0;
 	this.frame = 0;
@@ -879,7 +1248,9 @@ Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
 	this._transform$LObject2D$LCanvas$(label, canvas);
 	canvas.context.fillStyle = label.fontColor;
-	canvas.fillText$SNN(label.text, - label.width * label.origin.x, - label.height * label.origin.y);
+	canvas.context.textAlign = label.align;
+	canvas.context.textBaseline = label.baseline;
+	canvas.fillText$SNN(label.text, 0, 0);
 	return this;
 };
 
@@ -899,143 +1270,6 @@ Renderer.prototype._transform$LObject2D$LCanvas$ = function (obj, canvas) {
 };
 
 
-function Object2D() {
-	Element$0.call(this);
-	this.position = new Vector2();
-	this.origin = new Vector2$0(0.5, 0.5);
-	this.scale = new Vector2$0(1.0, 1.0);
-	this.rotation = 0;
-	this.width = 32;
-	this.height = 32;
-};
-
-$__jsx_extend([Object2D], Element$0);
-Object2D.prototype.setPosition$NN = function (x, y) {
-	this.position.set$NN(x, y);
-	return this;
-};
-
-
-Object2D.prototype.isHit$LVector2$ = function (p) {
-	var x;
-	var y;
-	var checkHorizon;
-	var checkVertical;
-	x = p.x;
-	y = p.y;
-	checkHorizon = this.getLeft$() < x && x < this.getRight$();
-	checkVertical = this.getTop$() < y && y < this.getBottom$();
-	return checkHorizon && checkVertical;
-};
-
-
-Object2D.prototype.getLeft$ = function () {
-	return this.position.x - this.width * this.origin.x;
-};
-
-
-Object2D.prototype.getRight$ = function () {
-	return this.position.x + this.width * (1 - this.origin.x);
-};
-
-
-Object2D.prototype.getTop$ = function () {
-	return this.position.y - this.height * this.origin.y;
-};
-
-
-Object2D.prototype.getBottom$ = function () {
-	return this.position.y + this.height * (1 - this.origin.y);
-};
-
-
-function CanvasElement() {
-	Object2D.call(this);
-};
-
-$__jsx_extend([CanvasElement], Object2D);
-CanvasElement.prototype._draw$LCanvasRenderingContext2D$ = function (ctx) {
-	var $this = this;
-	if (this.draw$LCanvasRenderingContext2D$) {
-		this.draw$LCanvasRenderingContext2D$(ctx);
-	}
-	if (this.children.length > 0) {
-		this.children.forEach((function (elm) {
-			(function ($v) {
-				if (! ($v == null || $v instanceof CanvasElement)) {
-					debugger;
-					throw new Error("[src/display/canvaselement.jsx:22:21] detected invalid cast, value is not an instance of the designated type or null\n                (elm as CanvasElement)._draw(ctx);\n                     ^^\n");
-				}
-				return $v;
-			}(elm))._draw$LCanvasRenderingContext2D$(ctx);
-		}));
-	}
-};
-
-
-CanvasElement.prototype.draw$LCanvasRenderingContext2D$ = function (ctx) {
-};
-
-
-function Shape(width, height) {
-	CanvasElement.call(this);
-	this.loaded = false;
-	this.width = width;
-	this.height = height;
-	this.canvas = new Canvas();
-	this.canvas.setSize$NN(width, height);
-};
-
-function Shape$0(width) {
-	Shape.call(this, width, 64);
-};
-
-function Shape$1() {
-	Shape.call(this, 64, 64);
-};
-
-$__jsx_extend([Shape, Shape$0, Shape$1], CanvasElement);
-function Label() {
-	CanvasElement.call(this);
-	this.text = "";
-	this.fontColor = "black";
-};
-
-function Label$0(text) {
-	CanvasElement.call(this);
-	this.fontColor = "black";
-	this.text = text;
-};
-
-$__jsx_extend([Label, Label$0], CanvasElement);
-function Sprite() {
-	CanvasElement.call(this);
-	this.image = null;
-};
-
-function Sprite$0(key) {
-	CanvasElement.call(this);
-	this.image = AssetManager$getImage$S(key);
-	console.log(this.image);
-	this.width = this.image.width;
-	this.height = this.image.height;
-};
-
-$__jsx_extend([Sprite, Sprite$0], CanvasElement);
-function Piece() {
-	var shape;
-	var label;
-	CanvasElement.call(this);
-	shape = new Shape(64, 64);
-	shape.canvas.clear$S("black");
-	this.addChild$LElement$0$(shape);
-	label = new Label$0("TEST");
-	label.fontColor = "white";
-	label.setPosition$NN(20, 35);
-	this.addChild$LElement$0$(label);
-};
-
-$__jsx_extend([Piece], CanvasElement);
 function AssetManager() {
 };
 
@@ -1335,131 +1569,6 @@ Pointing.prototype.getButtonDown$S = function (button) {
 };
 
 
-function Vector2() {
-	this.x = 0;
-	this.y = 0;
-};
-
-function Vector2$0(x, y) {
-	this.x = x;
-	this.y = y;
-};
-
-$__jsx_extend([Vector2, Vector2$0], Object);
-Vector2.prototype.set$NN = function (x, y) {
-	this.x = x;
-	this.y = y;
-	return this;
-};
-
-
-Vector2.prototype.set$LVector2$ = function (v) {
-	this.x = v.x;
-	this.y = v.y;
-	return this;
-};
-
-
-Vector2.prototype.add$NN = function (x, y) {
-	this.x += x;
-	this.y += y;
-	return this;
-};
-
-
-Vector2.prototype.add$LVector2$ = function (v) {
-	return this.add$NN(v.x, v.y);
-};
-
-
-Vector2.prototype.add$LVector2$LVector2$ = function (lhs, rhs) {
-	return this.set$NN(lhs.x + rhs.x, lhs.y + rhs.y);
-};
-
-
-Vector2.prototype.sub$NN = function (x, y) {
-	this.x -= x;
-	this.y -= y;
-	return this;
-};
-
-
-Vector2.prototype.sub$LVector2$ = function (v) {
-	return this.sub$NN(v.x, v.y);
-};
-
-
-Vector2.prototype.sub$LVector2$LVector2$ = function (lhs, rhs) {
-	return this.set$NN(lhs.x - rhs.x, lhs.y - rhs.y);
-};
-
-
-Vector2.prototype.mul$N = function (value) {
-	this.x *= value;
-	this.y *= value;
-	return this;
-};
-
-
-Vector2.prototype.div$N = function (value) {
-	this.x /= value;
-	this.y /= value;
-	return this;
-};
-
-
-Vector2.prototype.length$ = function () {
-	return Math.sqrt(this.lengthSquare$());
-};
-
-
-Vector2.prototype.lengthSquare$ = function () {
-	return this.x * this.x + this.y * this.y;
-};
-
-
-Vector2.prototype.normalize$ = function () {
-	var len;
-	len = this.length$();
-	this.x /= len;
-	this.y /= len;
-	return this;
-};
-
-
-Vector2.prototype.equals$NN = function (x, y) {
-	return this.x === x && this.y === y;
-};
-
-
-Vector2.prototype.equals$LVector2$ = function (v) {
-	return this.x === v.x && this.y === v.y;
-};
-
-
-Vector2.prototype.toString = function () {
-	return "(" + this.x.toString() + "," + this.y.toString() + ")";
-};
-
-
-Vector2.prototype.log$ = function () {
-	console.log(this.toString());
-	return this;
-};
-
-
-function Vector2$dot$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.x + lhs.y * rhs.y;
-};
-
-Vector2.dot$LVector2$LVector2$ = Vector2$dot$LVector2$LVector2$;
-
-function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
-	return lhs.x * rhs.y - lhs.y * rhs.x;
-};
-
-Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
-
 function Flow(waits, callback) {
 	this.counter = 0;
 	this.args = ({  });
@@ -1633,6 +1742,14 @@ $__jsx_lazy_init(dom, "document", function () {
 		return $v;
 	}(js$0.global.document));
 });
+TouchNumberApp.SCREEN_WIDTH = 480;
+TouchNumberApp.SCREEN_HEIGHT = 640;
+$__jsx_lazy_init(TouchNumberApp, "SCREEN_CENTER_X", function () {
+	return TouchNumberApp.SCREEN_WIDTH / 2;
+});
+$__jsx_lazy_init(TouchNumberApp, "SCREEN_CENTER_Y", function () {
+	return TouchNumberApp.SCREEN_HEIGHT / 2;
+});
 $__jsx_lazy_init(AssetManager, "assets", function () {
 	return ({  });
 });
@@ -1659,10 +1776,10 @@ var $__jsx_classMap = {
 		_Main$: _Main,
 		GameScene: GameScene,
 		GameScene$: GameScene,
-		TouchNumberApp: TouchNumberApp,
-		TouchNumberApp$LHTMLCanvasElement$: TouchNumberApp,
 		Piece: Piece,
-		Piece$: Piece
+		Piece$N: Piece,
+		TouchNumberApp: TouchNumberApp,
+		TouchNumberApp$LHTMLCanvasElement$: TouchNumberApp
 	},
 	"system:lib/js/js/web.jsx": {
 		dom: dom,
@@ -1749,6 +1866,15 @@ var $__jsx_classMap = {
 		DeviceMotionEventInit: DeviceMotionEventInit,
 		DeviceMotionEventInit$: DeviceMotionEventInit
 	},
+	"src/geom/vector2.jsx": {
+		Vector2: Vector2,
+		Vector2$: Vector2,
+		Vector2$NN: Vector2$0
+	},
+	"src/util/util.jsx": {
+		Util: Util,
+		Util$: Util
+	},
 	"src/app/element.jsx": {
 		Element: Element$0,
 		Element$: Element$0
@@ -1756,23 +1882,6 @@ var $__jsx_classMap = {
 	"src/app/scene.jsx": {
 		Scene: Scene,
 		Scene$: Scene
-	},
-	"src/app/baseapp.jsx": {
-		BaseApp: BaseApp,
-		BaseApp$LHTMLElement$: BaseApp
-	},
-	"src/display/canvasapp.jsx": {
-		CanvasApp: CanvasApp,
-		CanvasApp$LHTMLCanvasElement$: CanvasApp
-	},
-	"src/graphics/canvas.jsx": {
-		Canvas: Canvas,
-		Canvas$: Canvas,
-		Canvas$LHTMLCanvasElement$: Canvas$0
-	},
-	"src/display/renderer.jsx": {
-		Renderer: Renderer,
-		Renderer$: Renderer
 	},
 	"src/app/object2d.jsx": {
 		Object2D: Object2D,
@@ -1798,6 +1907,23 @@ var $__jsx_classMap = {
 		Sprite$: Sprite,
 		Sprite$S: Sprite$0
 	},
+	"src/app/baseapp.jsx": {
+		BaseApp: BaseApp,
+		BaseApp$LHTMLElement$: BaseApp
+	},
+	"src/display/canvasapp.jsx": {
+		CanvasApp: CanvasApp,
+		CanvasApp$LHTMLCanvasElement$: CanvasApp
+	},
+	"src/graphics/canvas.jsx": {
+		Canvas: Canvas,
+		Canvas$: Canvas,
+		Canvas$LHTMLCanvasElement$: Canvas$0
+	},
+	"src/display/renderer.jsx": {
+		Renderer: Renderer,
+		Renderer$: Renderer
+	},
 	"src/asset/assetmanager.jsx": {
 		AssetManager: AssetManager,
 		AssetManager$: AssetManager
@@ -1810,11 +1936,6 @@ var $__jsx_classMap = {
 	"src/input/Pointing.jsx": {
 		Pointing: Pointing,
 		Pointing$LHTMLElement$: Pointing
-	},
-	"src/geom/vector2.jsx": {
-		Vector2: Vector2,
-		Vector2$: Vector2,
-		Vector2$NN: Vector2$0
 	},
 	"src/util/flow.jsx": {
 		Flow: Flow,
