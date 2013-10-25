@@ -11,7 +11,6 @@ import "canvaselement.jsx";
  */
 class Sprite extends CanvasElement {
     var image: HTMLImageElement;
-    // var loaded = false;
 
     /**
      * constructor
@@ -20,22 +19,6 @@ class Sprite extends CanvasElement {
         super();
     }
     
-    // /**
-    //  * constructor
-    //  */
-    // function constructor(src: string) {
-    //     super();
-
-    //     this.image = dom.document.createElement("img") as HTMLImageElement;
-    //     this.image.src = src;
-    //     var self = this;
-    //     this.image.addEventListener("load", function(e:Event): void {
-    //         self.loaded = true;
-    //         self.width = self.image.width;
-    //         self.height= self.image.height;
-    //     });
-    // }
-    
     /**
      * constructor
      */
@@ -43,8 +26,6 @@ class Sprite extends CanvasElement {
         super();
 
         this.image = AssetManager.getImage(key);
-
-        log(this.image);
 
         this.width = this.image.width;
         this.height= this.image.height;
