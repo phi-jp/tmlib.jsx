@@ -736,12 +736,20 @@ function AssetManager$getImage$S(key) {
 AssetManager.getImage$S = AssetManager$getImage$S;
 
 function BaseApp(elm) {
+	var $this = this;
+	var ua;
+	var mobileFlag;
 	this.sceneIndex = 0;
 	this.frame = 0;
 	this.fps = 30;
+	this.pointing = null;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
-	this.pointing = new Mouse(elm);
+	ua = dom.window.navigator.userAgent;
+	mobileFlag = (function () {
+		return ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0;
+	})();
+	this.pointing = (mobileFlag ? new Touch$0(elm) : new Mouse(elm));
 };
 
 $__jsx_extend([BaseApp], Object);
@@ -1086,6 +1094,114 @@ Mouse.prototype.getButtonUp$S = function (button) {
 		}
 		return v;
 	}(Mouse.BUTTON_MAP[button]))) !== 0;
+};
+
+
+function Touch$0(elm) {
+	var $this = this;
+	Pointing.call(this, elm);
+	this.touch = false;
+	this.last = 0;
+	this.now = 0;
+	this.start = 0;
+	this.end = 0;
+	this.element.addEventListener("touchstart", (function (e) {
+		var touchEvent;
+		var element;
+		var t;
+		var r;
+		touchEvent = (function ($v) {
+			if (! ($v == null || $v instanceof TouchEvent)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:18:31] detected invalid cast, value is not an instance of the designated type or null\n            var touchEvent = e as TouchEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:19:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		t = touchEvent.touches[0];
+		r = element.getBoundingClientRect();
+		$this._tempPosition.set$NN(t.clientX - r.left, t.clientY - r.top);
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
+		$this.position.set$LVector2$1$($this._tempPosition);
+		$this.prevPosition.set$LVector2$1$($this._tempPosition);
+		$this.touch = true;
+	}));
+	this.element.addEventListener("touchend", (function (e) {
+		$this.touch = false;
+	}));
+	this.element.addEventListener("touchmove", (function (e) {
+		var touchEvent;
+		var element;
+		var t;
+		var r;
+		touchEvent = (function ($v) {
+			if (! ($v == null || $v instanceof TouchEvent)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:36:31] detected invalid cast, value is not an instance of the designated type or null\n            var touchEvent = e as TouchEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:37:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		t = touchEvent.touches[0];
+		r = element.getBoundingClientRect();
+		$this._tempPosition.set$NN(t.clientX - r.left, t.clientY - r.top);
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
+	}));
+};
+
+$__jsx_extend([Touch$0], Pointing);
+Touch$0.prototype.update$ = function () {
+	this.last = this.now;
+	this.now = ((this.touch ? 1 : 0) | 0);
+	this.start = (this.now ^ this.last) & this.now;
+	this.end = (this.now ^ this.last) & this.last;
+	this.deltaPosition.sub$LVector2$1$LVector2$1$(this._tempPosition, this.prevPosition);
+	this.prevPosition.set$LVector2$1$(this.position);
+	this.position.set$LVector2$1$(this._tempPosition);
+};
+
+
+Touch$0.prototype.getPointing$ = function () {
+	return this.getTouch$();
+};
+
+
+Touch$0.prototype.getPointingStart$ = function () {
+	return this.getTouchStart$();
+};
+
+
+Touch$0.prototype.getPointingEnd$ = function () {
+	return this.getTouchEnd$();
+};
+
+
+Touch$0.prototype.getTouch$ = function () {
+	return this.now !== 0;
+};
+
+
+Touch$0.prototype.getTouchStart$ = function () {
+	return this.start !== 0;
+};
+
+
+Touch$0.prototype.getTouchEnd$ = function () {
+	return this.end !== 0;
 };
 
 
@@ -2011,6 +2127,10 @@ var $__jsx_classMap = {
 	"src/input/mouse.jsx": {
 		Mouse: Mouse,
 		Mouse$LHTMLElement$: Mouse
+	},
+	"src/input/touch.jsx": {
+		Touch: Touch$0,
+		Touch$LHTMLElement$: Touch$0
 	},
 	"src/app/element.jsx": {
 		Element: Element$0,

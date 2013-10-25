@@ -144,6 +144,7 @@ class Player extends Sprite {
         var p = baseApp.pointing;
         if (p.getPointing()) {
             var temp = new Vector2(p.deltaPosition.x, p.deltaPosition.y);
+            // log(temp.y);
             this.position.add(temp.div(2));
         }
     }
