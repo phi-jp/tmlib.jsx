@@ -787,7 +787,7 @@ GameScene.prototype.checkTouch$X = function (app) {
 		if (piece.isHit$LVector2$(temp) && $this.currentNumber === piece.number) {
 			$this.pieceGroup.removeChild$LElement$0$(piece);
 			++ $this.currentNumber;
-			if ($this.currentNumber === 25) {
+			if ($this.currentNumber > 25) {
 				time = baseApp.frame / baseApp.fps;
 				dom.window.alert("clear!" + ((time | 0) + "") + "秒かかりました!");
 			}

@@ -96,7 +96,7 @@ class GameScene extends Scene {
                 this.pieceGroup.removeChild(piece);
                 ++this.currentNumber;
 
-                if (this.currentNumber == 25) {
+                if (this.currentNumber > 25) {
                     var time = baseApp.frame/baseApp.fps;
                     dom.window.alert("clear!" + (time|0) + "秒かかりました!");
                 }
