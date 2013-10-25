@@ -9,6 +9,8 @@ import "console.jsx";
 
 import "../input/pointing.jsx";
 import "../input/mouse.jsx";
+import "../input/touch.jsx" into tm;
+
 import "scene.jsx";
 
 
@@ -31,7 +33,13 @@ class BaseApp {
         this.scenes = [
             new Scene()
         ]: Scene[];
-        this.pointing = new Mouse(elm);
+
+        var ua = dom.window.navigator.userAgent;
+        var mobileFlag = (()-> {
+            return (ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0);
+        })();
+
+        this.pointing = (mobileFlag) ? new tm.Touch(elm) : new Mouse(elm);
     }
     
     function run(): void {
