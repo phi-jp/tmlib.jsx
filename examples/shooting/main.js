@@ -139,7 +139,7 @@ function dom$id$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -151,7 +151,7 @@ function dom$getElementById$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -163,7 +163,7 @@ function dom$createElement$S(tag) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.createElement(tag)));
@@ -741,7 +741,7 @@ function BaseApp(elm) {
 	this.fps = 30;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
-	this.pointing = new Pointing(elm);
+	this.pointing = new Mouse(elm);
 };
 
 $__jsx_extend([BaseApp], Object);
@@ -824,7 +824,7 @@ function Timer$setTimeout$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
 		}
 		return $v;
 	}(js$0.global.setTimeout))(callback, intervalMS);
@@ -836,7 +836,7 @@ function Timer$clearTimeout$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
 		}
 		return $v;
 	}(js$0.global.clearTimeout))(timer);
@@ -848,7 +848,7 @@ function Timer$setInterval$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
 		}
 		return $v;
 	}(js$0.global.setInterval))(callback, intervalMS);
@@ -860,7 +860,7 @@ function Timer$clearInterval$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
 		}
 		return $v;
 	}(js$0.global.clearInterval))(timer);
@@ -898,7 +898,7 @@ function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
 			name = (function (v) {
 				if (! (v != null)) {
 					debugger;
-					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:72:35] null access\n                var name = prefixes[i] + \"equestAnimationFrame\";\n                                   ^\n");
+					throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:72:35] null access\n                var name = prefixes[i] + \"equestAnimationFrame\";\n                                   ^\n");
 				}
 				return v;
 			}(prefixes[i])) + "equestAnimationFrame";
@@ -907,7 +907,7 @@ function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
 					return (function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:75:48] detected invalid cast, value is not a function or null\n                        return (js.global[name] as __noconvert__\n                                                ^^\n");
+							throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:75:48] detected invalid cast, value is not a function or null\n                        return (js.global[name] as __noconvert__\n                                                ^^\n");
 						}
 						return $v;
 					}(js$0.global[name]))(callback);
@@ -940,7 +940,7 @@ function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
 			name = (function (v) {
 				if (! (v != null)) {
 					debugger;
-					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:100:35] null access\n                var name = prefixes[i] + \"ancelAnimationFrame\";\n                                   ^\n");
+					throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:100:35] null access\n                var name = prefixes[i] + \"ancelAnimationFrame\";\n                                   ^\n");
 				}
 				return v;
 			}(prefixes[i])) + "ancelAnimationFrame";
@@ -949,7 +949,7 @@ function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
 					(function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:103:41] detected invalid cast, value is not a function or null\n                        (js.global[name] as __noconvert__\n                                         ^^\n");
+							throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:103:41] detected invalid cast, value is not a function or null\n                        (js.global[name] as __noconvert__\n                                         ^^\n");
 						}
 						return $v;
 					}(js$0.global[name]))(timer);
@@ -965,23 +965,28 @@ Timer._getCancelAnimationFrameImpl$B = Timer$_getCancelAnimationFrameImpl$B;
 function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
 function Pointing(elm) {
-	var $this = this;
 	this.position = new Vector2$1();
 	this.deltaPosition = new Vector2$1();
 	this.prevPosition = new Vector2$1();
 	this._tempPosition = new Vector2$1();
+	this.element = elm;
+};
+
+$__jsx_extend([Pointing], Object);
+function Mouse(elm) {
+	var $this = this;
+	Pointing.call(this, elm);
 	this.button = 0;
 	this.last = 0;
 	this.press = 0;
 	this.up = 0;
 	this.down = 0;
-	this.element = elm;
 	this.element.addEventListener("mousedown", (function (e) {
 		var mouseEvent;
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:37:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:27:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
@@ -992,7 +997,7 @@ function Pointing(elm) {
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:41:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:31:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
@@ -1005,14 +1010,14 @@ function Pointing(elm) {
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:45:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:35:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
 		element = (function ($v) {
 			if (! ($v == null || $v instanceof HTMLElement)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:46:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+				throw new Error("[src/input/mouse.jsx:36:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
 			}
 			return $v;
 		}(e.target));
@@ -1024,8 +1029,8 @@ function Pointing(elm) {
 	}));
 };
 
-$__jsx_extend([Pointing], Object);
-Pointing.prototype.update$ = function () {
+$__jsx_extend([Mouse], Pointing);
+Mouse.prototype.update$ = function () {
 	this.last = this.press;
 	this.press = this.button;
 	this.down = (this.press ^ this.last) & this.press;
@@ -1036,36 +1041,51 @@ Pointing.prototype.update$ = function () {
 };
 
 
-Pointing.prototype.getPointingStart$ = function () {
-	return (this.down & (function (v) {
-		if (! (v != null)) {
-			debugger;
-			throw new Error("[src/input/Pointing.jsx:74:47] null access\n        return (this.down & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                               ^\n");
-		}
-		return v;
-	}(Pointing.BUTTON_MAP.left))) !== 0;
+Mouse.prototype.getPointing$ = function () {
+	return this.getButton$S("left");
 };
 
 
-Pointing.prototype.getPointing$ = function () {
+Mouse.prototype.getPointingStart$ = function () {
+	return this.getButtonDown$S("left");
+};
+
+
+Mouse.prototype.getPointingEnd$ = function () {
+	return this.getButtonUp$S("left");
+};
+
+
+Mouse.prototype.getButton$S = function (button) {
 	return (this.press & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:78:48] null access\n        return (this.press & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                                ^\n");
+			throw new Error("[src/input/mouse.jsx:76:45] null access\n        return (this.press & Mouse.BUTTON_MAP[button]) != 0;\n                                             ^\n");
 		}
 		return v;
-	}(Pointing.BUTTON_MAP.left))) !== 0;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
 };
 
 
-Pointing.prototype.getButtonDown$S = function (button) {
+Mouse.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:82:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+			throw new Error("[src/input/mouse.jsx:80:44] null access\n        return (this.down & Mouse.BUTTON_MAP[button]) != 0;\n                                            ^\n");
 		}
 		return v;
-	}(Pointing.BUTTON_MAP[button]))) !== 0;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
+};
+
+
+Mouse.prototype.getButtonUp$S = function (button) {
+	return (this.up & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/mouse.jsx:84:42] null access\n        return (this.up & Mouse.BUTTON_MAP[button]) != 0;\n                                          ^\n");
+		}
+		return v;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
 };
 
 
@@ -1354,10 +1374,15 @@ function GameScene() {
 	this.player = new Player();
 	this.bulletGroup = new CanvasElement();
 	this.enemyGroup = new CanvasElement();
+	this.scoreLabel = new Label$0("SCORE: 000");
+	this.score = 0;
 	this.player.position.set$NN(ShootingApp.SCREEN_CENTER_X, ShootingApp.SCREEN_HEIGHT - 30);
 	this.addChild$LElement$0$(this.player);
 	this.addChild$LElement$0$(this.enemyGroup);
 	this.addChild$LElement$0$(this.bulletGroup);
+	this.scoreLabel.setPosition$NN(230, 20);
+	this.scoreLabel.align = "right";
+	this.addChild$LElement$0$(this.scoreLabel);
 };
 
 $__jsx_extend([GameScene], Scene);
@@ -1370,7 +1395,7 @@ GameScene.prototype.update$X = function (app) {
 	baseApp = (function ($v) {
 		if (! ($v == null || $v instanceof BaseApp)) {
 			debugger;
-			throw new Error("[examples/shooting/src/shootingapp.jsx:73:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
+			throw new Error("[examples/shooting/src/shootingapp.jsx:70:26] detected invalid cast, value is not an instance of the designated type or null\n        var baseApp = app as BaseApp;\n                          ^^\n");
 		}
 		return $v;
 	}(app));
@@ -1389,7 +1414,7 @@ GameScene.prototype.update$X = function (app) {
 		if ($this.player.isHit$LObject2D$((function ($v) {
 			if (! ($v == null || $v instanceof Object2D)) {
 				debugger;
-				throw new Error("[examples/shooting/src/shootingapp.jsx:90:40] detected invalid cast, value is not an instance of the designated type or null\n            if (this.player.isHit(enemy as Object2D)) {\n                                        ^^\n");
+				throw new Error("[examples/shooting/src/shootingapp.jsx:87:40] detected invalid cast, value is not an instance of the designated type or null\n            if (this.player.isHit(enemy as Object2D)) {\n                                        ^^\n");
 			}
 			return $v;
 		}(enemy)))) {
@@ -1404,14 +1429,14 @@ GameScene.prototype.update$X = function (app) {
 			enemy = (function ($v) {
 				if (! ($v == null || $v instanceof Enemy)) {
 					debugger;
-					throw new Error("[examples/shooting/src/shootingapp.jsx:100:41] detected invalid cast, value is not an instance of the designated type or null\n                var enemy = enemyElement as Enemy;\n                                         ^^\n");
+					throw new Error("[examples/shooting/src/shootingapp.jsx:97:41] detected invalid cast, value is not an instance of the designated type or null\n                var enemy = enemyElement as Enemy;\n                                         ^^\n");
 				}
 				return $v;
 			}(enemyElement));
 			if ((function ($v) {
 				if (! ($v == null || $v instanceof Object2D)) {
 					debugger;
-					throw new Error("[examples/shooting/src/shootingapp.jsx:101:29] detected invalid cast, value is not an instance of the designated type or null\n                if ( (bullet as Object2D).isHit( enemy as Object2D )) {\n                             ^^\n");
+					throw new Error("[examples/shooting/src/shootingapp.jsx:98:29] detected invalid cast, value is not an instance of the designated type or null\n                if ( (bullet as Object2D).isHit( enemy as Object2D )) {\n                             ^^\n");
 				}
 				return $v;
 			}(bullet)).isHit$LObject2D$(enemy)) {
@@ -1419,6 +1444,8 @@ GameScene.prototype.update$X = function (app) {
 				enemy.damage$();
 				if (enemy.isDead$()) {
 					enemy.remove$();
+					$this.score += 100;
+					$this.scoreLabel.text = "SCORE: " + ($this.score + "");
 				}
 				return true;
 			}
@@ -1812,7 +1839,7 @@ $__jsx_lazy_init(dom, "document", function () {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLDocument)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
 		}
 		return $v;
 	}(js$0.global.document));
@@ -1834,11 +1861,11 @@ $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 $__jsx_lazy_init(Timer, "_cancelAnimationFrame", function () {
 	return Timer$_getCancelAnimationFrameImpl$B(true);
 });
-Pointing.BUTTON_LEFT = 0x1;
-Pointing.BUTTON_MIDDLE = 0x2;
-Pointing.BUTTON_RIGHT = 0x4;
-$__jsx_lazy_init(Pointing, "BUTTON_MAP", function () {
-	return ({ "left": Pointing.BUTTON_LEFT, "middle": Pointing.BUTTON_MIDDLE, "right": Pointing.BUTTON_RIGHT });
+Mouse.BUTTON_LEFT = 0x1;
+Mouse.BUTTON_MIDDLE = 0x2;
+Mouse.BUTTON_RIGHT = 0x4;
+$__jsx_lazy_init(Mouse, "BUTTON_MAP", function () {
+	return ({ "left": Mouse.BUTTON_LEFT, "middle": Mouse.BUTTON_MIDDLE, "right": Mouse.BUTTON_RIGHT });
 });
 
 var $__jsx_classMap = {
@@ -1977,9 +2004,13 @@ var $__jsx_classMap = {
 		Timer$: Timer,
 		TimerHandle: TimerHandle
 	},
-	"src/input/Pointing.jsx": {
+	"src/input/pointing.jsx": {
 		Pointing: Pointing,
 		Pointing$LHTMLElement$: Pointing
+	},
+	"src/input/mouse.jsx": {
+		Mouse: Mouse,
+		Mouse$LHTMLElement$: Mouse
 	},
 	"src/app/element.jsx": {
 		Element: Element$0,

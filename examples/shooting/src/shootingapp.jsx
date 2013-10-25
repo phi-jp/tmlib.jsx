@@ -50,6 +50,8 @@ class GameScene extends Scene {
     var player = new Player();
     var bulletGroup = new CanvasElement();
     var enemyGroup = new CanvasElement();
+    var scoreLabel = new Label("SCORE: 000");
+    var score = 0;
 
     function constructor() {
         super();
@@ -60,14 +62,9 @@ class GameScene extends Scene {
         this.addChild(this.enemyGroup);
         this.addChild(this.bulletGroup);
 
-        // var label = new Label("GameScene");
-        // label.setPosition(30, 30);
-        // this.addChild(label);
-
-        // var shape = new Shape();
-        // shape.setPosition(30, 30);
-        // shape.canvas.clear("blue");
-        // this.addChild(shape);
+        this.scoreLabel.setPosition(230, 20);
+        this.scoreLabel.align = "right";
+        this.addChild(this.scoreLabel);
     }
     override function update(app:variant): void {
         var baseApp = app as BaseApp;
@@ -104,6 +101,9 @@ class GameScene extends Scene {
                     enemy.damage();
                     if (enemy.isDead()) {
                         enemy.remove();
+
+                        this.score += 100;
+                        this.scoreLabel.text = "SCORE: " + (this.score as string);
                     }
 
                     return true;
