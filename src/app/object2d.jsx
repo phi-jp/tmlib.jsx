@@ -17,6 +17,7 @@ class Object2D extends Element {
     var rotation = 0;
     var width  = 32;
     var height = 32;
+    var radius = 32;
     
     /**
      * constructor
@@ -37,6 +38,13 @@ class Object2D extends Element {
         var checkVertical= (this.getTop() < y && y < this.getBottom());
         
         return checkHorizon && checkVertical;
+    }
+
+    function isHit(object: Object2D): boolean {
+        var dir = (new Vector2()).sub(this.position, object.position);
+        var lenSq = dir.lengthSquare();
+
+        return ( (lenSq) < (this.radius+object.radius)*(this.radius+object.radius) );
     }
     
     function getLeft(): number {
