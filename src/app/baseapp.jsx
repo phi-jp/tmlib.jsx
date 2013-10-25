@@ -7,7 +7,8 @@ import "js/web.jsx";
 
 import "console.jsx";
 
-import "../input/Pointing.jsx";
+import "../input/pointing.jsx";
+import "../input/mouse.jsx";
 import "scene.jsx";
 
 
@@ -30,7 +31,7 @@ class BaseApp {
         this.scenes = [
             new Scene()
         ]: Scene[];
-        this.pointing = new Pointing(elm);
+        this.pointing = new Mouse(elm);
     }
     
     function run(): void {
