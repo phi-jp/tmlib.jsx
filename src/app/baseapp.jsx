@@ -17,7 +17,8 @@ import "scene.jsx";
 class BaseApp {
     var element: HTMLElement;
     var scenes: Scene[];
-    var sceneIndex: int;
+    var sceneIndex: int = 0;
+    var frame: number = 0;
     var pointing: Pointing;
     
     /**
@@ -28,15 +29,13 @@ class BaseApp {
         this.scenes = [
             new Scene()
         ]: Scene[];
-        this.sceneIndex = 0;
         this.pointing = new Pointing(elm);
     }
     
     function run(): void {
-        var self = this;
         //var id: Nullable.<TimerHandle> = null;
         Timer.setInterval(function(): void {
-            self._loop();
+            this._loop();
         }, 1000/30);
     }
 
@@ -54,6 +53,8 @@ class BaseApp {
         
         this._update();
         this._draw();
+
+        ++this.frame;
     }
     
     function _update(): void {
