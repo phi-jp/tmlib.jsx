@@ -862,6 +862,7 @@ GameScene.prototype.checkCollision$X = function (app) {
 function BaseApp(elm) {
 	this.sceneIndex = 0;
 	this.frame = 0;
+	this.fps = 30;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
 	this.pointing = new Pointing$0(elm);
@@ -872,7 +873,7 @@ BaseApp.prototype.run$ = function () {
 	var $this = this;
 	Timer$setInterval$F$V$N((function () {
 		$this._loop$();
-	}), 1000 / 30);
+	}), 1000 / this.fps);
 };
 
 

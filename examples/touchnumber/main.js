@@ -776,6 +776,7 @@ GameScene.prototype.checkTouch$X = function (app) {
 	temp = new Vector2$0(p.position.x, p.position.y);
 	this.pieceGroup.children.forEach((function (elm) {
 		var piece;
+		var time;
 		piece = (function ($v) {
 			if (! ($v == null || $v instanceof Piece)) {
 				debugger;
@@ -786,6 +787,10 @@ GameScene.prototype.checkTouch$X = function (app) {
 		if (piece.isHit$LVector2$(temp) && $this.currentNumber === piece.number) {
 			$this.pieceGroup.removeChild$LElement$0$(piece);
 			++ $this.currentNumber;
+			if ($this.currentNumber === 25) {
+				time = baseApp.frame / baseApp.fps;
+				dom.window.alert("clear!" + ((time | 0) + "") + "秒かかりました!");
+			}
 		}
 	}));
 };
@@ -944,6 +949,7 @@ $__jsx_extend([Piece], CanvasElement);
 function BaseApp(elm) {
 	this.sceneIndex = 0;
 	this.frame = 0;
+	this.fps = 30;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
 	this.pointing = new Pointing(elm);
@@ -954,7 +960,7 @@ BaseApp.prototype.run$ = function () {
 	var $this = this;
 	Timer$setInterval$F$V$N((function () {
 		$this._loop$();
-	}), 1000 / 30);
+	}), 1000 / this.fps);
 };
 
 

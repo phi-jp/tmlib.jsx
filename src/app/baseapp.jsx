@@ -19,6 +19,7 @@ class BaseApp {
     var scenes: Scene[];
     var sceneIndex: int = 0;
     var frame: number = 0;
+    var fps: number = 30;
     var pointing: Pointing;
     
     /**
@@ -36,7 +37,7 @@ class BaseApp {
         //var id: Nullable.<TimerHandle> = null;
         Timer.setInterval(function(): void {
             this._loop();
-        }, 1000/30);
+        }, 1000/this.fps);
     }
 
     function replaceScene(scene: Scene): BaseApp {
