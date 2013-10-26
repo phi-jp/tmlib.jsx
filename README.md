@@ -1,6 +1,7 @@
 # tmlib.jsx
 
-tmlib.jsx is jsx version of tmlib.js.
+tmlib.jsx ported [tmlib.js](http://phi-jp.github.io/tmlib.js) in jsx.
+This is game library of jsx.
 
 
 ## setup
@@ -15,11 +16,9 @@ $npm install
 $grunt
 ```
 
-
 ## watch build
 
 ```
 $grunt watch
 ```
-
 
