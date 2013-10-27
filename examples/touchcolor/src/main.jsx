@@ -69,7 +69,7 @@ class GameScene extends Scene {
     function checkCollision(app:variant): void {
         var baseApp = app as CanvasApp;
         var p = baseApp.pointing;
-        if (!p.getButtonDown("left")) { return ; }
+        if (!p.getPointingStart()) { return ; }
         
         var temp = new Vector2(p.position.x, p.position.y);
         

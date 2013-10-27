@@ -139,7 +139,7 @@ function dom$id$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:29:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -151,7 +151,7 @@ function dom$getElementById$S(id) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:37:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.getElementById(id) as HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.getElementById(id)));
@@ -163,7 +163,7 @@ function dom$createElement$S(tag) {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLElement)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:45:47] detected invalid cast, value is not an instance of the designated type or null\n        return dom.document.createElement(tag) as __noconvert__ HTMLElement;\n                                               ^^\n");
 		}
 		return $v;
 	}(dom.document.createElement(tag)));
@@ -631,110 +631,14 @@ function Vector2$cross$LVector2$LVector2$(lhs, rhs) {
 Vector2.cross$LVector2$LVector2$ = Vector2$cross$LVector2$LVector2$;
 
 function Pointing(elm) {
-	var $this = this;
 	this.position = new Vector2$1();
 	this.deltaPosition = new Vector2$1();
 	this.prevPosition = new Vector2$1();
 	this._tempPosition = new Vector2$1();
-	this.button = 0;
-	this.last = 0;
-	this.press = 0;
-	this.up = 0;
-	this.down = 0;
 	this.element = elm;
-	this.element.addEventListener("mousedown", (function (e) {
-		var mouseEvent;
-		mouseEvent = (function ($v) {
-			if (! ($v == null || $v instanceof MouseEvent)) {
-				debugger;
-				throw new Error("[src/input/pointing.jsx:37:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
-			}
-			return $v;
-		}(e));
-		$this.button |= 1 << mouseEvent.button;
-	}));
-	this.element.addEventListener("mouseup", (function (e) {
-		var mouseEvent;
-		mouseEvent = (function ($v) {
-			if (! ($v == null || $v instanceof MouseEvent)) {
-				debugger;
-				throw new Error("[src/input/pointing.jsx:41:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
-			}
-			return $v;
-		}(e));
-		$this.button &= ~ (1 << mouseEvent.button);
-	}));
-	this.element.addEventListener("mousemove", (function (e) {
-		var mouseEvent;
-		var element;
-		var rect;
-		mouseEvent = (function ($v) {
-			if (! ($v == null || $v instanceof MouseEvent)) {
-				debugger;
-				throw new Error("[src/input/pointing.jsx:45:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
-			}
-			return $v;
-		}(e));
-		element = (function ($v) {
-			if (! ($v == null || $v instanceof HTMLElement)) {
-				debugger;
-				throw new Error("[src/input/pointing.jsx:46:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
-			}
-			return $v;
-		}(e.target));
-		rect = element.getBoundingClientRect();
-		$this._tempPosition.x = mouseEvent.x - rect.left;
-		$this._tempPosition.y = mouseEvent.y - rect.top;
-		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
-		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
-	}));
 };
 
 $__jsx_extend([Pointing], Object);
-Pointing.prototype.update$ = function () {
-	this.last = this.press;
-	this.press = this.button;
-	this.down = (this.press ^ this.last) & this.press;
-	this.up = (this.press ^ this.last) & this.last;
-	this.deltaPosition.sub$LVector2$1$LVector2$1$(this._tempPosition, this.prevPosition);
-	this.prevPosition.set$LVector2$1$(this.position);
-	this.position.set$LVector2$1$(this._tempPosition);
-};
-
-
-Pointing.prototype.getPointingStart$ = function () {
-	return (this.down & (function (v) {
-		if (! (v != null)) {
-			debugger;
-			throw new Error("[src/input/pointing.jsx:74:47] null access\n        return (this.down & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                               ^\n");
-		}
-		return v;
-	}(Pointing.BUTTON_MAP.left))) !== 0;
-};
-
-
-Pointing.prototype.getPointing$ = function () {
-	return (this.press & (function (v) {
-		if (! (v != null)) {
-			debugger;
-			throw new Error("[src/input/pointing.jsx:78:48] null access\n        return (this.press & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                                ^\n");
-		}
-		return v;
-	}(Pointing.BUTTON_MAP.left))) !== 0;
-};
-
-
-Pointing.prototype.getButtonDown$S = function (button) {
-	return (this.down & (function (v) {
-		if (! (v != null)) {
-			debugger;
-			throw new Error("[src/input/pointing.jsx:82:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
-		}
-		return v;
-	}(Pointing.BUTTON_MAP[button]))) !== 0;
-};
-
-
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function Element$0() {
 	this.parent = null;
@@ -837,7 +741,7 @@ GameScene.prototype.checkCollision$X = function (app) {
 		return $v;
 	}(app));
 	p = baseApp.pointing;
-	if (! p.getButtonDown$S("left")) {
+	if (! p.getPointingStart$()) {
 		return;
 	}
 	temp = new Vector2$0(p.position.x, p.position.y);
@@ -860,12 +764,23 @@ GameScene.prototype.checkCollision$X = function (app) {
 
 
 function BaseApp(elm) {
+	var $this = this;
+	var ua;
+	var mobileFlag;
 	this.sceneIndex = 0;
 	this.frame = 0;
 	this.fps = 30;
+	this.pointing = null;
 	this.element = elm;
 	this.scenes = [ new Scene() ];
-	this.pointing = new Pointing$0(elm);
+	ua = dom.window.navigator.userAgent;
+	mobileFlag = (function () {
+		return ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0;
+	})();
+	this.pointing = (mobileFlag ? new Touch$0(elm) : new Mouse(elm));
+	elm.addEventListener("touchstart", (function (e) {
+		e.preventDefault();
+	}));
 };
 
 $__jsx_extend([BaseApp], Object);
@@ -1517,7 +1432,7 @@ function Timer$setTimeout$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:34:40] detected invalid cast, value is not a function or null\n        return (js.global[\"setTimeout\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                        ^^\n");
 		}
 		return $v;
 	}(js$0.global.setTimeout))(callback, intervalMS);
@@ -1529,7 +1444,7 @@ function Timer$clearTimeout$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:38:35] detected invalid cast, value is not a function or null\n        (js.global[\"clearTimeout\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                   ^^\n");
 		}
 		return $v;
 	}(js$0.global.clearTimeout))(timer);
@@ -1541,7 +1456,7 @@ function Timer$setInterval$F$V$N(callback, intervalMS) {
 	return (function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:42:41] detected invalid cast, value is not a function or null\n        return (js.global[\"setInterval\"] as __noconvert__ function(:function():void,:number) : TimerHandle)(callback, intervalMS);\n                                         ^^\n");
 		}
 		return $v;
 	}(js$0.global.setInterval))(callback, intervalMS);
@@ -1553,7 +1468,7 @@ function Timer$clearInterval$LTimerHandle$(timer) {
 	(function ($v) {
 		if (! ($v == null || typeof $v === "function")) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:46:36] detected invalid cast, value is not a function or null\n        (js.global[\"clearInterval\"] as __noconvert__ function(:TimerHandle) : void)(timer);\n                                    ^^\n");
 		}
 		return $v;
 	}(js$0.global.clearInterval))(timer);
@@ -1591,7 +1506,7 @@ function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
 			name = (function (v) {
 				if (! (v != null)) {
 					debugger;
-					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:72:35] null access\n                var name = prefixes[i] + \"equestAnimationFrame\";\n                                   ^\n");
+					throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:72:35] null access\n                var name = prefixes[i] + \"equestAnimationFrame\";\n                                   ^\n");
 				}
 				return v;
 			}(prefixes[i])) + "equestAnimationFrame";
@@ -1600,7 +1515,7 @@ function Timer$_getRequestAnimationFrameImpl$B(useNativeImpl) {
 					return (function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:75:48] detected invalid cast, value is not a function or null\n                        return (js.global[name] as __noconvert__\n                                                ^^\n");
+							throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:75:48] detected invalid cast, value is not a function or null\n                        return (js.global[name] as __noconvert__\n                                                ^^\n");
 						}
 						return $v;
 					}(js$0.global[name]))(callback);
@@ -1633,7 +1548,7 @@ function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
 			name = (function (v) {
 				if (! (v != null)) {
 					debugger;
-					throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:100:35] null access\n                var name = prefixes[i] + \"ancelAnimationFrame\";\n                                   ^\n");
+					throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:100:35] null access\n                var name = prefixes[i] + \"ancelAnimationFrame\";\n                                   ^\n");
 				}
 				return v;
 			}(prefixes[i])) + "ancelAnimationFrame";
@@ -1642,7 +1557,7 @@ function Timer$_getCancelAnimationFrameImpl$B(useNativeImpl) {
 					(function ($v) {
 						if (! ($v == null || typeof $v === "function")) {
 							debugger;
-							throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:103:41] detected invalid cast, value is not a function or null\n                        (js.global[name] as __noconvert__\n                                         ^^\n");
+							throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/timer.jsx:103:41] detected invalid cast, value is not a function or null\n                        (js.global[name] as __noconvert__\n                                         ^^\n");
 						}
 						return $v;
 					}(js$0.global[name]))(timer);
@@ -1657,24 +1572,20 @@ Timer._getCancelAnimationFrameImpl$B = Timer$_getCancelAnimationFrameImpl$B;
 
 function TimerHandle() {}
 $__jsx_extend([TimerHandle], Object);
-function Pointing$0(elm) {
+function Mouse(elm) {
 	var $this = this;
-	this.position = new Vector2$1();
-	this.deltaPosition = new Vector2$1();
-	this.prevPosition = new Vector2$1();
-	this._tempPosition = new Vector2$1();
+	Pointing.call(this, elm);
 	this.button = 0;
 	this.last = 0;
 	this.press = 0;
 	this.up = 0;
 	this.down = 0;
-	this.element = elm;
 	this.element.addEventListener("mousedown", (function (e) {
 		var mouseEvent;
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:37:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:27:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
@@ -1685,7 +1596,7 @@ function Pointing$0(elm) {
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:41:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:31:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
@@ -1698,14 +1609,14 @@ function Pointing$0(elm) {
 		mouseEvent = (function ($v) {
 			if (! ($v == null || $v instanceof MouseEvent)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:45:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
+				throw new Error("[src/input/mouse.jsx:35:31] detected invalid cast, value is not an instance of the designated type or null\n            var mouseEvent = e as MouseEvent;\n                               ^^\n");
 			}
 			return $v;
 		}(e));
 		element = (function ($v) {
 			if (! ($v == null || $v instanceof HTMLElement)) {
 				debugger;
-				throw new Error("[src/input/Pointing.jsx:46:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+				throw new Error("[src/input/mouse.jsx:36:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
 			}
 			return $v;
 		}(e.target));
@@ -1717,8 +1628,8 @@ function Pointing$0(elm) {
 	}));
 };
 
-$__jsx_extend([Pointing$0], Object);
-Pointing$0.prototype.update$ = function () {
+$__jsx_extend([Mouse], Pointing);
+Mouse.prototype.update$ = function () {
 	this.last = this.press;
 	this.press = this.button;
 	this.down = (this.press ^ this.last) & this.press;
@@ -1729,36 +1640,159 @@ Pointing$0.prototype.update$ = function () {
 };
 
 
-Pointing$0.prototype.getPointingStart$ = function () {
-	return (this.down & (function (v) {
-		if (! (v != null)) {
-			debugger;
-			throw new Error("[src/input/Pointing.jsx:74:47] null access\n        return (this.down & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                               ^\n");
-		}
-		return v;
-	}(Pointing$0.BUTTON_MAP.left))) !== 0;
+Mouse.prototype.getPointing$ = function () {
+	return this.getButton$S("left");
 };
 
 
-Pointing$0.prototype.getPointing$ = function () {
+Mouse.prototype.getPointingStart$ = function () {
+	return this.getButtonDown$S("left");
+};
+
+
+Mouse.prototype.getPointingEnd$ = function () {
+	return this.getButtonUp$S("left");
+};
+
+
+Mouse.prototype.getButton$S = function (button) {
 	return (this.press & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:78:48] null access\n        return (this.press & Pointing.BUTTON_MAP[\"left\"]) != 0;\n                                                ^\n");
+			throw new Error("[src/input/mouse.jsx:76:45] null access\n        return (this.press & Mouse.BUTTON_MAP[button]) != 0;\n                                             ^\n");
 		}
 		return v;
-	}(Pointing$0.BUTTON_MAP.left))) !== 0;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
 };
 
 
-Pointing$0.prototype.getButtonDown$S = function (button) {
+Mouse.prototype.getButtonDown$S = function (button) {
 	return (this.down & (function (v) {
 		if (! (v != null)) {
 			debugger;
-			throw new Error("[src/input/Pointing.jsx:82:47] null access\n        return (this.down & Pointing.BUTTON_MAP[button]) != 0;\n                                               ^\n");
+			throw new Error("[src/input/mouse.jsx:80:44] null access\n        return (this.down & Mouse.BUTTON_MAP[button]) != 0;\n                                            ^\n");
 		}
 		return v;
-	}(Pointing$0.BUTTON_MAP[button]))) !== 0;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
+};
+
+
+Mouse.prototype.getButtonUp$S = function (button) {
+	return (this.up & (function (v) {
+		if (! (v != null)) {
+			debugger;
+			throw new Error("[src/input/mouse.jsx:84:42] null access\n        return (this.up & Mouse.BUTTON_MAP[button]) != 0;\n                                          ^\n");
+		}
+		return v;
+	}(Mouse.BUTTON_MAP[button]))) !== 0;
+};
+
+
+function Touch$0(elm) {
+	var $this = this;
+	Pointing.call(this, elm);
+	this.touch = false;
+	this.last = 0;
+	this.now = 0;
+	this.start = 0;
+	this.end = 0;
+	this.element.addEventListener("touchstart", (function (e) {
+		var touchEvent;
+		var element;
+		var t;
+		var r;
+		touchEvent = (function ($v) {
+			if (! ($v == null || $v instanceof TouchEvent)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:18:31] detected invalid cast, value is not an instance of the designated type or null\n            var touchEvent = e as TouchEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:19:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		t = touchEvent.touches[0];
+		r = element.getBoundingClientRect();
+		$this._tempPosition.set$NN(t.clientX - r.left, t.clientY - r.top);
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
+		$this.position.set$LVector2$1$($this._tempPosition);
+		$this.prevPosition.set$LVector2$1$($this._tempPosition);
+		$this.touch = true;
+	}));
+	this.element.addEventListener("touchend", (function (e) {
+		$this.touch = false;
+	}));
+	this.element.addEventListener("touchmove", (function (e) {
+		var touchEvent;
+		var element;
+		var t;
+		var r;
+		touchEvent = (function ($v) {
+			if (! ($v == null || $v instanceof TouchEvent)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:36:31] detected invalid cast, value is not an instance of the designated type or null\n            var touchEvent = e as TouchEvent;\n                               ^^\n");
+			}
+			return $v;
+		}(e));
+		element = (function ($v) {
+			if (! ($v == null || $v instanceof HTMLElement)) {
+				debugger;
+				throw new Error("[src/input/touch.jsx:37:35] detected invalid cast, value is not an instance of the designated type or null\n            var element = e.target as HTMLElement;\n                                   ^^\n");
+			}
+			return $v;
+		}(e.target));
+		t = touchEvent.touches[0];
+		r = element.getBoundingClientRect();
+		$this._tempPosition.set$NN(t.clientX - r.left, t.clientY - r.top);
+		$this._tempPosition.x *= +element.width / (+element.style.width.replace('px', ''));
+		$this._tempPosition.y *= +element.height / (+element.style.height.replace('px', ''));
+	}));
+};
+
+$__jsx_extend([Touch$0], Pointing);
+Touch$0.prototype.update$ = function () {
+	this.last = this.now;
+	this.now = ((this.touch ? 1 : 0) | 0);
+	this.start = (this.now ^ this.last) & this.now;
+	this.end = (this.now ^ this.last) & this.last;
+	this.deltaPosition.sub$LVector2$1$LVector2$1$(this._tempPosition, this.prevPosition);
+	this.prevPosition.set$LVector2$1$(this.position);
+	this.position.set$LVector2$1$(this._tempPosition);
+};
+
+
+Touch$0.prototype.getPointing$ = function () {
+	return this.getTouch$();
+};
+
+
+Touch$0.prototype.getPointingStart$ = function () {
+	return this.getTouchStart$();
+};
+
+
+Touch$0.prototype.getPointingEnd$ = function () {
+	return this.getTouchEnd$();
+};
+
+
+Touch$0.prototype.getTouch$ = function () {
+	return this.now !== 0;
+};
+
+
+Touch$0.prototype.getTouchStart$ = function () {
+	return this.start !== 0;
+};
+
+
+Touch$0.prototype.getTouchEnd$ = function () {
+	return this.end !== 0;
 };
 
 
@@ -1805,16 +1839,10 @@ $__jsx_lazy_init(dom, "document", function () {
 	return (function ($v) {
 		if (! ($v == null || $v instanceof HTMLDocument)) {
 			debugger;
-			throw new Error("[/Users/uematsu.yuki/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
+			throw new Error("[/Users/phi/Dropbox/git/tmlib.jsx/node_modules/grunt-jsx/node_modules/jsx/lib/js/js/web.jsx:23:50] detected invalid cast, value is not an instance of the designated type or null\n    static const document = js.global[\"document\"] as __noconvert__ HTMLDocument;\n                                                  ^^\n");
 		}
 		return $v;
 	}(js$0.global.document));
-});
-Pointing.BUTTON_LEFT = 0x1;
-Pointing.BUTTON_MIDDLE = 0x2;
-Pointing.BUTTON_RIGHT = 0x4;
-$__jsx_lazy_init(Pointing, "BUTTON_MAP", function () {
-	return ({ "left": Pointing.BUTTON_LEFT, "middle": Pointing.BUTTON_MIDDLE, "right": Pointing.BUTTON_RIGHT });
 });
 $__jsx_lazy_init(AssetManager, "assets", function () {
 	return ({  });
@@ -1825,11 +1853,11 @@ $__jsx_lazy_init(Timer, "_requestAnimationFrame", function () {
 $__jsx_lazy_init(Timer, "_cancelAnimationFrame", function () {
 	return Timer$_getCancelAnimationFrameImpl$B(true);
 });
-Pointing$0.BUTTON_LEFT = 0x1;
-Pointing$0.BUTTON_MIDDLE = 0x2;
-Pointing$0.BUTTON_RIGHT = 0x4;
-$__jsx_lazy_init(Pointing$0, "BUTTON_MAP", function () {
-	return ({ "left": Pointing$0.BUTTON_LEFT, "middle": Pointing$0.BUTTON_MIDDLE, "right": Pointing$0.BUTTON_RIGHT });
+Mouse.BUTTON_LEFT = 0x1;
+Mouse.BUTTON_MIDDLE = 0x2;
+Mouse.BUTTON_RIGHT = 0x4;
+$__jsx_lazy_init(Mouse, "BUTTON_MAP", function () {
+	return ({ "left": Mouse.BUTTON_LEFT, "middle": Mouse.BUTTON_MIDDLE, "right": Mouse.BUTTON_RIGHT });
 });
 
 var $__jsx_classMap = {
@@ -2004,9 +2032,13 @@ var $__jsx_classMap = {
 		Timer$: Timer,
 		TimerHandle: TimerHandle
 	},
-	"src/input/Pointing.jsx": {
-		Pointing: Pointing$0,
-		Pointing$LHTMLElement$: Pointing$0
+	"src/input/mouse.jsx": {
+		Mouse: Mouse,
+		Mouse$LHTMLElement$: Mouse
+	},
+	"src/input/touch.jsx": {
+		Touch: Touch$0,
+		Touch$LHTMLElement$: Touch$0
 	},
 	"src/util/flow.jsx": {
 		Flow: Flow,

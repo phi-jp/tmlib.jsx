@@ -750,6 +750,9 @@ function BaseApp(elm) {
 		return ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0;
 	})();
 	this.pointing = (mobileFlag ? new Touch$0(elm) : new Mouse(elm));
+	elm.addEventListener("touchstart", (function (e) {
+		e.preventDefault();
+	}));
 };
 
 $__jsx_extend([BaseApp], Object);

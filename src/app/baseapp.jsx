@@ -40,6 +40,10 @@ class BaseApp {
         })();
 
         this.pointing = (mobileFlag) ? new tm.Touch(elm) : new Mouse(elm);
+
+        elm.addEventListener("touchstart", (e) -> {
+            e.preventDefault();
+        });
     }
     
     function run(): void {
