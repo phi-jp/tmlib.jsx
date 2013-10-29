@@ -2,11 +2,12 @@
  *
  */
 
+import "../event/eventdispatcher.jsx" into tm;
 
 /**
  * element class
  */
-class Element {
+class Element extends tm.EventDispatcher {
     var parent = null: Element;
     var children: Element[];
 //    var update = null: function(app: variant): void;
@@ -54,9 +55,13 @@ class Element {
     }
     
     function _update(app: variant): void {
-        if (this.update) {
-            this.update(app);
+        this.update(app);
+
+        if (this.contains("enterframe")) {
+            var e = new tm.Event("enterframe");
+            this.fire(e);
         }
+
         if (this.children.length > 0) {
             this.children.forEach((elm) -> {
                 elm._update(app);
