@@ -1438,6 +1438,7 @@ Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
 	this._transform$LObject2D$LCanvas$(label, canvas);
 	canvas.context.fillStyle = label.fontColor;
+	canvas.context.font = label._fontStyle;
 	canvas.context.textAlign = label.align;
 	canvas.context.textBaseline = label.baseline;
 	canvas.fillText$SNN(label.text, 0, 0);
@@ -1459,6 +1460,42 @@ Renderer.prototype._transform$LObject2D$LCanvas$ = function (obj, canvas) {
 	return this;
 };
 
+
+function Util() {
+};
+
+$__jsx_extend([Util], Object);
+function Util$shuffle$AX(arr) {
+	var i;
+	var len;
+	var j;
+	var t;
+	for ((i = 0, len = arr.length); i < len; ++ i) {
+		j = Math.floor(Math.random() * len);
+		if (i !== j) {
+			t = arr[i];
+			arr[i] = arr[j];
+			arr[j] = t;
+		}
+	}
+	return arr;
+};
+
+Util.shuffle$AX = Util$shuffle$AX;
+
+function Util$format$SHX(str, obj) {
+	var fn;
+	var rex;
+	fn = (function (m) {
+		var key;
+		key = m.substring(1, m.length - 1);
+		return obj[key] + "";
+	});
+	rex = /\{(\w+)\}/g;
+	return str.replace(rex, fn);
+};
+
+Util.format$SHX = Util$format$SHX;
 
 function Vector2$1() {
 	this.x = 0;
@@ -1694,7 +1731,7 @@ function GameScene() {
 	this.player = new Player();
 	this.bulletGroup = new CanvasElement();
 	this.enemyGroup = new CanvasElement();
-	this.scoreLabel = new Label$0("SCORE: 000");
+	this.scoreLabel = new Label("SCORE: 000");
 	this.score = 0;
 	this.player.position.set$NN(ShootingApp.SCREEN_CENTER_X, ShootingApp.SCREEN_HEIGHT - 30);
 	this.addChild$LElement$0$(this.player);
@@ -1962,23 +1999,57 @@ Player.prototype.update$X = function (app) {
 };
 
 
-function Label() {
+function Label(text) {
 	CanvasElement.call(this);
-	this.text = "";
 	this.align = "center";
 	this.baseline = "middle";
 	this.fontColor = "black";
+	this._fontWeight = "";
+	this._fontSize = 24;
+	this._fontFamily = "'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+	this._fontStyle = "";
+	this.text = text;
+	this._updateFontStyle$();
 };
 
-function Label$0(text) {
-	CanvasElement.call(this);
-	this.align = "center";
-	this.baseline = "middle";
-	this.fontColor = "black";
-	this.text = text;
+function Label$0() {
+	Label.call(this, "");
 };
 
 $__jsx_extend([Label, Label$0], CanvasElement);
+Label.prototype.setFontWeight$S = function (weight) {
+	this._fontWeight = weight;
+	this._updateFontStyle$();
+	return this;
+};
+
+
+Label.prototype.setFontSize$N = function (size) {
+	this._fontSize = size;
+	this._updateFontStyle$();
+	return this;
+};
+
+
+Label.prototype.setFontFamily$S = function (family) {
+	this._fontFamily = family;
+	this._updateFontStyle$();
+	return this;
+};
+
+
+Label.prototype._updateFontStyle$ = function () {
+	this._fontStyle = Util$format$SHX("{_fontWeight} {_fontSize}px {_fontFamily}", (function ($v) {
+		if (! ($v == null || typeof $v === "object" || typeof $v === "function")) {
+			debugger;
+			throw new Error("[src/display/label.jsx:52:101] detected invalid cast, value is not a Map or null\n        this._fontStyle = Util.format(\"{_fontWeight} {_fontSize}px {_fontFamily}\", (this as variant) as Map.<variant>);\n                                                                                                     ^^\n");
+		}
+		return $v;
+	}(this)));
+	return this;
+};
+
+
 function Shape(width, height) {
 	CanvasElement.call(this);
 	this.loaded = false;
@@ -2190,6 +2261,10 @@ var $__jsx_classMap = {
 		Renderer: Renderer,
 		Renderer$: Renderer
 	},
+	"src/util/util.jsx": {
+		Util: Util,
+		Util$: Util
+	},
 	"src/geom/Vector2.jsx": {
 		Vector2: Vector2$1,
 		Vector2$: Vector2$1,
@@ -2224,8 +2299,8 @@ var $__jsx_classMap = {
 	},
 	"src/display/label.jsx": {
 		Label: Label,
-		Label$: Label,
-		Label$S: Label$0
+		Label$S: Label,
+		Label$: Label$0
 	},
 	"src/display/shape.jsx": {
 		Shape: Shape,

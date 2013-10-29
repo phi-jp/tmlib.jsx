@@ -652,6 +652,20 @@ function Util$shuffle$AX(arr) {
 
 Util.shuffle$AX = Util$shuffle$AX;
 
+function Util$format$SHX(str, obj) {
+	var fn;
+	var rex;
+	fn = (function (m) {
+		var key;
+		key = m.substring(1, m.length - 1);
+		return obj[key] + "";
+	});
+	rex = /\{(\w+)\}/g;
+	return str.replace(rex, fn);
+};
+
+Util.format$SHX = Util$format$SHX;
+
 var js$0 = (function () { var global = (function () { return this; }()); return { global: global, eval: global.eval, invoke: function(invocant, methodName, args) { return invocant[methodName].apply(invocant, args); } }; }());
 function BaseApp(elm) {
 	var $this = this;
@@ -972,6 +986,7 @@ Renderer.prototype._drawSprite$LSprite$LCanvas$ = function (sprite, canvas) {
 Renderer.prototype._drawLabel$LLabel$LCanvas$ = function (label, canvas) {
 	this._transform$LObject2D$LCanvas$(label, canvas);
 	canvas.context.fillStyle = label.fontColor;
+	canvas.context.font = label._fontStyle;
 	canvas.context.textAlign = label.align;
 	canvas.context.textBaseline = label.baseline;
 	canvas.fillText$SNN(label.text, 0, 0);
@@ -1235,7 +1250,7 @@ function Piece(number) {
 	shape = new Shape(64, 64);
 	shape.canvas.clear$S("hsl(160, 70%, 60%)");
 	this.addChild$LElement$0$(shape);
-	label = new Label$0(number + "");
+	label = new Label(number + "");
 	label.fontColor = "white";
 	this.addChild$LElement$0$(label);
 };
@@ -1254,23 +1269,36 @@ function Sprite$0(key) {
 };
 
 $__jsx_extend([Sprite, Sprite$0], CanvasElement);
-function Label() {
+function Label(text) {
 	CanvasElement.call(this);
-	this.text = "";
 	this.align = "center";
 	this.baseline = "middle";
 	this.fontColor = "black";
+	this._fontWeight = "";
+	this._fontSize = 24;
+	this._fontFamily = "'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+	this._fontStyle = "";
+	this.text = text;
+	this._updateFontStyle$();
 };
 
-function Label$0(text) {
-	CanvasElement.call(this);
-	this.align = "center";
-	this.baseline = "middle";
-	this.fontColor = "black";
-	this.text = text;
+function Label$0() {
+	Label.call(this, "");
 };
 
 $__jsx_extend([Label, Label$0], CanvasElement);
+Label.prototype._updateFontStyle$ = function () {
+	this._fontStyle = Util$format$SHX("{_fontWeight} {_fontSize}px {_fontFamily}", (function ($v) {
+		if (! ($v == null || typeof $v === "object" || typeof $v === "function")) {
+			debugger;
+			throw new Error("[src/display/label.jsx:34:101] detected invalid cast, value is not a Map or null\n        this._fontStyle = Util.format(\"{_fontWeight} {_fontSize}px {_fontFamily}\", (this as variant) as Map.<variant>);\n                                                                                                     ^^\n");
+		}
+		return $v;
+	}(this)));
+	return this;
+};
+
+
 function Shape(width, height) {
 	CanvasElement.call(this);
 	this.loaded = false;
@@ -2112,8 +2140,8 @@ var $__jsx_classMap = {
 	},
 	"src/display/label.jsx": {
 		Label: Label,
-		Label$: Label,
-		Label$S: Label$0
+		Label$S: Label,
+		Label$: Label$0
 	},
 	"src/display/shape.jsx": {
 		Shape: Shape,
