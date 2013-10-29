@@ -36,8 +36,8 @@ class ShootingApp extends CanvasApp {
         super(elm);
 
         AssetManager.load({
-            "my": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/my.png",
-            "rock": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/rock1.png",
+            "my": "http://rawgithub.com/phi-jp/tmlib.js/0.1.8/resource/img/shooting/player00.png",
+            "rock": "http://rawgithub.com/phi-jp/tmlib.js/0.1.8/resource/img/shooting/enemy.png",
             "bullet": "http://rawgithub.com/jsx/JSX/master/web/example/shooting/img/bullet.png",
         }, (hoge):void -> {
             var scene = new GameScene();
@@ -122,6 +122,10 @@ class Player extends Sprite {
 
         this.radius = 16;
         this.velocity = new Vector2(2, 0);
+
+        // this.on('enterframe', (e)-> {
+        //     log("hoge");
+        // });
     }
     
     override function update(app:variant): void {
@@ -148,6 +152,7 @@ class Player extends Sprite {
             this.position.add(temp.div(2));
         }
     }
+
 }
 
 
