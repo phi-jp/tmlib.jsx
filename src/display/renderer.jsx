@@ -71,6 +71,7 @@ class Renderer {
         this._transform(label, canvas);
 
         canvas.context.fillStyle = label.fontColor;
+        canvas.context.font = label._fontStyle;
         canvas.context.textAlign = label.align;
         canvas.context.textBaseline = label.baseline;
 
