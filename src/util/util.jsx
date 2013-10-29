@@ -16,4 +16,14 @@ class Util {
 
 		return arr;
 	}
+
+	static function format(str:string, obj:Map.<variant>): string {
+		var fn = (m:string):string -> {
+			var key = m.substring(1, m.length-1);
+			return obj[key] as string;
+		};
+		var rex = /\{(\w+)\}/g;
+
+		return str.replace(rex, fn);
+	}
 }
